@@ -1,36 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <!--交流列表-->
+    <group
+        android:id="@+id/group_communicate"
+        android:title="@string/communicate">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_friend"
+            android:icon="@drawable/ic_menu_friend"
+            android:title="@string/action_friend" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_message"
+            android:icon="@drawable/ic_menu_message"
+            android:title="@string/action_message" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
 
+    <!--卡组操作-->
+    <group android:id="@+id/group_card">
+        <!--整理卡片-->
+        <item
+            android:id="@+id/nav_arrange"
+            android:icon="@drawable/ic_menu_arrange"
+            android:title="@string/action_arrange" />
+        <!--新建卡组-->
+        <item
+            android:id="@+id/nav_create_cardlist"
+            android:icon="@drawable/ic_menu_create_cardlist"
+            android:title="@string/action_create_cardlist" />
+        <!--导入图册-->
+        <item
+            android:id="@+id/nav_add_folder"
+            android:icon="@drawable/ic_menu_add_folder"
+            android:title="@string/action_add_folder" />
+
+    </group>
+
+    <!--设置组-->
+    <group android:id="@+id/group_settings">
+        <!--回收站-->
+        <item
+            android:id="@+id/nav_recyclebin"
+            android:icon="@drawable/ic_menu_recyclebin"
+            android:title="@string/action_recyclebin" />
+        <!--设置-->
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/action_settings" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_menu_share"
+            android:title="@string/action_share" />
+    </group>
 </menu>
