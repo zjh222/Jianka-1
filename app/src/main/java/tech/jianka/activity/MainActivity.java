@@ -1,4 +1,4 @@
-package tech.jianka.jianka;
+package tech.jianka.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
