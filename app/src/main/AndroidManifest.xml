@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="tech.jianka.activity">
 
-    <!--android:launchMode="singleTop"保证退回的时候不会重绘主界面-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- android:launchMode="singleTop"保证退回的时候不会重绘主界面 -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,11 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- 主Activity -->
         <activity
-            android:name="tech.jianka.activity.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,12 +28,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="tech.jianka.activity.SettingsActivity"
+        <!-- 设置Activity -->
+        <activity
+            android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <!-- 消息列表Activity -->
+        <activity
+            android:name=".MessageActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <!-- FriendListActivity -->
+        <activity
+            android:name=".FriendListActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".NewCardActivity"></activity>
     </application>
 
 </manifest>
