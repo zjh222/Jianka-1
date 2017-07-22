@@ -52,7 +52,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".NewCardActivity"></activity>
+        <activity android:name=".NewCardActivity" />
+        <activity android:name=".CardListActivity"></activity>
     </application>
 
 </manifest>

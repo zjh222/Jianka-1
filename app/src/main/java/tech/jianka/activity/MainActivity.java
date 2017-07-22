@@ -80,30 +80,35 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id){
             case R.id.nav_friend:
+                navFriendList();
                 break;
             case R.id.nav_message:
-//                startActivity(new Intent(this, MessageListActivity.class));
+                navMessage();
                 break;
             case R.id.nav_arrange:
+                navArrange();
                 break;
             case R.id.nav_create_cardlist:
+                navCreateCardList();
                 break;
             case R.id.nav_add_folder:
+                navAddFolder();
                 break;
             case R.id.nav_recyclebin:
+                navRecycleBin();
                 break;
             case R.id.nav_settings:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                navSettings();
+
                 break;
             case R.id.nav_share:
+                navShare();
                 break;
             default:
                 break;
@@ -112,6 +117,40 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void navShare() {
+
+    }
+
+    private void navSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void navRecycleBin() {
+
+    }
+
+    private void navAddFolder() {
+
+    }
+
+
+    private void navCreateCardList() {
+        startActivity(new Intent(this, MessageActivity.class));
+    }
+
+    private void navArrange() {
+
+    }
+
+    private void navMessage() {
+
+    }
+
+    private void navFriendList() {
+        startActivity(new Intent(this,FriendListActivity.class));
     }
 
 }

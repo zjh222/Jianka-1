@@ -1,19 +1,23 @@
 package tech.jianka.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-public class MessageActivity extends AppCompatActivity {
+public class CardListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+        setContentView(R.layout.activity_card_list);
 
-
-        setTitle(getString(R.string.action_message));
+        Intent intent = getIntent();
+        if (intent.hasExtra(getString(R.string.title))) {
+            String title = intent.getStringExtra(getString(R.string.title));
+            setTitle(title);
+        }
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
