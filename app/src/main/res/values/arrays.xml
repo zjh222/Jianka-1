@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="pref_theme_option_labels">
+        <item>@string/pref_theme_label_purple</item>
+        <item>@string/pref_theme_label_red</item>
+        <item>@string/pref_theme_label_blue</item>
+        <item>@string/pref_theme_label_yellow</item>
+        <item>@string/pref_theme_label_pink</item>
+    </array>
+    <array name="pref_theme_option_values">
+        <item>@string/pref_theme_purple_value</item>
+        <item>@string/pref_theme_red_value</item>
+        <item>@string/pref_theme_blue_value</item>
+        <item>@string/pref_theme_yellow_value</item>
+        <item>@string/pref_theme_pink_value</item>
+    </array>
+    <array name="pref_recycle_bin_save_time_label">
+        <item>@string/pref_recycle_bin_save_time_label_7</item>
+        <item>@string/pref_recycle_bin_save_time_label_14</item>
+        <item>@string/pref_recycle_bin_save_time_label_30</item>
+    </array>
+    <array name="pref_recycle_bin_save_time_value">
+        <item>@string/pref_recycle_bin_save_time_value_7</item>
+        <item>@string/pref_recycle_bin_save_time_value_14</item>
+        <item>@string/pref_recycle_bin_save_time_value_30</item>
+    </array>
+
+</resources>

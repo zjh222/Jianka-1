@@ -6,15 +6,45 @@
 
     <string name="action_settings">设置</string>
     <string name="action_search">查找</string>
-    <string name="action_create_cardlist">新建卡组</string>
+    <string name="action_create_card_list">新建卡组</string>
     <string name="action_add_folder">导入图册</string>
     <string name="action_message">消息列表</string>
     <string name="action_friend">我的好友</string>
     <string name="communicate">交流</string>
     <string name="action_arrange">整理卡片</string>
     <string name="action_share">分享APP</string>
-    <string name="action_recyclebin">回收站</string>
+    <string name="action_recycle_bin">回收站</string>
     <string name="action_clear">清空</string>
     <string name="email">richardlus@foxmail.com</string>
     <string name="title">title</string>
+    <string name="action_show_hidden">显示隐藏卡组</string>
+    <string name="action_new_card_list">新建卡组</string>
+
+    <string name="pref_theme_key"  translatable="false">theme</string>
+    <string name="pref_theme_label">主题</string>
+    <string name="pref_theme_label_purple">紫色</string>
+    <string name="pref_theme_label_red">红色</string>
+    <string name="pref_theme_label_blue">蓝色</string>
+    <string name="pref_theme_label_yellow">黄色</string>
+    <string name="pref_theme_label_pink">粉色</string>
+
+    <string name="pref_theme_purple_value" translatable="false">purple</string>
+    <string name="pref_theme_red_value" translatable="false">red</string>
+    <string name="pref_theme_blue_value" translatable="false">blue</string>
+    <string name="pref_theme_yellow_value" translatable="false">yellow</string>
+    <string name="pref_theme_pink_value" translatable="false">pink</string>
+
+    <string name="pref_recycle_bin_save_time_key" translatable="false">save_time</string>
+    <string name="pref_recycle_bin_save_time_label">回收站保存时间</string>
+    <string name="pref_recycle_bin_save_time_label_7">一星期</string>
+    <string name="pref_recycle_bin_save_time_label_14">两星期</string>
+    <string name="pref_recycle_bin_save_time_label_30">一个月</string>
+    <string name="pref_recycle_bin_save_time_value_7" translatable="false">7</string>
+    <string name="pref_recycle_bin_save_time_value_14" translatable="false">14</string>
+    <string name="pref_recycle_bin_save_time_value_30" translatable="false">30</string>
+
+    <string name="pref_remind_label">提醒时间</string>
+    <string name="pref_remind_key" translatable="false">remind_time</string>
+    <string name="pref_remind_time_10" translatable="false">10</string>
+
 </resources>
