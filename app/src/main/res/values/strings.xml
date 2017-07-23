@@ -46,5 +46,6 @@
     <string name="pref_remind_label">提醒时间</string>
     <string name="pref_remind_key" translatable="false">remind_time</string>
     <string name="pref_remind_time_10" translatable="false">10</string>
+    <string name="title_holder">标题占位String</string>
 
 </resources>

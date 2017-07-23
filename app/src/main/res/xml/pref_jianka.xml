@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceScreen android:title="账号设置">
+        <PreferenceCategory android:title="个人账号">
+
+        </PreferenceCategory>
+    </PreferenceScreen>
+
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="show_bass"
@@ -12,6 +19,7 @@
         android:entryValues="@array/pref_theme_option_values"
         android:key="@string/pref_theme_key"
         android:title="@string/pref_theme_label" />
+
     <ListPreference
         android:defaultValue="@string/pref_recycle_bin_save_time_value_7"
         android:entries="@array/pref_recycle_bin_save_time_label"

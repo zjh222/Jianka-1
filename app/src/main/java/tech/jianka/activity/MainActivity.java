@@ -9,13 +9,24 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
+import android.widget.Toast;
+
+import tech.jianka.adapter.CardAdapter;
+import tech.jianka.data.CardArray;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,CardAdapter.CardClickListener{
+    private CardAdapter mAdapter;
+    private RecyclerView mCardRecycle;
+    private Toast mToast;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
@@ -45,6 +57,17 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mCardRecycle = (RecyclerView) findViewById(R.id.main_recycler_view);
+        mCardRecycle.setHasFixedSize(true);
+        CardArray cardArray = new CardArray();
+        cardArray.newCard(50);
+        mAdapter = new CardAdapter(cardArray,this);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+        layoutManager.setOrientation(GridLayout.VERTICAL);
+        mCardRecycle.setAdapter(mAdapter);
+        mCardRecycle.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -164,4 +187,13 @@ public class MainActivity extends AppCompatActivity
         startActivity(new Intent(this,FriendListActivity.class));
     }
 
+    @Override
+    public void onCardClick(int clickedCardIndex) {
+        if(mToast != null){
+            mToast.cancel();
+        }
+        String toastMessage = "Card" +clickedCardIndex +"  clicked";
+        mToast = Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT);
+        mToast.show();
+    }
 }
