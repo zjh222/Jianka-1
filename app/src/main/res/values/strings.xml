@@ -3,7 +3,7 @@
 
     <string name="navigation_drawer_open">打开抽屉</string>
     <string name="navigation_drawer_close">关闭抽屉</string>
-
+    <!--抽屉-->
     <string name="action_settings">设置</string>
     <string name="action_search">查找</string>
     <string name="action_create_card_list">新建卡组</string>
@@ -20,20 +20,46 @@
     <string name="action_show_hidden">显示隐藏卡组</string>
     <string name="action_new_card_list">新建卡组</string>
 
-    <string name="pref_theme_key"  translatable="false">theme</string>
+    <!--账号设置-->
+    <string name="pref_category_account">账号</string>
+    <string name="pref_account_personal">个人</string>
+    <string name="pref_account_team">团队</string>
+    <string name="pref_account_team_not_yet">后续推出</string>
+
+
+    <!--外观设置-->
+    <string name="pref_category_appearance">外观</string>
     <string name="pref_theme_label">主题</string>
+    <string name="pref_theme_key" translatable="false">theme</string>
     <string name="pref_theme_label_purple">紫色</string>
     <string name="pref_theme_label_red">红色</string>
     <string name="pref_theme_label_blue">蓝色</string>
     <string name="pref_theme_label_yellow">黄色</string>
     <string name="pref_theme_label_pink">粉色</string>
-
     <string name="pref_theme_purple_value" translatable="false">purple</string>
     <string name="pref_theme_red_value" translatable="false">red</string>
     <string name="pref_theme_blue_value" translatable="false">blue</string>
     <string name="pref_theme_yellow_value" translatable="false">yellow</string>
     <string name="pref_theme_pink_value" translatable="false">pink</string>
 
+
+    <!--卡组设置-->
+    <string name="pref_category_card_list">卡组</string>
+    <string name="show_hidden_key" translatable="false">card_list</string>
+    <string name="show_hidden_card">显示</string>
+    <string name="hide_hidden_card">隐藏</string>
+    <string name="pref_show_hidden_label">隐藏卡组</string>
+
+
+    <!--GTD设置-->
+    <string name="pref_category_gtd">GTD</string>
+    <string name="pref_remind_label">提醒时间</string>
+    <string name="pref_remind_key" translatable="false">remind_time</string>
+    <string name="pref_remind_time_10" translatable="false">10</string>
+    <string name="title_holder">标题占位String</string>
+
+    <!--回收站设置-->
+    <string name="pref_category_recycle_bin">回收站</string>
     <string name="pref_recycle_bin_save_time_key" translatable="false">save_time</string>
     <string name="pref_recycle_bin_save_time_label">回收站保存时间</string>
     <string name="pref_recycle_bin_save_time_label_7">一星期</string>
@@ -43,9 +69,15 @@
     <string name="pref_recycle_bin_save_time_value_14" translatable="false">14</string>
     <string name="pref_recycle_bin_save_time_value_30" translatable="false">30</string>
 
-    <string name="pref_remind_label">提醒时间</string>
-    <string name="pref_remind_key" translatable="false">remind_time</string>
-    <string name="pref_remind_time_10" translatable="false">10</string>
-    <string name="title_holder">标题占位String</string>
+
+    <string name="pref_category_others">其他</string>
+    <string name="pref_feedback_key" translatable="false" >feedback</string>
+    <string name="pref_feedback_label">意见反馈</string>
+    <string name="pref_donate_key" translatable="false">donate</string>
+    <string name="pref_donate_label">捐赠</string>
+    <string name="pref_donate_summary">觉得App有用话,随意打赏</string>
+    <string name="pref_rate_the_app_key" translatable="false">rate</string>
+    <string name="pref_rate_the_app_label">在应用市场评分</string>
+    <string name="action_refresh">刷新/同步</string>
 
 </resources>

@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--账号设置-->
+    <PreferenceCategory android:title="@string/pref_category_account" >
+        <Preference android:title="@string/pref_account_personal" />
+        <Preference android:title="@string/pref_account_team"
+            android:summary="@string/pref_account_team_not_yet"/>
+    </PreferenceCategory>
+    <!--外观设置-->
+    <PreferenceCategory android:title="@string/pref_category_appearance" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_bass"
+            android:summaryOff="Hidden"
+            android:summaryOn="Shown"
+            android:title="Show Bass" />
+        <ListPreference
+            android:defaultValue="@string/pref_theme_purple_value"
+            android:entries="@array/pref_theme_option_labels"
+            android:entryValues="@array/pref_theme_option_values"
+            android:key="@string/pref_theme_key"
+            android:title="@string/pref_theme_label" />
+    </PreferenceCategory>
+    <!--卡组设置-->
+    <PreferenceCategory android:title="@string/pref_category_card_list" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_hidden_key"
+            android:summaryOn="@string/show_hidden_card"
+            android:summaryOff="@string/hide_hidden_card"
+            android:title="@string/pref_show_hidden_label"
+            />
+    </PreferenceCategory>
+    <!--回收站设置-->
+    <PreferenceCategory android:title="@string/pref_category_recycle_bin" >
+        <ListPreference
+            android:defaultValue="@string/pref_recycle_bin_save_time_value_7"
+            android:entries="@array/pref_recycle_bin_save_time_label"
+            android:entryValues="@array/pref_recycle_bin_save_time_value"
+            android:key="@string/pref_recycle_bin_save_time_key"
+            android:title="@string/pref_recycle_bin_save_time_label" />
+    </PreferenceCategory>
+    <!--GTD设置-->
+    <PreferenceCategory android:title="@string/pref_category_gtd" >
 
-    <PreferenceScreen android:title="账号设置">
-        <PreferenceCategory android:title="个人账号">
+        <EditTextPreference
+            android:defaultValue="@string/pref_remind_time_10"
+            android:title="@string/pref_remind_label"
+            android:key="@string/pref_remind_key" />
+    </PreferenceCategory>
+    <!--其他-->
+    <PreferenceCategory android:title="@string/pref_category_others">
+        <Preference
+            android:key="@string/pref_feedback_key"
+            android:title="@string/pref_feedback_label"/>
+        <Preference
+            android:key="@string/pref_donate_key"
+            android:title="@string/pref_donate_label"
+            android:summary="@string/pref_donate_summary"/>
+        <Preference
+            android:key="@string/pref_rate_the_app_key"
+            android:title="@string/pref_rate_the_app_label"/>
+    </PreferenceCategory>
 
-        </PreferenceCategory>
-    </PreferenceScreen>
-
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="show_bass"
-        android:summaryOff="Hidden"
-        android:summaryOn="Shown"
-        android:title="Show Bass" />
-    <ListPreference
-        android:defaultValue="@string/pref_theme_purple_value"
-        android:entries="@array/pref_theme_option_labels"
-        android:entryValues="@array/pref_theme_option_values"
-        android:key="@string/pref_theme_key"
-        android:title="@string/pref_theme_label" />
-
-    <ListPreference
-        android:defaultValue="@string/pref_recycle_bin_save_time_value_7"
-        android:entries="@array/pref_recycle_bin_save_time_label"
-        android:entryValues="@array/pref_recycle_bin_save_time_value"
-        android:key="@string/pref_recycle_bin_save_time_key"
-        android:title="@string/pref_recycle_bin_save_time_label" />
-    <EditTextPreference
-        android:defaultValue="@string/pref_remind_time_10"
-        android:title="@string/pref_remind_label"
-        android:key="@string/pref_remind_key" />
 </PreferenceScreen>

@@ -17,6 +17,8 @@ import java.util.prefs.PreferenceChangeListener;
 public class SettingsFragment extends PreferenceFragmentCompat
         implements SharedPreferences.OnSharedPreferenceChangeListener,
         PreferenceChangeListener {
+
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.pref_jianka);
@@ -31,10 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 String value = sharedPreferences.getString(p.getKey(), "");
                 setPreferenceSummary(p, value);
             }
-
         }
-
-
     }
 
     @Override
