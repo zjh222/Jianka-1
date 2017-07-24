@@ -79,5 +79,11 @@
     <string name="pref_rate_the_app_key" translatable="false">rate</string>
     <string name="pref_rate_the_app_label">在应用市场评分</string>
     <string name="action_refresh">刷新/同步</string>
+    <string name="enter_a_title">增加一张卡片到收信箱</string>
+    <string name="enter_the_content">输入卡片内容</string>
+    <string name="time_example">2017年7月20日   9:36</string>
+    <string name="new_card_activity">创建卡片</string>
+    <string name="card_background_color">卡色</string>
+    <string name="important_or_emergent">等级</string>
 
 </resources>
