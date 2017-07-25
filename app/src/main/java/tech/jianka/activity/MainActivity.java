@@ -5,22 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.Toast;
 
 import tech.jianka.adapter.CardAdapter;
-import tech.jianka.data.CardArray;
+import tech.jianka.adapter.MyFragmentPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,CardAdapter.CardClickListener{
@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity
     private Toast mToast;
     private SwipeRefreshLayout refreshLayout;
 
+    private MyFragmentPagerAdapter adapter ;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,16 +63,25 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mCardRecycle = (RecyclerView) findViewById(R.id.main_recycler_view);
-        mCardRecycle.setHasFixedSize(true);
-        CardArray cardArray = new CardArray();
-        cardArray.newCard(50);
-        mAdapter = new CardAdapter(cardArray,this);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
-        layoutManager.setOrientation(GridLayout.VERTICAL);
-        mCardRecycle.setAdapter(mAdapter);
-        mCardRecycle.setLayoutManager(layoutManager);
+        adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),this);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+//        mCardRecycle = (RecyclerView) findViewById(R.id.main_recycler_view);
+//        mCardRecycle.setHasFixedSize(true);
+//        CardArray cardArray = new CardArray();
+//        cardArray.newCard(50);
+//        mAdapter = new CardAdapter(cardArray,this);
+////        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+//        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
+//        layoutManager.setOrientation(GridLayout.VERTICAL);
+//        mCardRecycle.setAdapter(mAdapter);
+//        mCardRecycle.setLayoutManager(layoutManager);
     }
 
     @Override
