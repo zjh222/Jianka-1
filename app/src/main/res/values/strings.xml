@@ -83,7 +83,7 @@
     <string name="enter_the_content">输入卡片内容</string>
     <string name="time_example">2017年7月20日   9:36</string>
     <string name="new_card_activity">创建卡片</string>
-    <string name="card_background_color">卡色</string>
+    <string name="card_theme_color">卡色</string>
     <string name="important_or_emergent">等级</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -99,5 +99,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="event_regular">常规</string>
+    <string name="card_theme_blue">蓝</string>
 
 </resources>
