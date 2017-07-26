@@ -69,6 +69,7 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mTextView = (TextView) itemView.findViewById(R.id.tv_card_item_title);
             mTextViewDate = (TextView) itemView.findViewById(R.id.tv_card_item_time);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
@@ -80,8 +81,8 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @Override
         public boolean onLongClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mCardItemClickListener.onCardItemClick(clickedPosition);
-            return false;
+            mCardItemLongClickListener.onCardItemLongClick(clickedPosition);
+            return true;
         }
     }
 
