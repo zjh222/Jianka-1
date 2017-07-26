@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--tab 的标题-->
+    <string-array name="home_tab_title">
+        <item>分组</item>
+        <item>最近</item>
+        <item>任务</item>
+    </string-array>
+
     <array name="pref_theme_option_labels">
         <item>@string/pref_theme_label_purple</item>
         <item>@string/pref_theme_label_red</item>

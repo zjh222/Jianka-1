@@ -3,35 +3,40 @@ package tech.jianka.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import tech.jianka.adapter.CardAdapter;
-import tech.jianka.adapter.MyFragmentPagerAdapter;
+import tech.jianka.adapter.HomeFragmentPagerAdapter;
+import tech.jianka.fragment.HomePageFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,CardAdapter.CardClickListener{
-    private CardAdapter mAdapter;
-    private RecyclerView mCardRecycle;
-    private Toast mToast;
-    private SwipeRefreshLayout refreshLayout;
+        implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnAdapterChangeListener{
 
-    private MyFragmentPagerAdapter adapter ;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private List<Fragment> fragmentList;
+    private String[] titles;
+    private CardAdapter.CardItemClickListener listener;
+    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,26 +68,38 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),this);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        initView();
+        initData();
+    }
+
+    private void initView() {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        fragmentList = new ArrayList<>();
+        titles = getResources().getStringArray(R.array.home_tab_title);
+        for (String title : titles) {
+            Bundle bundle = new Bundle();
+            bundle.putString("title", title);
+            HomePageFragment homePageFragment = HomePageFragment.newInstance(title,"");
+            homePageFragment.setArguments(bundle);
+            fragmentList.add(homePageFragment);
+        }
+
+    }
+
+    private void initData() {
+        HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList,listener);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
+        viewPager.addOnAdapterChangeListener(this);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-//        mCardRecycle = (RecyclerView) findViewById(R.id.main_recycler_view);
-//        mCardRecycle.setHasFixedSize(true);
-//        CardArray cardArray = new CardArray();
-//        cardArray.newCard(50);
-//        mAdapter = new CardAdapter(cardArray,this);
-////        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-//        GridLayoutManager layoutManager = new GridLayoutManager(this,2);
-//        layoutManager.setOrientation(GridLayout.VERTICAL);
-//        mCardRecycle.setAdapter(mAdapter);
-//        mCardRecycle.setLayoutManager(layoutManager);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -107,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             navSettings();
             return true;
-        }else if (id == R.id.action_new_card_list){
+        } else if (id == R.id.action_new_card_list) {
             navCreateCardList();
             return true;
         } else if (id == R.id.action_show_hidden) {
@@ -132,7 +149,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.nav_friend:
                 navFriendList();
                 break;
@@ -186,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void navCreateCardList() {
-        startActivity(new Intent(this,NewCardListActivity.class));
+        startActivity(new Intent(this, NewCardListActivity.class));
     }
 
     private void navArrange() {
@@ -198,16 +215,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void navFriendList() {
-        startActivity(new Intent(this,FriendListActivity.class));
+        startActivity(new Intent(this, FriendListActivity.class));
     }
 
     @Override
-    public void onCardClick(int clickedCardIndex) {
-        if(mToast != null){
-            mToast.cancel();
-        }
-        String toastMessage = "Card" +clickedCardIndex +"  clicked";
-        mToast = Toast.makeText(this,toastMessage,Toast.LENGTH_SHORT);
-        mToast.show();
+    public void onAdapterChanged(@NonNull ViewPager viewPager, @Nullable PagerAdapter oldAdapter, @Nullable PagerAdapter newAdapter) {
+
     }
 }

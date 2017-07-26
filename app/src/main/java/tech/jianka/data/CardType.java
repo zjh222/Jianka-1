@@ -6,7 +6,9 @@ package tech.jianka.data;
 
 public enum CardType {
     INBOX,
-    GTD,
-    GENERAL,
-    PICTURE
+    PLAIN_TXT,
+    PICTURE_TXT,
+    PICTURE,
+    TASK,
+    LINK
 }
