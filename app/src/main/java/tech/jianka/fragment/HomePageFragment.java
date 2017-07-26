@@ -1,5 +1,6 @@
 package tech.jianka.fragment;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,7 +27,7 @@ import tech.jianka.data.CardArray;
  * Use the {@link HomePageFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomePageFragment extends Fragment implements CardAdapter.CardItemClickListener,CardAdapter.CardItemLongClickListener{
+public class HomePageFragment extends Fragment implements CardAdapter.CardItemClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_TAB_TITLE = "title";
@@ -97,23 +98,23 @@ public class HomePageFragment extends Fragment implements CardAdapter.CardItemCl
         recyclerView.setLayoutManager(layoutManager);
         CardArray cards = new CardArray();
         cards.newCard(50);
-        CardAdapter cardAdapter = new CardAdapter(getActivity(), cards, this,this);
+        CardAdapter cardAdapter = new CardAdapter(getActivity(), cards, this);
         recyclerView.setAdapter(cardAdapter);
     }
 
     private void initData() {
     }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
 
     @Override
     public void onDetach() {
@@ -123,6 +124,7 @@ public class HomePageFragment extends Fragment implements CardAdapter.CardItemCl
 
     @Override
     public void onCardItemClick(int clickedCardIndex) {
+        // TODO: 2017/7/26 处理卡片单击事件
         if (mToast != null) {
             mToast.cancel();
         }
@@ -133,6 +135,7 @@ public class HomePageFragment extends Fragment implements CardAdapter.CardItemCl
 
     @Override
     public void onCardItemLongClick(int clickedCardIndex) {
+        // TODO: 2017/7/26 处理卡片长按事件
         if (mToast != null) {
             mToast.cancel();
         }

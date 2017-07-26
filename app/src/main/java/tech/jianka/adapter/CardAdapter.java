@@ -18,16 +18,14 @@ import tech.jianka.data.Card;
 
 public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final CardItemClickListener mCardItemClickListener;
-    private final CardItemLongClickListener mCardItemLongClickListener;
     private LayoutInflater inflater;
     private ArrayList<Card> cardArray;
     private Context context;
 
-    public CardAdapter(Context context, ArrayList<Card> cardArray, CardItemClickListener listener, CardItemLongClickListener longClickListener) {
+    public CardAdapter(Context context, ArrayList<Card> cardArray, CardItemClickListener listener) {
         this.context = context;
         this.cardArray = cardArray;
         this.mCardItemClickListener = listener;
-        this.mCardItemLongClickListener = longClickListener;
     }
 
     @Override
@@ -81,7 +79,7 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @Override
         public boolean onLongClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mCardItemLongClickListener.onCardItemLongClick(clickedPosition);
+            mCardItemClickListener.onCardItemLongClick(clickedPosition);
             return true;
         }
     }
@@ -91,9 +89,6 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface CardItemClickListener {
         void onCardItemClick(int clickedCardIndex);
-    }
-
-    public interface CardItemLongClickListener {
         void onCardItemLongClick(int clickedCardIndex);
     }
 }

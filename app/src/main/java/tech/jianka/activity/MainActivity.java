@@ -2,6 +2,7 @@ package tech.jianka.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,7 +30,7 @@ import tech.jianka.adapter.HomeFragmentPagerAdapter;
 import tech.jianka.fragment.HomePageFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnAdapterChangeListener{
+        implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnAdapterChangeListener,HomePageFragment.OnFragmentInteractionListener {
 
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -220,6 +221,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onAdapterChanged(@NonNull ViewPager viewPager, @Nullable PagerAdapter oldAdapter, @Nullable PagerAdapter newAdapter) {
+
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }
