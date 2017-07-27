@@ -17,6 +17,7 @@ import android.widget.Toast;
 import tech.jianka.activity.R;
 import tech.jianka.adapter.CardAdapter;
 import tech.jianka.data.CardArray;
+import tech.jianka.utils.GridSpacingItemDecoration;
 
 
 /**
@@ -94,8 +95,9 @@ public class HomePageFragment extends Fragment implements CardAdapter.CardItemCl
     private void initView() {
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.home_swipe_refresh);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.home_recycler_view);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1,GridLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,0,true));
         CardArray cards = new CardArray();
         cards.newCard(50);
         CardAdapter cardAdapter = new CardAdapter(getActivity(), cards, this);

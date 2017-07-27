@@ -32,7 +32,7 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //加载Item View的时候根据不同TYPE加载不同的布局
         inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.card_item, parent, false);
+        View view = inflater.inflate(R.layout.card_item_one_column, parent, false);
         CardViewHolder holder = new CardViewHolder(view);
         return holder;
 
@@ -42,7 +42,6 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CardViewHolder) {
             ((CardViewHolder) holder).mTextView.setText(cardArray.get(position).getTitle());
-            ((CardViewHolder) holder).mTextViewDate.setText(cardArray.get(position).getDate().toString());
         }
     }
 

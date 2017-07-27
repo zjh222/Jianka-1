@@ -20,12 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import tech.jianka.adapter.CardAdapter;
 import tech.jianka.adapter.HomeFragmentPagerAdapter;
 import tech.jianka.fragment.HomePageFragment;
 
@@ -36,8 +34,6 @@ public class MainActivity extends AppCompatActivity
     private TabLayout tabLayout;
     private List<Fragment> fragmentList;
     private String[] titles;
-    private CardAdapter.CardItemClickListener listener;
-    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +85,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initData() {
-        HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList,listener);
+        HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnAdapterChangeListener(this);

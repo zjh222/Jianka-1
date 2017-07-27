@@ -14,11 +14,9 @@ public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private String[] titles;
     private List<Fragment> fragmentList;
-    private CardAdapter.CardItemClickListener listener;
 
-    public HomeFragmentPagerAdapter(FragmentManager manager, String[] titles, List<Fragment> fragmentList, CardAdapter.CardItemClickListener listener) {
+    public HomeFragmentPagerAdapter(FragmentManager manager, String[] titles, List<Fragment> fragmentList) {
         super(manager);
-        this.listener = listener;
         this.titles = titles;
         this.fragmentList = fragmentList;
     }
