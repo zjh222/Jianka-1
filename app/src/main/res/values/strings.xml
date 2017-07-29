@@ -99,8 +99,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <style name="card_height_one_column">card_height</style>
-    <string name="event_regular">常规</string>
+
     <string name="card_theme_blue">蓝</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -108,5 +109,13 @@
     <string name="tab_card_group">所有卡组</string>
     <string name="card_group_inbox">收信箱</string>
     <string name="card_image">卡中图片</string>
+    <string name="save_card">保存</string>
+    <string name="action_insert_image">图片</string>
 
+    <!--任务等级-->
+    <string name="task_regular">常规</string>
+    <string name="task_important_emergent">很重要-很紧急</string>
+    <string name="task_unimportant_emergent">不重要-很紧急</string>
+    <string name="task_important_not_emergent">很重要-不紧急</string>
+    <string name="task_unimportant_not_emergent">不重要-不紧急</string>
 </resources>

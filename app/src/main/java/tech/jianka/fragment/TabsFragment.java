@@ -98,7 +98,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             GroupArray groups = new GroupArray();
             groups.addGroup(20);
             ItemAdapter adapter = new ItemAdapter(groups,ItemAdapter.CARD_GROUP, this);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(2));
+            recyclerView.addItemDecoration(new SpaceItemDecoration(5));
             recyclerView.setAdapter(adapter);
 
         } else if (fragmentType == RECENT_FRAGMENT) {
@@ -108,6 +108,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             CardGroup cards = new CardGroup("hello");
             cards.newCard(50);
             ItemAdapter cardAdapter = new ItemAdapter(cards,ItemAdapter.CARD, this);
+            recyclerView.addItemDecoration(new SpaceItemDecoration(2));
             recyclerView.setAdapter(cardAdapter);
         } else if(fragmentType == TASK_FRAGMENT){
             recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
@@ -116,6 +117,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             GroupArray groups = new GroupArray();
             groups.addGroup(4);
             ItemAdapter cardAdapter = new ItemAdapter(groups,ItemAdapter.TASK_GROUP, this);
+            recyclerView.addItemDecoration(new SpaceItemDecoration(5));
             recyclerView.setAdapter(cardAdapter);
         }
 

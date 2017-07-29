@@ -63,9 +63,6 @@
             android:name=".NewCardActivity"
             android:parentActivityName=".MainActivity" />
         <!-- 卡片列表的界面 -->
-        <activity
-            android:name=".CardListActivity"
-            android:parentActivityName=".MainActivity" />
         <!-- 新建卡组的界面 -->
         <activity
             android:name=".NewCardListActivity"

@@ -32,14 +32,18 @@
         <item>@string/pref_recycle_bin_save_time_value_30</item>
     </array>
 
-    <array name="important_emergent">
-        <item>@string/important_emergent</item>
-        <item>@string/important_not_emergent</item>
-        <item>@string/unimportant_emergent</item>
-        <item>@string/unimportant_not_emergent</item>
+    <array name="task">
+        <item>@string/task_regular</item>
+        <item>@string/task_important_emergent</item>
+        <item>@string/task_important_not_emergent</item>
+        <item>@string/task_unimportant_emergent</item>
+        <item>@string/task_unimportant_not_emergent</item>
     </array>
-    <string name="important_emergent">很重要-很紧急</string>
-    <string name="unimportant_emergent">不重要-很紧急</string>
-    <string name="important_not_emergent">很重要-不紧急</string>
-    <string name="unimportant_not_emergent">不重要-不紧急</string>
+
+    <string-array name="data">
+        <item>收信箱</item>
+        <item>任务</item>
+
+    </string-array>
+
 </resources>

@@ -80,10 +80,13 @@ public class MainActivity extends AppCompatActivity
         fragmentList.add(TabsFragment.newInstance(TabsFragment.TASK_FRAGMENT));
         //fragment的Adapter
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList);
+        //viewpager的设置
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnAdapterChangeListener(this);
-        tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1,false);//从中间页启动
+        //tab的设置
+        tabLayout.setupWithViewPager(viewPager);//tab和viewpager联动
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
