@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--tab 的标题-->
-    <string-array name="home_tab_title">
+    <string-array name="main_tab_title">
         <item>分组</item>
         <item>最近</item>
         <item>任务</item>

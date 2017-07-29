@@ -25,15 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.jianka.adapter.HomeFragmentPagerAdapter;
-import tech.jianka.fragment.HomePageFragment;
+import tech.jianka.fragment.TabsFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ViewPager.OnAdapterChangeListener,HomePageFragment.OnFragmentInteractionListener {
-
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private List<Fragment> fragmentList;
-    private String[] titles;
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ViewPager.OnAdapterChangeListener, TabsFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +48,13 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+        fab.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // TODO: 2017/7/29 长按直接解析粘贴板内容
+                return true;
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -66,25 +66,19 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         initView();
-        initData();
     }
 
     private void initView() {
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        fragmentList = new ArrayList<>();
-        titles = getResources().getStringArray(R.array.home_tab_title);
-        for (String title : titles) {
-            Bundle bundle = new Bundle();
-            bundle.putString("title", title);
-            HomePageFragment homePageFragment = HomePageFragment.newInstance(title,"");
-            homePageFragment.setArguments(bundle);
-            fragmentList.add(homePageFragment);
-        }
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
 
-    }
-
-    private void initData() {
+        List<Fragment> fragmentList = new ArrayList<>();
+        String[] titles = getResources().getStringArray(R.array.main_tab_title);
+        //增加三个fragment
+        fragmentList.add(TabsFragment.newInstance(TabsFragment.GROUP_FRAGMENT));
+        fragmentList.add(TabsFragment.newInstance(TabsFragment.RECENT_FRAGMENT));
+        fragmentList.add(TabsFragment.newInstance(TabsFragment.TASK_FRAGMENT));
+        //fragment的Adapter
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
@@ -93,9 +87,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
     }
-
 
 
     @Override
@@ -141,7 +133,6 @@ public class MainActivity extends AppCompatActivity
     private void showHiddenCardList() {
         // TODO: 2017/7/22
     }
-
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

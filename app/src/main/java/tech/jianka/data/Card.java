@@ -11,7 +11,7 @@ public class Card {
     private String author;
     private Date date;
     private String content;
-    private CardType cardType;
+    private DataType dataType;
 
     public String getTitle() {
         return title;
@@ -45,19 +45,19 @@ public class Card {
         this.content = content;
     }
 
-    public CardType getCardType() {
-        return cardType;
+    public DataType getDataType() {
+        return dataType;
     }
 
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
     }
 
-    public Card(String title, String author, Date date, String content, CardType cardType) {
+    public Card(String title, String author, Date date, String content, DataType dataType) {
         this.title = title;
         this.author = author;
         this.date = date;
         this.content = content;
-        this.cardType = cardType;
+        this.dataType = dataType;
     }
 }

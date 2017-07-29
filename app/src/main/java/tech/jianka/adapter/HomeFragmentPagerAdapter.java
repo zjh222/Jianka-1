@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.List;
 
 /**
- * Created by Richa on 2017/7/25.
+ * Created by Richard on 2017/7/25.
  */
 
 public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {

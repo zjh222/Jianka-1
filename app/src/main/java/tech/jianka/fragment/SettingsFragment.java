@@ -1,4 +1,4 @@
-package tech.jianka.activity;
+package tech.jianka.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
+
+import tech.jianka.activity.R;
 
 /**
  * Created by Richa on 2017/7/21.

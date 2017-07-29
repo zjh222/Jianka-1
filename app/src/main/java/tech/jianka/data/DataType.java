@@ -4,11 +4,15 @@ package tech.jianka.data;
  * Created by Richa on 2017/7/23.
  */
 
-public enum CardType {
+public enum DataType {
+    ONE_COLUMN,
+    TWO_COLUNM,
+    GROUP_FRAGMENT,
+    RECENT_FRAGMENT,
+    TASK_FRAGMENT,
     INBOX,
     PLAIN_TXT,
     PICTURE_TXT,
     PICTURE,
-    TASK,
     LINK
 }

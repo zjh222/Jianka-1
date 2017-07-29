@@ -65,92 +65,24 @@
 
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:orientation="horizontal"
                 android:scrollbars="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/colorSelector"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/new_card_created_time">
+                app:layout_constraintTop_toBottomOf="@+id/new_card_created_time"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+                <com.sendtion.xrichtext.RichTextEditor
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/editText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:gravity="start|top"
-                    android:hint="@string/enter_the_content"
-                    android:minHeight="150dp"
-                    android:padding="8dp"
-                    />
+                </com.sendtion.xrichtext.RichTextEditor>
             </LinearLayout>
 
-
-            <RadioGroup
-                android:id="@+id/colorSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/eventSelector"
-                app:layout_constraintLeft_toLeftOf="parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/card_theme_color" />
-
-                <RadioButton
-                    android:id="@+id/color1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true" />
-
-                <RadioButton
-                    android:id="@+id/color2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <RadioButton
-                    android:id="@+id/color3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <RadioButton
-                    android:id="@+id/color4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <RadioButton
-                    android:id="@+id/color5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/necCardColorIdentifier"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/card_theme_blue" />
-
-            </RadioGroup>
 
             <RadioGroup
                 android:id="@+id/eventSelector"

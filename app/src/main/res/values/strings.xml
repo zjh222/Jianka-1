@@ -99,6 +99,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <style name="card_height_one_column">card_height</style>
     <string name="event_regular">常规</string>
     <string name="card_theme_blue">蓝</string>
 
