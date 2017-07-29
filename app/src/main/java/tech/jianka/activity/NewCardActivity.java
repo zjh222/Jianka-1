@@ -47,6 +47,11 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }else{
             mEditContent.append("没找到");
         }
+        if (getString("hello", this) != null) {
+            mEditContent.append(getString("hello", this) );
+        }else{
+            mEditContent.append("没找到");
+        }
 
     }
     public static void putString(String key, String value, Context context) {
