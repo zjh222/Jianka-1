@@ -32,6 +32,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<CardGroup> groups;
     private int adapterType = 0;
 
+    public ItemAdapter(CardGroup cards, ItemClickListener listener, ArrayList<CardGroup> groups, int adapterType) {
+        this.cards = cards;
+        this.listener = listener;
+        this.groups = groups;
+        this.adapterType = adapterType;
+    }
 
     public ItemAdapter(int adapterType, ItemClickListener listener) {
         this.listener = listener;
