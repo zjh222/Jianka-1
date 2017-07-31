@@ -5,6 +5,8 @@ package tech.jianka.data;
  */
 
 public enum DataType {
+    CARD,
+    CARD_GROUP,
     ONE_COLUMN,
     TWO_COLUNM,
     GROUP_FRAGMENT,

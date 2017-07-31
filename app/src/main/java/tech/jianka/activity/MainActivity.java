@@ -26,6 +26,7 @@ import java.util.List;
 
 import tech.jianka.adapter.HomeFragmentPagerAdapter;
 import tech.jianka.fragment.TabsFragment;
+import tech.jianka.utils.PreferenceHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
-
+        initGroup();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -68,12 +69,23 @@ public class MainActivity extends AppCompatActivity
         initView();
     }
 
+    private void initGroup() {
+        Boolean defaultGroupReady = PreferenceHelper.getBoolean("pref_group", "DEFAULT_GROUP_READY", this);
+        if(defaultGroupReady){
+            String[] groups = getResources().getStringArray(R.array.default_group);
+            for (String group : groups) {
+                PreferenceHelper.putString("pref_group",group,group,this);
+            }
+            PreferenceHelper.putBoolean("pref_group","DEFAULT_GROUP_READY",true,this);
+        }
+    }
+
     private void initView() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         List<Fragment> fragmentList = new ArrayList<>();
-        String[] titles = getResources().getStringArray(R.array.main_tab_title);
+        String[] titles = getResources().getStringArray(R.array.main_tab_titles);
         //增加三个fragment
         fragmentList.add(TabsFragment.newInstance(TabsFragment.GROUP_FRAGMENT));
         fragmentList.add(TabsFragment.newInstance(TabsFragment.RECENT_FRAGMENT));
@@ -84,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnAdapterChangeListener(this);
-        viewPager.setCurrentItem(1,false);//从中间页启动
+        viewPager.setCurrentItem(TabsFragment.RECENT_FRAGMENT,false);//从中间页启动
         //tab的设置
         tabLayout.setupWithViewPager(viewPager);//tab和viewpager联动
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
