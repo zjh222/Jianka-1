@@ -21,10 +21,7 @@ public class FileHelper {
         super();
         this.mContext = mContext;
     }
-/**
- * 新建文件夹 新建文件
- * 读取文件夹 读取文件
- */
+
     /**
      * 这里定义的是一个文件保存的方法，写入到文件中，所以是输出流
      */

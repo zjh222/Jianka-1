@@ -16,10 +16,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileFilter;
+import java.util.List;
+
 import tech.jianka.activity.R;
 import tech.jianka.adapter.ItemAdapter;
-import tech.jianka.data.CardGroup;
-import tech.jianka.data.GroupArray;
+import tech.jianka.data.Item;
+import tech.jianka.data.ItemData;
+import tech.jianka.utils.FileUtil;
 import tech.jianka.utils.SpaceItemDecoration;
 
 /**
@@ -42,6 +47,8 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
 
     private OnFragmentInteractionListener mListener;
     private View view;
+    private List<ItemData> itemDatas;
+    private List<Item> items;
 
     public TabsFragment() {
         // Required empty public constructor
@@ -93,13 +100,23 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.group_recycler_view);
             layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
-
+            //加载数据为items
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                String jiankaPath = FileUtil.getStoragePath(getActivity());
+                mToast.makeText(getActivity(), jiankaPath, Toast.LENGTH_LONG).show();
+                File jianka = new File(jiankaPath);
+                File[] cards = fileFilter(jianka);
+                if (null != jianka && jianka.length() != 0) {
+                    itemDatas = FileUtil.getItemInfosFromFileArray(cards);
+                    for (ItemData itemData : itemDatas) {
+                        items.add(new Item(itemData.isDirectory() ? Item.GROUP : Item.CARD, itemData));
+                    }
+                    ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.CARD_GROUP, this);
+                    recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+                    recyclerView.setAdapter(adapter);
+                }
+            }
             // TODO: 2017/7/27 获取目录数据
-            GroupArray groups = new GroupArray();
-            groups.addGroup(20);
-            ItemAdapter adapter = new ItemAdapter(groups,ItemAdapter.CARD_GROUP, this);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(5));
-            recyclerView.setAdapter(adapter);
 
         } else if (fragmentType == RECENT_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
@@ -107,22 +124,35 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView.setLayoutManager(layoutManager);
             CardGroup cards = new CardGroup("hello");
             cards.newCard(50);
-            ItemAdapter cardAdapter = new ItemAdapter(cards,ItemAdapter.CARD, this);
+            ItemAdapter cardAdapter = new ItemAdapter(cards, ItemAdapter.CARD, this);
             recyclerView.addItemDecoration(new SpaceItemDecoration(2));
             recyclerView.setAdapter(cardAdapter);
-        } else if(fragmentType == TASK_FRAGMENT){
+        } else if (fragmentType == TASK_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
             layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
             GroupArray groups = new GroupArray();
             groups.addGroup(4);
-            ItemAdapter cardAdapter = new ItemAdapter(groups,ItemAdapter.TASK_GROUP, this);
+            ItemAdapter cardAdapter = new ItemAdapter(groups, ItemAdapter.TASK_GROUP, this);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
             recyclerView.setAdapter(cardAdapter);
         }
 
     }
 
+    /**
+     * 文件过滤,将手机中隐藏的文件给过滤掉
+     */
+    public static File[] fileFilter(File file) {
+        File[] files = file.listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                return !pathname.isHidden();
+            }
+        });
+        return files;
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

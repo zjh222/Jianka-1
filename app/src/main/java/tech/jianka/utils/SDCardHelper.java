@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
- * Created by Richa on 2017/7/29.
+ * Created by Richard on 2017/7/29.
  */
 
 public class SDCardHelper {
@@ -27,11 +27,11 @@ public class SDCardHelper {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
 
-    /*
-    *获取sdcard绝对物理路径
-    */
+    /**
+     * 获取sdcard绝对物理路径
+     */
     public static String getSDCardPath() {
-        if (isSDCardMounted()) {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             return Environment.getExternalStorageDirectory().getAbsolutePath();
         } else {
             return null;
@@ -132,7 +132,7 @@ public class SDCardHelper {
                     baos = new ByteArrayOutputStream();
                     bis = new BufferedInputStream(new FileInputStream(file));
                     byte[] buffer = new byte[1024 * 8];
-                    int c=0;
+                    int c = 0;
                     while ((c = bis.read(buffer)) != -1) {
                         baos.write(buffer, 0, c);
                         baos.flush();
