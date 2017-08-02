@@ -10,16 +10,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class NewCardListActivity extends AppCompatActivity {
+import java.io.File;
+
+import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+
+public class NewCardGroupActivity extends AppCompatActivity {
     private EditText mEditGroupTitle;
     private Button mBtnSave;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card_group);
 
         setTitle(R.string.action_new_card_list);
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         mEditGroupTitle = (EditText) findViewById(R.id.new_card_group_title);
@@ -29,12 +34,12 @@ public class NewCardListActivity extends AppCompatActivity {
 
     public void btnSave(View view) {
         String title = mEditGroupTitle.getText().toString();
-        if (title != null) {
-            putString("hello",title,this);
-        }
+        new File(getSpecifiedSDPath("jianka/data/" + title)).mkdirs();
+        NavUtils.navigateUpFromSameTask(this);
     }
+
     public static void putString(String key, String value, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group",Context.MODE_PRIVATE );
+        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
         editor.apply();
@@ -44,6 +49,7 @@ public class NewCardListActivity extends AppCompatActivity {
         SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
         return sharedPref.getString(key, "");
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

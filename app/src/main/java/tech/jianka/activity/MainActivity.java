@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +29,13 @@ import tech.jianka.adapter.HomeFragmentPagerAdapter;
 import tech.jianka.fragment.TabsFragment;
 import tech.jianka.utils.PreferenceHelper;
 
+import static tech.jianka.utils.CardUtil.getSDCardPath;
+import static tech.jianka.utils.PreferenceHelper.getBoolean;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ViewPager.OnAdapterChangeListener, TabsFragment.OnFragmentInteractionListener {
-
+    private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +49,18 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, NewCardActivity.class);
+                Intent intent = new Intent();
+                switch (viewPager.getCurrentItem()){
+                    case TabsFragment.GROUP_FRAGMENT:
+                        intent.setClass(context, NewCardGroupActivity.class);
+                        break;
+                    case TabsFragment.RECENT_FRAGMENT:
+                         intent = new Intent(context, NewCardActivity.class);
+                        break;
+                    case TabsFragment.TASK_FRAGMENT:
+                        intent = new Intent(context, NewCardGroupActivity.class);
+                        break;
+                }
                 startActivity(intent);
             }
         });
@@ -56,6 +71,9 @@ public class MainActivity extends AppCompatActivity
                 return true;
             }
         });
+
+        checkFirstLaunch();
+
         initGroup();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -69,8 +87,20 @@ public class MainActivity extends AppCompatActivity
         initView();
     }
 
+    private void checkFirstLaunch() {
+        boolean flag = getSharedPreferences("tech.jianka",MODE_PRIVATE).getBoolean("isFirstRun",true);
+        if(flag){
+            String[] groups = {"jianka/image","jianka/log","/jianka/data/InBox","/jianka/data/Task"};
+            for (String group : groups) {
+                new File(getSDCardPath()+File.separator + group).mkdirs();
+            }
+            getSharedPreferences("tech.jianka", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
+
+        }
+    }
+
     private void initGroup() {
-        Boolean defaultGroupReady = PreferenceHelper.getBoolean("pref_group", "DEFAULT_GROUP_READY", this);
+        Boolean defaultGroupReady = getBoolean("pref_group", "DEFAULT_GROUP_READY", this);
         if(defaultGroupReady){
             String[] groups = getResources().getStringArray(R.array.default_group);
             for (String group : groups) {
@@ -82,7 +112,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initView() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         List<Fragment> fragmentList = new ArrayList<>();
         String[] titles = getResources().getStringArray(R.array.main_tab_titles);
@@ -206,7 +236,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void navCreateCardList() {
-        startActivity(new Intent(this, NewCardListActivity.class));
+        startActivity(new Intent(this, NewCardGroupActivity.class));
     }
 
     private void navArrange() {

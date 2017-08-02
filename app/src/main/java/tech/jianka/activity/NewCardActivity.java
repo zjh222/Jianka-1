@@ -1,7 +1,5 @@
 package tech.jianka.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
@@ -12,15 +10,14 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import tech.jianka.utils.FileHelper;
-import tech.jianka.utils.SDCardHelper;
+import tech.jianka.data.Item;
+
+import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
+import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
 public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
     private RadioGroup mTaskSelecotor;
@@ -41,6 +38,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }
 
         date = new Date();
+//        getDateInstance().format(date);
         String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(date);
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
@@ -53,37 +51,14 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
-        putString("group1","hello",this);
-        mEditContent.append(getString("group1",this));
-        if (getString("hello", this) != null) {
-            mEditContent.append(getString("hello", this) );
-        }else{
-            mEditContent.append("没找到");
-        }
-        if (getString("hello", this) != null) {
-            mEditContent.append(getString("hello", this) );
-        }else{
-            mEditContent.append("没找到");
-        }
 
     }
-    public static void putString(String key, String value, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-    public static String getString(String key, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
-        return sharedPref.getString(key, "");
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_card,menu);
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,41 +68,23 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_save:
-                String title = mEditTitle.getText().toString();
-                String date = new String();
-
-
-//                Card card =new Card(mEditTitle.getText().toString(),)
-                FileHelper fHelper = new FileHelper(this);
-                String filename = "jianka.card";
-                String fileDetail = "content";
-                try {
-                    fHelper.save(filename, fileDetail);
-                    Toast.makeText(getApplicationContext(), "数据写入成功", Toast.LENGTH_SHORT).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "数据写入失败", Toast.LENGTH_SHORT).show();
-                }
-                return true;
+                saveCard();
+                finish();
             case R.id.action_insert_image:
-                if (SDCardHelper.isSDCardMounted()) {
-                    File currentFile = new File(SDCardHelper.getSDCardPath());
-                    SDCardHelper.saveFileToSDCard(SDCardHelper.Obj2Bytes("jianka.card"), "jianka/jianka", "jianka.card");
-                    Toast.makeText(getApplicationContext(),"jianka.card", Toast.LENGTH_SHORT).show();
-                }
-                String detail = "";
-                FileHelper fHelper2 = new FileHelper(getApplicationContext());
-                try {
-                    String fname = "jianka.card";
-                    detail = fHelper2.read(fname);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
         }
+    }
+
+    private void saveCard() {
+        String title = mEditTitle.getText().toString();
+        String content = mEditContent.getText().toString();
+        int cardType = Item.CARD;
+        Item newCard = new Item();
+        newCard.setItemType(Item.CARD);
+        newCard.setCardTitle(title);
+        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/InBox", title + ".card");
     }
 
     @Override

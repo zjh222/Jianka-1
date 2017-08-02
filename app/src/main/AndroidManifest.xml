@@ -4,7 +4,7 @@
     package="tech.jianka.activity">
     <uses-feature android:name="android.hardware.wifi" />
 
-
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -65,7 +65,7 @@
         <!-- 卡片列表的界面 -->
         <!-- 新建卡组的界面 -->
         <activity
-            android:name=".NewCardListActivity"
+            android:name=".NewCardGroupActivity"
             android:parentActivityName=".MainActivity" />
     </application>
 

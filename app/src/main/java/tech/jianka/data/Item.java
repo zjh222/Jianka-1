@@ -9,19 +9,16 @@ import java.io.Serializable;
 public class Item implements Serializable {
     private static final long serialVersionUID = 7995824715641496969L;
 
+    public static final int PARENT = 123;
     public static final int GROUP = 744;
     public static final int CARD = 500;
     private int itemType;
     private int cardType;
 
     private String fileName;
-    private String suffix;
-    private String filePath;
-    private long fileSize;
-    private String modifiedTime;
     private String cardTitle;
-    private String cardModifiedTime;
-    private String cardAuthor;
+    private String modifiedTime;
+    private String filePath;
     // TODO: 2017/7/31 content的保存方式
     private Object cardContent;
 
@@ -45,13 +42,6 @@ public class Item implements Serializable {
         this.fileName = fileName;
     }
 
-    public String getSuffix() {
-        return suffix;
-    }
-
-    public void setSuffix(String suffix) {
-        this.suffix = suffix;
-    }
 
     public String getFilePath() {
         return filePath;
@@ -61,21 +51,6 @@ public class Item implements Serializable {
         this.filePath = filePath;
     }
 
-    public long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public String getModifiedTime() {
-        return modifiedTime;
-    }
-
-    public void setModifiedTime(String modifiedTime) {
-        this.modifiedTime = modifiedTime;
-    }
 
     public String getCardTitle() {
         return cardTitle;
@@ -85,32 +60,12 @@ public class Item implements Serializable {
         this.cardTitle = cardTitle;
     }
 
-    public String getCardModifiedTime() {
-        return cardModifiedTime;
-    }
-
-    public void setCardModifiedTime(String cardModifiedTime) {
-        this.cardModifiedTime = cardModifiedTime;
-    }
-
-    public String getCardAuthor() {
-        return cardAuthor;
-    }
-
-    public void setCardAuthor(String cardAuthor) {
-        this.cardAuthor = cardAuthor;
-    }
-
     public Object getCardContent() {
         return cardContent;
     }
 
     public void setCardContent(Object cardContent) {
         this.cardContent = cardContent;
-    }
-
-    public void setData(ItemData data) {
-        this.data = data;
     }
 
     public Item() {
@@ -122,19 +77,20 @@ public class Item implements Serializable {
         this.filePath = filePath;
         this.modifiedTime = modifiedTime;
     }
-
     public Item(int itemType) {
         this.itemType = itemType;
     }
 
-    public ItemData getData() {
-        return data;
-    }
-
-    private ItemData data;
-
     public int getItemType() {
         return itemType;
+    }
+
+    public String getModifiedTime() {
+        return modifiedTime;
+    }
+
+    public void setModifiedTime(String modifiedTime) {
+        this.modifiedTime = modifiedTime;
     }
 }
 

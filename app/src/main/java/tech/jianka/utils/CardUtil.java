@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 
 import tech.jianka.data.Item;
-import tech.jianka.data.ItemData;
 
 /**
  * Created by Richa on 2017/7/31.
@@ -123,10 +122,9 @@ public class CardUtil {
     /**
      * 获取sdcard某文件夹物理路径
      */
-    @Nullable
     public static String getSpecifiedSDPath(String path) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() + path;
+            return Environment.getExternalStorageDirectory().getAbsolutePath() +File.separator+ path;
         } else {
             return null;
         }
@@ -151,13 +149,15 @@ public class CardUtil {
      * @param groupDir
      * @return
      */
-    @Nullable
     public static List<Item> getChildItems(String groupDir) {
         File group = new File(groupDir);
-        ArrayList<Item> childItems;
+        ArrayList<Item> childItems = new ArrayList<>();
         File[] children = fileFilter(group);
         if (children != null && children.length != 0) {
-            childItems = getCardsFromFileArray(children);
+            for (File child : children) {
+                Item item = getCardFromFile(child);
+                childItems.add(item);
+            }
             return childItems;
         }else return null;
     }
@@ -171,36 +171,28 @@ public class CardUtil {
         }
 //        做一个排序
 //        Collections.sort(items,new FileNameComparator());
-        return null;
+        return items;
     }
 
     private static Item getCardFromFile(File child) {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
+        FileInputStream fis;
+        ObjectInputStream ois;
         Item item = new Item();
-        try {
+        if (child.isDirectory()) {
+            item.setItemType(Item.GROUP);
+            item.setFileName(child.getName());
+            item.setFilePath(child.getPath());
+        }else try {
             fis = new FileInputStream(child.toString());
             ois = new ObjectInputStream(fis);
             item = (Item) ois.readObject();
+            item.setItemType(Item.CARD);
+            item.setFileName(child.getName());
+            item.setFilePath(child.getPath());
         } catch (Exception e) {
             e.printStackTrace();
         }
         return item;
-    }
-
-    public static ItemData getItemInfoFromFile(File file) {
-        ItemData ItemData = new ItemData();
-        ItemData.setFileName(file.getName());
-        ItemData.setFilePath(file.getPath());
-        ItemData.setFileSize(file.length());
-        ItemData.setDirectory(file.isDirectory());
-        ItemData.setLastModifiedTime(FileUtil.getFileLastModifiedTime(file));
-        int lastDotIndex = file.getName().lastIndexOf(".");
-        if (lastDotIndex > 0) {
-            String fileSuffix = file.getName().substring(lastDotIndex + 1);
-            ItemData.setSuffix(fileSuffix);
-        }
-        return ItemData;
     }
 
 }

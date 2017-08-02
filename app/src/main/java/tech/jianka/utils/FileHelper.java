@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by Richa on 2017/7/29.
+ * Created by Richard on 2017/7/29.
  */
 
 public class FileHelper {
