@@ -1,7 +1,5 @@
 package tech.jianka.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
@@ -13,6 +11,14 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import tech.jianka.data.Item;
+
+import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
+import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
+
 public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
     private RadioGroup mTaskSelecotor;
     private EditText mEditTitle;
@@ -20,6 +26,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private TextView mTextCreateDate;
     private EditText mEditContent;
     private TextView mTaskIndicator;
+    private Date date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,54 +37,54 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        date = new Date();
+//        getDateInstance().format(date);
+        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(date);
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
+        mTextCreateDate.setText(time);
         mTaskIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
 
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
-        putString("group1","hello",this);
-        mEditContent.append(getString("group1",this));
-        if (getString("hello", this) != null) {
-            mEditContent.append(getString("hello", this) );
-        }else{
-            mEditContent.append("没找到");
-        }
-        if (getString("inbox", this) != null) {
-            mEditContent.append(getString("inbox", this) );
-        }else{
-            mEditContent.append("没找到");
-        }
 
     }
-    public static void putString(String key, String value, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-    public static String getString(String key, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
-        return sharedPref.getString(key, "");
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_new_card,menu);
         return true;
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.action_save:
+                saveCard();
+                finish();
+            case R.id.action_insert_image:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveCard() {
+        String title = mEditTitle.getText().toString();
+        String content = mEditContent.getText().toString();
+        int cardType = Item.CARD;
+        Item newCard = new Item();
+        newCard.setItemType(Item.CARD);
+        newCard.setCardTitle(title);
+        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/InBox", title + ".card");
     }
 
     @Override

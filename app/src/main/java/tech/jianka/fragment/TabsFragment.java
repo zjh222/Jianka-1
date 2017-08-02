@@ -16,11 +16,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.List;
+
 import tech.jianka.activity.R;
 import tech.jianka.adapter.ItemAdapter;
-import tech.jianka.data.CardGroup;
-import tech.jianka.data.GroupArray;
+import tech.jianka.data.Item;
+import tech.jianka.data.ItemData;
 import tech.jianka.utils.SpaceItemDecoration;
+
+import static tech.jianka.utils.CardUtil.getChildItems;
+import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +47,8 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
 
     private OnFragmentInteractionListener mListener;
     private View view;
+    private List<ItemData> itemDatas;
+    private List<Item> items;
 
     public TabsFragment() {
         // Required empty public constructor
@@ -93,34 +100,31 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.group_recycler_view);
             layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
-
-            // TODO: 2017/7/27 获取目录数据
-            GroupArray groups = new GroupArray();
-            groups.addGroup(20);
-            ItemAdapter adapter = new ItemAdapter(groups,ItemAdapter.CARD_GROUP, this);
+            //加载数据为items
+            String path = getSpecifiedSDPath("jianka/data");
+            List<Item> items = getChildItems(path);
+            ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.GROUP, this);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
             recyclerView.setAdapter(adapter);
-
         } else if (fragmentType == RECENT_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
             layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
-            CardGroup cards = new CardGroup("hello");
-            cards.newCard(50);
-            ItemAdapter cardAdapter = new ItemAdapter(cards,ItemAdapter.CARD, this);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(2));
-            recyclerView.setAdapter(cardAdapter);
-        } else if(fragmentType == TASK_FRAGMENT){
+            String path = getSpecifiedSDPath("jianka/data/InBox");
+            List<Item> items = getChildItems(path);
+            ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+        } else if (fragmentType == TASK_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
             layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-            GroupArray groups = new GroupArray();
-            groups.addGroup(4);
-            ItemAdapter cardAdapter = new ItemAdapter(groups,ItemAdapter.TASK_GROUP, this);
+            String path = getSpecifiedSDPath("jianka/data/Task");
+            List<Item> items = getChildItems(path);
+            ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.TASK_GROUP, this);
+            recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
-            recyclerView.setAdapter(cardAdapter);
         }
-
     }
 
 

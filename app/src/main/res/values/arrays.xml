@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--tab 的标题-->
-    <string-array name="main_tab_title">
+    <string-array name="main_tab_titles">
         <item>分组</item>
         <item>最近</item>
         <item>任务</item>
@@ -40,10 +40,19 @@
         <item>@string/task_unimportant_not_emergent</item>
     </array>
 
-    <string-array name="data">
-        <item>收信箱</item>
-        <item>任务</item>
-
+    <string-array name="default_group">
+        <item>@string/default_group_inbox</item>
+        <item>@string/default_group_task</item>
+        <item>@string/default_group_important_emergent</item>
+        <item>@string/default_group_important_not_emergent</item>
+        <item>@string/default_group_unimportant_emergent</item>
+        <item>@string/default_group_unimportant_not_emergent</item>
     </string-array>
 
+    <string name="default_group_inbox">收信箱</string>
+    <string name="default_group_task">任务</string>
+    <string name="default_group_important_emergent">重要|紧急</string>
+    <string name="default_group_important_not_emergent">重要|不紧急</string>
+    <string name="default_group_unimportant_emergent">不重要|紧急</string>
+    <string name="default_group_unimportant_not_emergent">不重要|不紧急</string>
 </resources>

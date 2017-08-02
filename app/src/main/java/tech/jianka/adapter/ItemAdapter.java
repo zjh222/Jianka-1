@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import tech.jianka.activity.R;
-import tech.jianka.data.CardGroup;
+import tech.jianka.data.Item;
 
 /**
  * Created by Richard on 2017/7/28.
  */
 
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public static final int CARD_GROUP = 1;
+
+    public static final int GROUP = 1;
     public static final int CARD = 2;
     public static final int CARD_AND_GROUP = 3;
     public static final int TASK_GROUP = 4;
@@ -26,27 +27,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TASK_IMPORTANT_NOT_EMERGENT = 7;
     public static final int TASK_UNIMPORTANT_EMERGENT = 8;
     public static final int TASK_UNIMPORTANT_NOT_EMERGENT = 9;
+    public static final int ITEM_ONE_COLOMN = 40;
+    public static final int ITEM_TWO_COLOMN = 785;
+    public static final int CARD_TWO_COLUMN = 20;
 
-    private CardGroup cards;
     private ItemClickListener listener;
-    private ArrayList<CardGroup> groups;
+    private List<Item> items;
     private int adapterType = 0;
 
-    public ItemAdapter(int adapterType, ItemClickListener listener) {
+    public ItemAdapter(List<Item> items, int adapterType, ItemClickListener listener) {
         this.listener = listener;
-        this.adapterType = adapterType;
-    }
-
-    public ItemAdapter(ArrayList<CardGroup> groups, int adapterType, ItemClickListener listener) {
-        this.listener = listener;
-        this.groups = groups;
-        this.adapterType = adapterType;
-
-    }
-
-    public ItemAdapter(CardGroup cards, int adapterType, ItemClickListener listener) {
-        this.cards = cards;
-        this.listener = listener;
+        this.items = items;
         this.adapterType = adapterType;
     }
 
@@ -55,7 +46,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case CARD_GROUP:
+            case GROUP:
                 view = inflater.inflate(R.layout.group_item, parent, false);
                 return new GroupViewHolder(view);
             case CARD:
@@ -79,35 +70,31 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
-            String title = groups.get(position).getGroupTitle();
-            ((GroupViewHolder) holder).mTitle.setText(title);
+            ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
 //            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
 //            params.height = params.width*2/3;
 //            holder.itemView.setLayoutParams(params);
         } else if (holder instanceof CardViewHolder) {
-            if (cards != null) {
-                ((CardViewHolder) holder).mCardTitle.setText(cards.get(position).getTitle());
+            if (items != null) {
+                ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
             }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (adapterType == CARD_AND_GROUP) {
-            // TODO: 2017/7/28 return type use position
-            return adapterType;
+        if (adapterType == GROUP) {
+            if (items.get(position).getCardType() == Item.GROUP) {
+                return GROUP;
+            } else return GROUP;
+        } else{
+            return CARD;
         }
-        else if (adapterType == TASK_AND_GROUP) {
-            // TODO: 2017/7/28 return type use position
-            return adapterType;
-        }else return adapterType;
     }
 
     @Override
     public int getItemCount() {
-        if (groups != null) {
-            return groups.size();
-        } else return cards.size();
+        return items == null ? 0 : items.size();
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -138,6 +125,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             listener.onItemLongClick(clickedPosition);
             return true;
         }
+
     }
 
     public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -174,6 +162,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
      */
     public interface ItemClickListener {
         void onItemClick(int clickedCardIndex);
+
         void onItemLongClick(int clickedCardIndex);
     }
 }
