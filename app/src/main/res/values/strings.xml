@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">简单卡片</string>
+    <string name="app_name">简卡</string>
 
     <string name="navigation_drawer_open">打开抽屉</string>
     <string name="navigation_drawer_close">关闭抽屉</string>
@@ -79,8 +79,8 @@
     <string name="pref_rate_the_app_key" translatable="false">rate</string>
     <string name="pref_rate_the_app_label">在应用市场评分</string>
     <string name="action_refresh">刷新/同步</string>
-    <string name="enter_a_title">增加一张卡片到收信箱</string>
-    <string name="enter_the_content">输入卡片内容</string>
+    <string name="enter_a_title">卡片标题</string>
+    <string name="enter_the_content">请输入记录的文字……</string>
     <string name="time_example">2017年7月20日   9:36</string>
     <string name="new_card_activity">创建卡片</string>
     <string name="card_theme_color">卡色</string>
@@ -111,9 +111,11 @@
     <string name="card_image">卡中图片</string>
     <string name="save_card">保存</string>
     <string name="action_insert_image">图片</string>
+    <string name="camera_image">相机</string>
 
     <!--任务等级-->
-    <string name="task_regular">常规</string>
+    <string name="card_grade">等级：</string>
+    <string name="task_regular">普通卡片</string>
     <string name="task_important_emergent">很重要-很紧急</string>
     <string name="task_unimportant_emergent">不重要-很紧急</string>
     <string name="task_important_not_emergent">很重要-不紧急</string>
