@@ -35,7 +35,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
-        mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
+        //mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
         mTaskIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
 
         mTaskSelecotor.setOnCheckedChangeListener(this);
