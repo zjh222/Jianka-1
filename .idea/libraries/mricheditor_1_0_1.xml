@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="mricheditor-1.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/c60f99d8495aa60bd1fe33dd20a124c690641fd1/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/c60f99d8495aa60bd1fe33dd20a124c690641fd1/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huangdali/mricheditor/1.0.1/bf1db650c780a4390f01a50dc1969384439ec7c1/mricheditor-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
