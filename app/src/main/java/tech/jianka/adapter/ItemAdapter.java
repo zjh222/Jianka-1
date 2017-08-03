@@ -77,6 +77,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (holder instanceof CardViewHolder) {
             if (items != null) {
                 ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
+                ((CardViewHolder) holder).mCardContent.setText((String)items.get(position).getCardContent());
             }
         }
     }
@@ -101,6 +102,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         TextView mCardTitle;
         TextView mCardDate;
         TextView mCardGroup;
+        TextView mCardContent;
         ImageView mCardImage;
 
         public CardViewHolder(View itemView) {
@@ -109,6 +111,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mCardDate = (TextView) itemView.findViewById(R.id.card_item_date);
             mCardGroup = (TextView) itemView.findViewById(R.id.card_item_group);
             mCardImage = (ImageView) itemView.findViewById(R.id.card_item_image);
+            mCardContent = (TextView) itemView.findViewById(R.id.card_item_content);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

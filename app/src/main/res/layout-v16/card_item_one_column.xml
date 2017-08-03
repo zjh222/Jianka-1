@@ -74,7 +74,7 @@
 
 
             <TextView
-                android:id="@+id/card_content"
+                android:id="@+id/card_item_content"
                 android:layout_width="0dp"
                 android:layout_height="65dp"
                 app:layout_heightPercent="35%"

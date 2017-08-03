@@ -12,6 +12,7 @@ public class Item implements Serializable {
     public static final int PARENT = 123;
     public static final int GROUP = 744;
     public static final int CARD = 500;
+    public static final int REGULAR = 456;
     private int itemType;
     private int cardType;
 
@@ -21,6 +22,13 @@ public class Item implements Serializable {
     private String filePath;
     // TODO: 2017/7/31 content的保存方式
     private Object cardContent;
+
+    public Item(String cardTitle, int itemType, int cardType, Object cardContent) {
+        this.itemType = itemType;
+        this.cardType = cardType;
+        this.cardTitle = cardTitle;
+        this.cardContent = cardContent;
+    }
 
     public void setItemType(int itemType) {
         this.itemType = itemType;

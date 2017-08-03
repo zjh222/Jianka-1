@@ -104,7 +104,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             String path = getSpecifiedSDPath("jianka/data");
             List<Item> items = getChildItems(path);
             ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.GROUP, this);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
             recyclerView.setAdapter(adapter);
         } else if (fragmentType == RECENT_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
