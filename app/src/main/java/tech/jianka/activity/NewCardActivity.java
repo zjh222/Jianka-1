@@ -1,5 +1,8 @@
 package tech.jianka.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
@@ -38,15 +41,14 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }
 
         date = new Date();
-//        getDateInstance().format(date);
+
         String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(date);
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
-        mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
-        mTextCreateDate.setText(time);
+        //mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
         mTaskIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
 
         mTaskSelecotor.setOnCheckedChangeListener(this);
@@ -95,18 +97,23 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             switch (checkedId) {
                 case R.id.task_regular:
                     indicator.setText(tasks[0]);
+
                     break;
                 case R.id.task_important_emergent:
                     indicator.setText(tasks[1]);
+
                     break;
                 case R.id.task_important_not_emergent:
                     indicator.setText(tasks[2]);
+
                     break;
                 case R.id.task_unimportant_emergent:
                     indicator.setText(tasks[3]);
+
                     break;
                 case R.id.task_unimportant_not_emergent:
                     indicator.setText(tasks[4]);
+
                     break;
             }
         }
