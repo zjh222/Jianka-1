@@ -20,6 +20,7 @@ import java.util.List;
 
 import tech.jianka.activity.R;
 import tech.jianka.adapter.ItemAdapter;
+import tech.jianka.data.GroupData;
 import tech.jianka.data.Item;
 import tech.jianka.data.ItemData;
 import tech.jianka.data.TaskData;
@@ -101,10 +102,8 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.group_recycler_view);
             layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
-            // TODO: 2017/8/3 得到data目录下的目录
-            String path = getSpecifiedSDPath("jianka/data");
-            List<Item> items = getChildItems(path);
-            ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.GROUP, this);
+            GroupData data = new GroupData();
+            ItemAdapter adapter = new ItemAdapter(data.getItemGroup(), ItemAdapter.GROUP, this);
             recyclerView.addItemDecoration(new SpaceItemDecoration(10));
             recyclerView.setAdapter(adapter);
         } else if (fragmentType == RECENT_FRAGMENT) {

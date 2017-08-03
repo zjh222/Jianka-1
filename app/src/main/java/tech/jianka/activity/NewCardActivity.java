@@ -1,8 +1,5 @@
 package tech.jianka.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
@@ -86,7 +83,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         Item newCard = new Item();
         newCard.setItemType(Item.CARD);
         newCard.setCardTitle(title);
-        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/InBox", title + ".card");
+        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/收信箱", title + ".card");
     }
 
     @Override
