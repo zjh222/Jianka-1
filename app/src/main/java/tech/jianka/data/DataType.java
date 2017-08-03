@@ -4,15 +4,7 @@ package tech.jianka.data;
  * Created by Richa on 2017/7/23.
  */
 
-public enum DataType {
-    ONE_COLUMN,
-    TWO_COLUNM,
-    GROUP_FRAGMENT,
-    RECENT_FRAGMENT,
-    TASK_FRAGMENT,
-    INBOX,
-    PLAIN_TXT,
-    PICTURE_TXT,
-    PICTURE,
-    LINK
+public class DataType {
+    public static final int GROUP= 509;
+    public static final int CARD = 753;
 }

@@ -13,7 +13,7 @@ import java.util.prefs.PreferenceChangeListener;
 import tech.jianka.activity.R;
 
 /**
- * Created by Richa on 2017/7/21.
+ * Created by Richard on 2017/7/21.
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat
