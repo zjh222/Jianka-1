@@ -90,7 +90,9 @@ public class MainActivity extends AppCompatActivity
     private void checkFirstLaunch() {
         boolean flag = getSharedPreferences("tech.jianka",MODE_PRIVATE).getBoolean("isFirstRun",true);
         if(flag){
-            String[] groups = {"jianka/image","jianka/log","jianka/recyclebin","/jianka/data/收信箱","/jianka/data/任务"};
+            String[] groups = {"jianka/image", "jianka/log","jianka/recyclebin","/jianka/data/收信箱",
+                    "/jianka/task/important_emergent","/jianka/task/important_not_emergent",
+                    "/jianka/task/unimportant_emergent","/jianka/task/unimportant_not_emergent"};
             for (String group : groups) {
                 new File(getSDCardPath()+File.separator + group).mkdirs();
             }

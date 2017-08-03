@@ -100,7 +100,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.group_recycler_view);
             layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
-            //加载数据为items
+            // TODO: 2017/8/3 得到data目录下的目录
             String path = getSpecifiedSDPath("jianka/data");
             List<Item> items = getChildItems(path);
             ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.GROUP, this);
@@ -110,6 +110,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
             layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
+            // TODO: 2017/8/3 得到所有最近编辑的卡片,先获取收信箱中的卡片
             String path = getSpecifiedSDPath("jianka/data/InBox");
             List<Item> items = getChildItems(path);
             ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
@@ -119,7 +120,8 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
             layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-            String path = getSpecifiedSDPath("jianka/data/Task");
+            // TODO: 2017/8/3 获取任务列表下的卡组
+            String path = getSpecifiedSDPath("jianka/data/task");
             List<Item> items = getChildItems(path);
             ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.TASK_GROUP, this);
             recyclerView.setAdapter(adapter);
