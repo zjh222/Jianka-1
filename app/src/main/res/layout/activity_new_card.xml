@@ -138,7 +138,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:entries="@array/default_group"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="140dp"
