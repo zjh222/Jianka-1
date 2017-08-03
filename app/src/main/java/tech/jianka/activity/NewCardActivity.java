@@ -2,6 +2,7 @@ package tech.jianka.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
@@ -88,18 +89,23 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             switch (checkedId) {
                 case R.id.task_regular:
                     indicator.setText(tasks[0]);
+
                     break;
                 case R.id.task_important_emergent:
                     indicator.setText(tasks[1]);
+
                     break;
                 case R.id.task_important_not_emergent:
                     indicator.setText(tasks[2]);
+
                     break;
                 case R.id.task_unimportant_emergent:
                     indicator.setText(tasks[3]);
+
                     break;
                 case R.id.task_unimportant_not_emergent:
                     indicator.setText(tasks[4]);
+
                     break;
             }
         }
