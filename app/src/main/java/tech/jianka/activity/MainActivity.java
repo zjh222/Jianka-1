@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity
                          intent = new Intent(context, NewCardActivity.class);
                         break;
                     case TabsFragment.TASK_FRAGMENT:
-                        intent = new Intent(context, NewCardGroupActivity.class);
+                        intent = new Intent(context, NewCardActivity.class);
                         break;
                 }
                 startActivity(intent);
