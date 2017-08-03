@@ -1,16 +1,15 @@
 package tech.jianka.activity;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,16 +30,11 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private EditText mEditContent;
     private TextView mTaskIndicator;
     private Date date;
-    ////////////////////////////////////////
-    private ImageView iv_image;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
-        /////////////////
-        this.iv_image = (ImageView)this.findViewById(R.id.iv_image);
-        ////////////////////
+
         setTitle(getString(R.string.new_card_activity));
         if(getSupportActionBar()!=null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -59,31 +53,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
-    }
 
-    public void load(View v){
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            // 得到图片的全路径
-            Uri uri = data.getData();
-            // 通过路径加载图片
-            //这里省去了图片缩放操作，如果图片过大，可能会导致内存泄漏
-            //图片缩放的实现，请看：http://blog.csdn.net/reality_jie_blog/article/details/16891095
-            this.iv_image.setImageURI(uri);
-
-            // 获取图片的缩略图，可能为空！
-            // Bitmap bitmap = data.getParcelableExtra("data");
-            // this.iv_image.setImageBitmap(bitmap);
-
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
