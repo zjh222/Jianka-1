@@ -23,6 +23,11 @@ public class Item implements Serializable {
     // TODO: 2017/7/31 content的保存方式
     private Object cardContent;
 
+    public Item(String fileName,int cardType ) {
+        this.cardType = cardType;
+        this.fileName = fileName;
+    }
+
     public Item(String cardTitle, int itemType, int cardType, Object cardContent) {
         this.itemType = itemType;
         this.cardType = cardType;

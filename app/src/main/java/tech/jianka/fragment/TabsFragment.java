@@ -22,6 +22,7 @@ import tech.jianka.activity.R;
 import tech.jianka.adapter.ItemAdapter;
 import tech.jianka.data.Item;
 import tech.jianka.data.ItemData;
+import tech.jianka.data.TaskData;
 import tech.jianka.utils.SpaceItemDecoration;
 
 import static tech.jianka.utils.CardUtil.getChildItems;
@@ -120,10 +121,8 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
             layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
-            // TODO: 2017/8/3 获取任务列表下的卡组
-            String path = getSpecifiedSDPath("jianka/data/task");
-            List<Item> items = getChildItems(path);
-            ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.TASK_GROUP, this);
+            TaskData data = new TaskData();
+            ItemAdapter adapter = new ItemAdapter(data.getTaskItems(), ItemAdapter.GROUP, this);
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
         }

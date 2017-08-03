@@ -168,7 +168,13 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/camera_image"
             app:layout_constraintVertical_bias="0.0">-->
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:fillViewport="true"
+        android:scrollbars="vertical">
 
+    </ScrollView>
     <EditText
         android:id="@+id/new_card_content"
         android:layout_width="0dp"
