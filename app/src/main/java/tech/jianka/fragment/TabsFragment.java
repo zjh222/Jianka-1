@@ -111,7 +111,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
             // TODO: 2017/8/3 得到所有最近编辑的卡片,先获取收信箱中的卡片
-            String path = getSpecifiedSDPath("jianka/data/InBox");
+            String path = getSpecifiedSDPath("jianka/data/收信箱");
             List<Item> items = getChildItems(path);
             ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
             recyclerView.setAdapter(adapter);

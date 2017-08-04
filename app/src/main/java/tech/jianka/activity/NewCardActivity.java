@@ -6,21 +6,13 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Item;
 
-import static tech.jianka.utils.CardUtil.getChildItems;
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
 import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
@@ -28,12 +20,8 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private RadioGroup mTaskSelecotor;
     private EditText mEditTitle;
     private Spinner mGroupSelector;
-    private TextView mTextCreateDate;
     private EditText mEditContent;
-    private TextView mTaskIndicator;
-    private Date date;
-    private ArrayList<String> groups = new ArrayList<>();
-    private BaseAdapter myAdapter = null;
+    private TextView mIndicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,29 +32,15 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        date = new Date();
+        mIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
+
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
-        //mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
-        mTaskIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
-        String path = getSpecifiedSDPath("jianka/data");
-        List<Item> items = getChildItems(path);
-        for (Item item : items) {
-            groups.add(item.getFileName());
-        }
-        items.clear();
-        groups.add("任务");
-        myAdapter = new MyAdapter<String>(groups,R.layout.spinner_item) {
-            @Override
-            public void bindView(ViewHolder holder, String obj) {
-                holder.setText(R.id.spinner_item_text_view,obj);
-            }
-        };
-        mGroupSelector.setAdapter(myAdapter);
         mTaskSelecotor.setOnCheckedChangeListener(this);
+
 
     }
 
@@ -96,38 +70,36 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private void saveCard() {
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
-        int cardType = Item.CARD;
         Item newCard = new Item();
         newCard.setItemType(Item.CARD);
         newCard.setCardTitle(title);
-        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/"+mGroupSelector.getSelectedItem().toString(), title + ".card");
+        newCard.setCardContent(content);
+        if(mIndicator.getText().toString()=="常规"){
+            saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/"+mGroupSelector.getSelectedItem().toString(), title + ".card");
+        }else{
+            saveFileToSDCard(Obj2Bytes(newCard), "jianka/task/"+mIndicator.getText().toString(), title + ".card");
+        }
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         if (group.getId() == R.id.new_card_task_selector) {
             String[] tasks = getResources().getStringArray(R.array.task);
-            TextView indicator = (TextView) findViewById(R.id.new_card_task_indicator);
             switch (checkedId) {
                 case R.id.task_regular:
-                    indicator.setText(tasks[0]);
-
+                    mIndicator.setText(tasks[0]);
                     break;
                 case R.id.task_important_emergent:
-                    indicator.setText(tasks[1]);
-
+                    mIndicator.setText(tasks[1]);
                     break;
                 case R.id.task_important_not_emergent:
-                    indicator.setText(tasks[2]);
-
+                    mIndicator.setText(tasks[2]);
                     break;
                 case R.id.task_unimportant_emergent:
-                    indicator.setText(tasks[3]);
-
+                    mIndicator.setText(tasks[3]);
                     break;
                 case R.id.task_unimportant_not_emergent:
-                    indicator.setText(tasks[4]);
-
+                    mIndicator.setText(tasks[4]);
                     break;
             }
         }
