@@ -1,15 +1,32 @@
 package tech.jianka.activity;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import tech.jianka.data.Item;
 
@@ -22,10 +39,18 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private Spinner mGroupSelector;
     private EditText mEditContent;
     private TextView mIndicator;
+    private ImageView iv_image;//2017/8/4 lihan
+
+    private String str;//li2
+    private DBConnection helper;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
+
+        this.iv_image = (ImageView)findViewById(R.id.iv_image);//li
 
         setTitle(getString(R.string.new_card_activity));
         if(getSupportActionBar()!=null){
@@ -33,7 +58,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }
 
         mIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
-
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
@@ -41,8 +65,42 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
+        //li2
+        helper = new DBConnection(this);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
+        Date curDate = new Date(System.currentTimeMillis());
+        str = formatter.format(curDate);
+        if (!checkNetworkInfo()){
+            return;
+        }
+        //li2
 
     }
+    //2017/8/4
+    public void load(View view) {
+        // 激活系统图库，选择一张图片
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            // 得到图片的全路径
+            Uri uri = data.getData();
+            // 通过路径加载图片
+            //这里省去了图片缩放操作，如果图片过大，可能会导致内存泄漏
+            //图片缩放的实现，请看：http://blog.csdn.net/reality_jie_blog/article/details/16891095
+            this.iv_image.setImageURI(uri);
+            // 获取图片的缩略图，可能为空！
+            // Bitmap bitmap = data.getParcelableExtra("data");
+            // this.iv_image.setImageBitmap(bitmap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    //2017/8/4
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,12 +118,111 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             case R.id.action_save:
                 saveCard();
                 finish();
-            case R.id.action_insert_image:
-                return true;
+            case R.id.card_share:
+                //li2017/8/4
+                if (isEmpty()){
+                    ContentValues values = new ContentValues();
+                    values.put("content",
+                            Html.fromHtml(mEditContent.getText().toString())+"");
+                    values.put("writetime",str);
+
+//                    SQLiteDatabase db = helper.getWritableDatabase();
+//                    db.insert("content",null,values);
+//                    db.close();
+//
+//                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    //imm.hideSoftInputFromWindow(btnRight.getWindowToken(),0);
+
+                    isShare();}
+
+                    //li2017/8/4
+
+                    return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    //li2
+    private void isShare() {
+        new AlertDialog.Builder(this)
+                .setIcon(R.drawable.logo)
+                .setTitle("发表成功，立即分享？")
+                .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_SUBJECT,"分享");
+                        intent.putExtra(Intent.EXTRA_TEXT,str+"\n"+mEditContent.getText().toString());
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(Intent.createChooser(intent,getTitle()));
+
+                        mEditContent.setText("");
+                    }
+                }).setNegativeButton("以后", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                mEditContent.setText("");
+            }
+        }).show();
+    }
+
+    public boolean checkNetworkInfo() {
+
+        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        // mobile 3G Data Network
+        NetworkInfo.State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                .getState();
+        // wifi
+        NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                .getState();
+        // 如果3G网络和wifi网络都未连接，且不是处于正在连接状态 则进入Network Setting界面 由用户配置网络连接
+
+        if (mobile == NetworkInfo.State.CONNECTED || mobile == NetworkInfo.State.CONNECTING)
+            return true;
+        if (wifi == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTING)
+            return true;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("需要网络支持！")
+                .setCancelable(false)
+                .setPositiveButton("进行网络配置",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                // 进入无线网络配置界面
+                                startActivity(new Intent(
+                                        Settings.ACTION_WIRELESS_SETTINGS));
+                                NewCardActivity.this.finish();
+                            }
+                        })
+                .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        NewCardActivity.this.finish();
+                    }
+                });
+        builder.show();
+        return false;
+
+    }
+
+    private boolean isEmpty() {
+        if (mEditContent.getText() == null
+                || mEditContent.getText().toString().trim().equals("")) {
+            Toast toast = Toast.makeText(NewCardActivity.this,
+                    this.getText(R.string.contentnull), Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+            return false;
+        }
+
+        return true;
+    }
+//LI2
 
     private void saveCard() {
         String title = mEditTitle.getText().toString();

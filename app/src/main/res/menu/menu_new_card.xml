@@ -2,15 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_insert_image"
+        android:id="@+id/card_share"
         android:orderInCategory="99"
-        android:title="@string/action_insert_image"
+        android:title="@string/card_share"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_save"
         android:orderInCategory="100"
         android:title="@string/save_card"
         app:showAsAction="ifRoom" />
-
-
 </menu>

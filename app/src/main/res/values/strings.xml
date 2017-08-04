@@ -110,8 +110,9 @@
     <string name="card_group_inbox">收信箱</string>
     <string name="card_image">卡中图片</string>
     <string name="save_card">保存</string>
-    <string name="action_insert_image">图片</string>
+    <string name="card_share">分享</string>
     <string name="camera_image">相机</string>
+    <string name="contentnull">怎能没有灵感、想法呢！</string>
 
     <!--任务等级-->
     <string name="card_grade">等级：</string>
