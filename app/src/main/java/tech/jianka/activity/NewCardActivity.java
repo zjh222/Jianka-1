@@ -1,12 +1,16 @@
 package tech.jianka.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,10 +26,15 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private Spinner mGroupSelector;
     private EditText mEditContent;
     private TextView mIndicator;
+    private ImageView iv_image;//2017/8/4 lihan
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
+
+        this.iv_image = (ImageView)findViewById(R.id.iv_image);//li
 
         setTitle(getString(R.string.new_card_activity));
         if(getSupportActionBar()!=null){
@@ -33,7 +42,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }
 
         mIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
-
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
@@ -41,8 +49,32 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
-
     }
+    //2017/8/4
+    public void load(View view) {
+        // 激活系统图库，选择一张图片
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            // 得到图片的全路径
+            Uri uri = data.getData();
+            // 通过路径加载图片
+            //这里省去了图片缩放操作，如果图片过大，可能会导致内存泄漏
+            //图片缩放的实现，请看：http://blog.csdn.net/reality_jie_blog/article/details/16891095
+            this.iv_image.setImageURI(uri);
+            // 获取图片的缩略图，可能为空！
+            // Bitmap bitmap = data.getParcelableExtra("data");
+            // this.iv_image.setImageBitmap(bitmap);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    //2017/8/4
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
