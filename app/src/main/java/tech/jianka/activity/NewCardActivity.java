@@ -6,16 +6,21 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Item;
 
+import static tech.jianka.utils.CardUtil.getChildItems;
+import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
 import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
@@ -27,6 +32,8 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private EditText mEditContent;
     private TextView mTaskIndicator;
     private Date date;
+    private ArrayList<String> groups = new ArrayList<>();
+    private BaseAdapter myAdapter = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +45,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }
 
         date = new Date();
-
-        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(date);
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
@@ -47,9 +52,21 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         //mTextCreateDate = (TextView) findViewById(R.id.new_card_created_time);
         mTaskIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
-
+        String path = getSpecifiedSDPath("jianka/data");
+        List<Item> items = getChildItems(path);
+        for (Item item : items) {
+            groups.add(item.getFileName());
+        }
+        items.clear();
+        groups.add("任务");
+        myAdapter = new MyAdapter<String>(groups,R.layout.spinner_item) {
+            @Override
+            public void bindView(ViewHolder holder, String obj) {
+                holder.setText(R.id.spinner_item_text_view,obj);
+            }
+        };
+        mGroupSelector.setAdapter(myAdapter);
         mTaskSelecotor.setOnCheckedChangeListener(this);
-
 
     }
 
@@ -83,7 +100,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         Item newCard = new Item();
         newCard.setItemType(Item.CARD);
         newCard.setCardTitle(title);
-        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/收信箱", title + ".card");
+        saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/"+mGroupSelector.getSelectedItem().toString(), title + ".card");
     }
 
     @Override
