@@ -52,7 +52,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 view = inflater.inflate(R.layout.group_item, parent, false);
                 return new GroupViewHolder(view);
             case CARD:
-                view = inflater.inflate(R.layout.card_item_one_column, parent, false);
+                view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
                 return new CardViewHolder(view);
             case TASK_GROUP:
                 view = inflater.inflate(R.layout.group_item, parent, false);
@@ -107,10 +107,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void removeItem(int position) {
+    public boolean removeItem(int position) {
         new File(items.get(position).getFilePath()).delete();
         items.remove(position);
         notifyDataSetChanged();
+        return true;
     }
 
     public void shareItem(int clickedCardIndex) {

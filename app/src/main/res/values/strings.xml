@@ -122,4 +122,5 @@
     <string name="task_important_not_emergent">很重要-不紧急</string>
     <string name="task_unimportant_not_emergent">不重要-不紧急</string>
     <string name="card_insert_image">插入图片</string>
+    <string name="input_card_group_title">卡组名</string>
 </resources>

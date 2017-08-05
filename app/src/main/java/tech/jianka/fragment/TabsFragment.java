@@ -168,7 +168,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
 
     @Override
     public void onItemLongClick(final int clickedCardIndex) {
-        final String[] options = {"分享", "删除"};
+        final String[] options = {"分享", "删除","切换分组"};
         builder = new AlertDialog.Builder(getContext());
         alertDialog = builder.setTitle("选择操作")
                 .setItems(options, new DialogInterface.OnClickListener() {
@@ -180,7 +180,11 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
                                 // TODO: 2017/8/5 share
                                 break;
                             case 1:
+                                // TODO: 2017/8/6 检查是不是不可删除的类型
                                 adapter.removeItem(clickedCardIndex);
+                                break;
+                            case 2:
+                                // TODO: 2017/8/6 切换分组功能
                                 break;
                         }
                     }

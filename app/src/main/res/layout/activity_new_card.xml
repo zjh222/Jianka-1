@@ -19,6 +19,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:background="@null"
+        android:inputType="text|textCapWords"
         android:hint="@string/enter_a_title"
         android:textColor="@color/black"
         android:textColorHint="@color/lightGray"
@@ -154,7 +155,8 @@
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
+        android:paddingEnd="8dp"
         android:paddingLeft="8dp"
-        android:spinnerMode="dialog" />
+        android:paddingStart="8dp" />
 
 </LinearLayout>
