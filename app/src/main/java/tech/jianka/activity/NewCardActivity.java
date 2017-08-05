@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -26,10 +27,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Item;
 
+import static tech.jianka.utils.CardUtil.getChildItems;
+import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
 import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
@@ -39,10 +45,12 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private Spinner mGroupSelector;
     private EditText mEditContent;
     private TextView mIndicator;
-    private ImageView iv_image;//2017/8/4 lihan
+    private ImageView iv_image;
 
-    private String str;//li2
+    private String str;
     private DBConnection helper;
+
+    private BaseAdapter myAdapter;
 
 
     @Override
@@ -65,7 +73,22 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
-        //li2
+        ArrayList<String> groupItem = new ArrayList<>();
+        List<Item> items = getChildItems(getSpecifiedSDPath("jianka/data"));
+        items.add(new Item("任务", Item.GROUP));
+        for (Item item : items) {
+            groupItem.add(item.getFileName());
+        }
+
+        myAdapter = new MyAdapter<String>(groupItem,R.layout.spinner_item) {
+            @Override
+            public void bindView(ViewHolder holder, String obj) {
+                holder.setText(R.id.spinner_item_text_view, obj);
+            }
+        };
+
+        mGroupSelector.setAdapter(myAdapter);
+
         helper = new DBConnection(this);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());
@@ -73,7 +96,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         if (!checkNetworkInfo()) {
             return;
         }
-        //li2
     }
 
     //2017/8/4
