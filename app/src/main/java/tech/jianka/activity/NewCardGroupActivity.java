@@ -41,7 +41,6 @@ public class NewCardGroupActivity extends AppCompatActivity {
             TabsFragmentManager.getFragment(TabsFragmentManager.GROUP_FRAGMENT);
             fragment.adapter.addItem(new Item(title,getSpecifiedSDPath("jianka/data/" + title)));
             new File(getSpecifiedSDPath("jianka/data/" + title)).mkdirs();
-
             NavUtils.navigateUpFromSameTask(this);
         }
     }

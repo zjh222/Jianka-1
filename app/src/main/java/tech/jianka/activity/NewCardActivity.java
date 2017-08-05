@@ -244,12 +244,11 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
         return true;
     }
-//LI2
 
     private void saveCard() {
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
-        String filePath = null;
+        String filePath;
         if (mIndicator.getText().toString().equals("普通卡片")) {
             filePath = getSpecifiedSDPath("jianka/data/"+mGroupSelector.getSelectedItem().toString()+title + ".card");
         } else {

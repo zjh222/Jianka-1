@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/linen"
+    android:orientation="vertical"
     tools:context="tech.jianka.activity.NewCardActivity">
 
 
     <EditText
         android:id="@+id/new_card_title"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:background="@null"
         android:hint="@string/enter_a_title"
         android:textColor="@color/black"
-        android:textColorHint="@color/lightgray"
-        android:textSize="25sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.428" />
+        android:textColorHint="@color/lightGray"
+        android:textSize="25sp" />
 
 
     <RadioGroup
         android:id="@+id/new_card_task_selector"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_card_title">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/new_card_grade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/card_grade" />
+            android:text="@string/card_grade"
+            android:textSize="22sp" />
 
         <RadioButton
             android:id="@+id/task_regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/radio_group_selector"
             android:button="@color/red"
             android:checked="true"
@@ -62,7 +56,6 @@
             android:id="@+id/task_important_emergent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/radio_group_selector1"
             android:button="@color/red"
             android:text="" />
@@ -71,7 +64,6 @@
             android:id="@+id/task_important_not_emergent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/radio_group_selector2"
             android:button="@color/red"
             android:text="" />
@@ -80,7 +72,6 @@
             android:id="@+id/task_unimportant_emergent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/radio_group_selector3"
             android:button="@color/red"
             android:text="" />
@@ -89,7 +80,6 @@
             android:id="@+id/task_unimportant_not_emergent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@drawable/radio_group_selector4"
             android:button="@color/red"
             android:text="" />
@@ -98,63 +88,29 @@
             android:id="@+id/new_card_task_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:textSize="22sp"
             android:text="@string/task_regular" />
+
     </RadioGroup>
 
 
-    <ImageButton
-        android:id="@+id/camera_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="14dp"
-        android:background="@drawable/ic_camera_alt_black_48dp"
-        android:contentDescription="@string/camera_image"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_card_title"
-        android:onClick="load"/>
-
     <View
-
-        android:layout_width="0dp"
+        android:id="@+id/view"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="4dp"
-        android:background="@color/gray"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/camera_image"
-        android:id="@+id/view" />
-
-
-    <!--    <ScrollView
-            android:id="@+id/new_card_scroll_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            android:orientation="horizontal"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/camera_image"
-            app:layout_constraintVertical_bias="0.0">-->
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
+        android:background="@color/gray" />
 
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -168,11 +124,11 @@
             <EditText
                 android:id="@+id/new_card_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginStart="15dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:background="@null"
@@ -182,12 +138,12 @@
                 android:inputType="textMultiLine"
                 android:minHeight="100dp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/lightgray" />
+                android:textColorHint="@color/lightGray" />
+
             <ImageView
                 android:id="@+id/iv_image"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
@@ -195,72 +151,10 @@
         android:id="@+id/new_card_group_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal"
-        android:spinnerMode="dialog"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scroll_view"
-        app:layout_constraintVertical_bias="1.0" />
+        android:paddingLeft="8dp"
+        android:spinnerMode="dialog" />
 
-
-    <!--<RadioGroup-->
-    <!--android:id="@+id/eventSelector"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginBottom="8dp"-->
-    <!--android:layout_marginLeft="8dp"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:orientation="horizontal"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintLeft_toLeftOf="parent">-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/newCardEventLevel"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="@string/important_or_emergent" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/newCardRegular"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:checked="true" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/newCardImportantEmergent"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/newCardImportantNotEmergent"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/newCardUnimportantEmergent"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1" />-->
-
-    <!--<RadioButton-->
-    <!--android:id="@+id/newCardUnimportantNotEmergent"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1" />-->
-
-    <!--<TextView-->
-    <!--android:id="@+id/eventLevelIdentifier"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_weight="1"-->
-    <!--android:text="@string/event_regular" />-->
-    <!--</RadioGroup>-->
-
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
