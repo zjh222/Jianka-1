@@ -1,10 +1,12 @@
 package tech.jianka.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,7 +52,13 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
     private View view;
     private List<ItemData> itemDatas;
     private List<Item> items;
+    private AlertDialog alertDialog;
+    private AlertDialog.Builder builder;
 
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+
+    ItemAdapter adapter;
     public TabsFragment() {
         // Required empty public constructor
     }
@@ -95,24 +103,22 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RecyclerView recyclerView;
-        RecyclerView.LayoutManager layoutManager;
+
         if (fragmentType == GROUP_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.group_recycler_view);
             layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
             GroupData data = new GroupData();
-            ItemAdapter adapter = new ItemAdapter(data.getItemGroup(), ItemAdapter.GROUP, this);
+            adapter = new ItemAdapter(data.getItemGroup(), ItemAdapter.GROUP, this);
             recyclerView.addItemDecoration(new SpaceItemDecoration(10));
             recyclerView.setAdapter(adapter);
         } else if (fragmentType == RECENT_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
             layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
-            // TODO: 2017/8/3 得到所有最近编辑的卡片,先获取收信箱中的卡片
             String path = getSpecifiedSDPath("jianka/data/收信箱");
             List<Item> items = getChildItems(path);
-            ItemAdapter adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
+            adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
         } else if (fragmentType == TASK_FRAGMENT) {
@@ -120,14 +126,9 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             layoutManager =  new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
             TaskData data = new TaskData();
-            ItemAdapter adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.GROUP, this);
+            adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.GROUP, this);
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
-
-            RecyclerView taskItemRecycler = (RecyclerView) view.findViewById(R.id.task_recycler_view);
-            RecyclerView.LayoutManager taskLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
-            ItemAdapter taskAdapter = new ItemAdapter(data.getTaskItems(),ItemAdapter.ITEM_ONE_COLOMN,this);
-            taskItemRecycler.setAdapter(taskAdapter);
 
         }
     }
@@ -169,14 +170,25 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
     }
 
     @Override
-    public void onItemLongClick(int clickedCardIndex) {
-        // TODO: 2017/7/26 处理卡片长按事件
-        if (mToast != null) {
-            mToast.cancel();
-        }
-        String toastMessage = "Card" + clickedCardIndex + " long clicked";
-        mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT);
-        mToast.show();
+    public void onItemLongClick(final int clickedCardIndex) {
+        final String[] options = {"分享", "删除"};
+        builder = new AlertDialog.Builder(getContext());
+        alertDialog = builder.setTitle("选择操作")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                // TODO: 2017/8/5 share
+                                break;
+                            case 1:
+                                adapter.removeItem(clickedCardIndex);
+                                // TODO: 2017/8/5 删除数据
+                                break;
+                        }
+                    }
+                }).create();
+        alertDialog.show();
     }
 
     /**

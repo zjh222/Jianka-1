@@ -75,7 +75,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
         ArrayList<String> groupItem = new ArrayList<>();
         List<Item> items = getChildItems(getSpecifiedSDPath("jianka/data"));
-        items.add(new Item("任务", Item.GROUP));
+        items.add(new Item("任务", getSpecifiedSDPath("jianka/task")));
         for (Item item : items) {
             groupItem.add(item.getFileName());
         }

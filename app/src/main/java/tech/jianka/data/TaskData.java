@@ -7,7 +7,7 @@ import static tech.jianka.utils.CardUtil.getChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
 /**
- * Created by Richa on 2017/8/3.
+ * Created by Richard on 2017/8/3.
  */
 
 public class TaskData {
@@ -26,7 +26,7 @@ public class TaskData {
 
     public TaskData() {
         for (String group : taskGroup) {
-            taskGroups.add(new Item(group, Item.GROUP));
+            taskGroups.add(new Item(group,  getSpecifiedSDPath("jianka/task")));
         }
         for (String path : paths) {
             List<Item> items = getChildItems(getSpecifiedSDPath(path));

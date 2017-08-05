@@ -16,7 +16,7 @@ public class GroupData {
     public GroupData() {
         String path = getSpecifiedSDPath("jianka/data");
         itemGroup = getChildItems(path);
-        itemGroup.add(new Item("任务", Item.GROUP));
+        itemGroup.add(new Item("任务",getSpecifiedSDPath("jianka/task")));
     }
 
     public List<Item> getItemGroup() {

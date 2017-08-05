@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 import tech.jianka.activity.R;
@@ -77,7 +78,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (holder instanceof CardViewHolder) {
             if (items != null) {
                 ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
-                ((CardViewHolder) holder).mCardContent.setText((String)items.get(position).getCardContent());
+                ((CardViewHolder) holder).mCardContent.setText((String) items.get(position).getCardContent());
             }
         }
     }
@@ -88,7 +89,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if (items.get(position).getCardType() == Item.GROUP) {
                 return GROUP;
             } else return GROUP;
-        } else{
+        } else {
             return CARD;
         }
     }
@@ -96,6 +97,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return items == null ? 0 : items.size();
+    }
+
+    public void addItem(int position, Item item) {
+        items.add(position, item);
+        notifyDataSetChanged();
+    }
+
+    public void removeItem(int position) {
+        new File(items.get(position).getFilePath()).delete();
+        items.remove(position);
+        notifyItemRemoved(position);
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
