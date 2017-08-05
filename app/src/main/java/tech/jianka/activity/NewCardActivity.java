@@ -50,10 +50,10 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
 
-        this.iv_image = (ImageView)findViewById(R.id.iv_image);//li
+        this.iv_image = (ImageView) findViewById(R.id.iv_image);//li
 
         setTitle(getString(R.string.new_card_activity));
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
@@ -70,12 +70,12 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());
         str = formatter.format(curDate);
-        if (!checkNetworkInfo()){
+        if (!checkNetworkInfo()) {
             return;
         }
         //li2
-
     }
+
     //2017/8/4
     public void load(View view) {
         // 激活系统图库，选择一张图片
@@ -104,7 +104,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_new_card,menu);
+        getMenuInflater().inflate(R.menu.menu_new_card, menu);
         return true;
     }
 
@@ -118,13 +118,13 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             case R.id.action_save:
                 saveCard();
                 finish();
-            case R.id.card_share:
+            case R.id.action_share:
                 //li2017/8/4
-                if (isEmpty()){
+                if (isEmpty()) {
                     ContentValues values = new ContentValues();
                     values.put("content",
-                            Html.fromHtml(mEditContent.getText().toString())+"");
-                    values.put("writetime",str);
+                            Html.fromHtml(mEditContent.getText().toString()) + "");
+                    values.put("writetime", str);
 
 //                    SQLiteDatabase db = helper.getWritableDatabase();
 //                    db.insert("content",null,values);
@@ -133,11 +133,9 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 //                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     //imm.hideSoftInputFromWindow(btnRight.getWindowToken(),0);
 
-                    isShare();}
-
-                    //li2017/8/4
-
-                    return true;
+                    isShare();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -146,7 +144,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     //li2
     private void isShare() {
         new AlertDialog.Builder(this)
-                .setIcon(R.drawable.logo)
+                .setIcon(R.drawable.ic_menu_share)
                 .setTitle("发表成功，立即分享？")
                 .setPositiveButton("好的", new DialogInterface.OnClickListener() {
                     @Override
@@ -155,10 +153,10 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_SUBJECT,"分享");
-                        intent.putExtra(Intent.EXTRA_TEXT,str+"\n"+mEditContent.getText().toString());
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+                        intent.putExtra(Intent.EXTRA_TEXT, str + "\n" + mEditContent.getText().toString());
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(Intent.createChooser(intent,getTitle()));
+                        startActivity(Intent.createChooser(intent, getTitle()));
 
                         mEditContent.setText("");
                     }
@@ -231,10 +229,10 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         newCard.setItemType(Item.CARD);
         newCard.setCardTitle(title);
         newCard.setCardContent(content);
-        if(mIndicator.getText().toString()=="常规"){
-            saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/"+mGroupSelector.getSelectedItem().toString(), title + ".card");
-        }else{
-            saveFileToSDCard(Obj2Bytes(newCard), "jianka/task/"+mIndicator.getText().toString(), title + ".card");
+        if (mIndicator.getText().toString().equals("常规")) {
+            saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/" + mGroupSelector.getSelectedItem().toString(), title + ".card");
+        } else {
+            saveFileToSDCard(Obj2Bytes(newCard), "jianka/task/" + mIndicator.getText().toString(), title + ".card");
         }
     }
 

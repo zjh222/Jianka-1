@@ -9,7 +9,6 @@ import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,13 +116,19 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
         } else if (fragmentType == TASK_FRAGMENT) {
-            recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
-            layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            recyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
+            layoutManager =  new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
             TaskData data = new TaskData();
-            ItemAdapter adapter = new ItemAdapter(data.getTaskItems(), ItemAdapter.GROUP, this);
+            ItemAdapter adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.GROUP, this);
             recyclerView.setAdapter(adapter);
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+
+            RecyclerView taskItemRecycler = (RecyclerView) view.findViewById(R.id.task_recycler_view);
+            RecyclerView.LayoutManager taskLayoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
+            ItemAdapter taskAdapter = new ItemAdapter(data.getTaskItems(),ItemAdapter.ITEM_ONE_COLOMN,this);
+            taskItemRecycler.setAdapter(taskAdapter);
+
         }
     }
 
