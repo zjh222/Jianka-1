@@ -23,10 +23,12 @@ import tech.jianka.activity.R;
 import tech.jianka.adapter.ItemAdapter;
 import tech.jianka.data.GroupData;
 import tech.jianka.data.Item;
-import tech.jianka.data.ItemData;
 import tech.jianka.data.TaskData;
 import tech.jianka.utils.SpaceItemDecoration;
 
+import static tech.jianka.fragment.TabsFragmentManager.GROUP_FRAGMENT;
+import static tech.jianka.fragment.TabsFragmentManager.RECENT_FRAGMENT;
+import static tech.jianka.fragment.TabsFragmentManager.TASK_FRAGMENT;
 import static tech.jianka.utils.CardUtil.getChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
@@ -40,9 +42,6 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
  */
 public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
-    public static final int GROUP_FRAGMENT = 0;
-    public static final int RECENT_FRAGMENT = 1;
-    public static final int TASK_FRAGMENT = 2;
 
     private static Toast mToast;
 
@@ -50,15 +49,13 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
 
     private OnFragmentInteractionListener mListener;
     private View view;
-    private List<ItemData> itemDatas;
-    private List<Item> items;
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
 
-    ItemAdapter adapter;
+    public ItemAdapter adapter;
     public TabsFragment() {
         // Required empty public constructor
     }
@@ -179,11 +176,11 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
+                                adapter.shareItem(clickedCardIndex);
                                 // TODO: 2017/8/5 share
                                 break;
                             case 1:
                                 adapter.removeItem(clickedCardIndex);
-                                // TODO: 2017/8/5 删除数据
                                 break;
                         }
                     }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import tech.jianka.activity.R;
@@ -72,9 +73,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
             ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
-//            ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-//            params.height = params.width*2/3;
-//            holder.itemView.setLayoutParams(params);
         } else if (holder instanceof CardViewHolder) {
             if (items != null) {
                 ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
@@ -99,15 +97,23 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return items == null ? 0 : items.size();
     }
 
-    public void addItem(int position, Item item) {
-        items.add(position, item);
+    public void addItem(Item item) {
+        items.add(item);
+        try {
+            new File(item.getFilePath()).createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         notifyDataSetChanged();
     }
 
     public void removeItem(int position) {
         new File(items.get(position).getFilePath()).delete();
         items.remove(position);
-        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
+
+    public void shareItem(int clickedCardIndex) {
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

@@ -33,6 +33,7 @@ import java.util.List;
 
 import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Item;
+import tech.jianka.fragment.TabsFragmentManager;
 
 import static tech.jianka.utils.CardUtil.getChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
@@ -248,15 +249,19 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private void saveCard() {
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
-        Item newCard = new Item();
-        newCard.setItemType(Item.CARD);
-        newCard.setCardTitle(title);
-        newCard.setCardContent(content);
+        String filePath = null;
+        if (mIndicator.getText().toString().equals("普通卡片")) {
+            filePath = getSpecifiedSDPath("jianka/data/"+mGroupSelector.getSelectedItem().toString()+title + ".card");
+        } else {
+            filePath = getSpecifiedSDPath("jianka/data/"+mIndicator.getText().toString()+title + ".card");
+        }
+        Item newCard = new Item(title,Item.CARD,filePath,content);
         if (mIndicator.getText().toString().equals("普通卡片")) {
             saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/" + mGroupSelector.getSelectedItem().toString(), title + ".card");
         } else {
             saveFileToSDCard(Obj2Bytes(newCard), "jianka/task/" + mIndicator.getText().toString(), title + ".card");
         }
+        TabsFragmentManager.getFragment(TabsFragmentManager.RECENT_FRAGMENT).adapter.addItem(newCard);
     }
 
     @Override
