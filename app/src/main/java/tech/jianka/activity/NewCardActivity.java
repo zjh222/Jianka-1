@@ -35,10 +35,8 @@ import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Item;
 import tech.jianka.fragment.TabsFragmentManager;
 
-import static tech.jianka.utils.CardUtil.getChildItems;
+import static tech.jianka.utils.CardUtil.getGroupChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
-import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
-import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
 public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
     private RadioGroup mTaskSelecotor;
@@ -75,13 +73,13 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mTaskSelecotor.setOnCheckedChangeListener(this);
 
         ArrayList<String> groupItem = new ArrayList<>();
-        List<Item> items = getChildItems(getSpecifiedSDPath("jianka/data"));
+        List<Item> items = getGroupChildItems(getSpecifiedSDPath("jianka/data"));
         items.add(new Item("任务", getSpecifiedSDPath("jianka/task")));
         for (Item item : items) {
             groupItem.add(item.getFileName());
         }
 
-        myAdapter = new MyAdapter<String>(groupItem,R.layout.spinner_item) {
+        myAdapter = new MyAdapter<String>(groupItem, R.layout.spinner_item) {
             @Override
             public void bindView(ViewHolder holder, String obj) {
                 holder.setText(R.id.spinner_item_text_view, obj);
@@ -250,16 +248,11 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         String content = mEditContent.getText().toString();
         String filePath;
         if (mIndicator.getText().toString().equals("普通卡片")) {
-            filePath = getSpecifiedSDPath("jianka/data/"+mGroupSelector.getSelectedItem().toString()+title + ".card");
+            filePath = "jianka/data/" + mGroupSelector.getSelectedItem().toString();
         } else {
-            filePath = getSpecifiedSDPath("jianka/data/"+mIndicator.getText().toString()+title + ".card");
+            filePath = "jianka/data/" + mIndicator.getText().toString();
         }
-        Item newCard = new Item(title,Item.CARD,filePath,content);
-        if (mIndicator.getText().toString().equals("普通卡片")) {
-            saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/" + mGroupSelector.getSelectedItem().toString(), title + ".card");
-        } else {
-            saveFileToSDCard(Obj2Bytes(newCard), "jianka/task/" + mIndicator.getText().toString(), title + ".card");
-        }
+        Item newCard = new Item(title, Item.CARD, filePath, content);
         TabsFragmentManager.getFragment(TabsFragmentManager.RECENT_FRAGMENT).adapter.addItem(newCard);
     }
 
@@ -272,6 +265,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                     mIndicator.setText(tasks[0]);
                     break;
                 case R.id.task_important_emergent:
+                    // TODO: 2017/8/6 设置和spinner的联动
                     mIndicator.setText(tasks[1]);
                     break;
                 case R.id.task_important_not_emergent:

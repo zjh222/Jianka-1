@@ -14,6 +14,10 @@ import java.util.List;
 import tech.jianka.activity.R;
 import tech.jianka.data.Item;
 
+import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
+import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
+
 /**
  * Created by Richard on 2017/7/28.
  */
@@ -100,7 +104,11 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addItem(Item item) {
         items.add(item);
         try {
-            new File(item.getFilePath()).createNewFile();
+            if (item.getItemType() == Item.GROUP) {
+                new File(getSpecifiedSDPath(item.getFilePath())).createNewFile();
+            }else {
+                saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
