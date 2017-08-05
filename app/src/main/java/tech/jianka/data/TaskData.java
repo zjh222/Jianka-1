@@ -14,9 +14,8 @@ public class TaskData {
     String[] taskGroup = {"重要|紧急", "重要|不紧急", "不重要|紧急", "不重要|不紧急"};
 
     String[] paths = {
-            "jianka/task/important_emergent", "jianka/task/important_not_emergent",
-            "jianka/task/unimportant_emergent", "jianka/task/unimportant_not_emergent"};
-
+            "jianka/task/很重要-很紧急","jianka/task/很重要-不紧急",
+            "jianka/task/不重要-很紧急","jianka/task/不紧急-不重要"};
 
     private List<Item> taskGroups = new ArrayList<>();
     private List<Item> taskItems = new ArrayList<>();

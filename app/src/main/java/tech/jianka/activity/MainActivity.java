@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity
         boolean flag = getSharedPreferences("tech.jianka",MODE_PRIVATE).getBoolean("isFirstRun",true);
         if(flag){
             String[] groups = {"jianka/image", "jianka/log","jianka/recyclebin","jianka/data/收信箱",
-                    "jianka/task/important_emergent","jianka/task/important_not_emergent",
-                    "jianka/task/unimportant_emergent","jianka/task/unimportant_not_emergent"};
+                    "jianka/task/很重要-很紧急","jianka/task/很重要-不紧急",
+                    "jianka/task/不重要-很紧急","jianka/task/不紧急-不重要"};
             for (String group : groups) {
                 new File(getSDCardPath()+File.separator + group).mkdirs();
             }

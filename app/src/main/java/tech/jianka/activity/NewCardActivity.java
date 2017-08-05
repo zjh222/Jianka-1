@@ -140,6 +140,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             case R.id.action_save:
                 saveCard();
                 finish();
+                return true;
             case R.id.action_share:
                 //li2017/8/4
                 if (isEmpty()) {
@@ -234,7 +235,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         if (mEditContent.getText() == null
                 || mEditContent.getText().toString().trim().equals("")) {
             Toast toast = Toast.makeText(NewCardActivity.this,
-                    this.getText(R.string.contentnull), Toast.LENGTH_SHORT);
+                    this.getText(R.string.content_null), Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
             return false;
@@ -251,7 +252,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         newCard.setItemType(Item.CARD);
         newCard.setCardTitle(title);
         newCard.setCardContent(content);
-        if (mIndicator.getText().toString().equals("常规")) {
+        if (mIndicator.getText().toString().equals("普通卡片")) {
             saveFileToSDCard(Obj2Bytes(newCard), "jianka/data/" + mGroupSelector.getSelectedItem().toString(), title + ".card");
         } else {
             saveFileToSDCard(Obj2Bytes(newCard), "jianka/task/" + mIndicator.getText().toString(), title + ".card");
