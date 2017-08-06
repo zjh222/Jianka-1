@@ -2,6 +2,7 @@ package tech.jianka.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import tech.jianka.activity.NewCardActivity;
 import tech.jianka.activity.R;
 import tech.jianka.adapter.ItemAdapter;
 import tech.jianka.data.GroupData;
@@ -56,6 +58,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
     RecyclerView.LayoutManager layoutManager;
 
     public ItemAdapter adapter;
+
     public TabsFragment() {
         // Required empty public constructor
     }
@@ -107,7 +110,7 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView.setLayoutManager(layoutManager);
             GroupData data = new GroupData();
             adapter = new ItemAdapter(data.getItemGroup(), ItemAdapter.GROUP, this);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
+//            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
             recyclerView.setAdapter(adapter);
         } else if (fragmentType == RECENT_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
@@ -120,12 +123,12 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView.addItemDecoration(new SpaceItemDecoration(5));
         } else if (fragmentType == TASK_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
-            layoutManager =  new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
+            layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
             TaskData data = new TaskData();
-            adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.GROUP, this);
+            adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.TASK_GROUP, this);
             recyclerView.setAdapter(adapter);
-            recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+//            recyclerView.addItemDecoration(new SpaceItemDecoration(20));
 
         }
     }
@@ -157,39 +160,83 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
 
     @Override
     public void onItemClick(int clickedCardIndex) {
-        // TODO: 2017/7/26 处理卡片单击事件
-        if (mToast != null) {
-            mToast.cancel();
+        switch (fragmentType) {
+            case GROUP_FRAGMENT:
+                // TODO: 2017/8/6 显示group中的内容  fragment 层叠
+                break;
+            case RECENT_FRAGMENT:
+                Intent intent = new Intent(getActivity(), NewCardActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("CARD_DETAILS",adapter.getItem(clickedCardIndex));
+                intent.putExtras(bundle);
+                startActivity(intent);
+                break;
+            case TASK_FRAGMENT:
+
+                break;
         }
-        String toastMessage = "Card" + clickedCardIndex + "  clicked";
-        mToast = Toast.makeText(getActivity(), toastMessage, Toast.LENGTH_SHORT);
-        mToast.show();
+        // TODO: 2017/7/26 处理卡片单击事件
+
     }
 
     @Override
     public void onItemLongClick(final int clickedCardIndex) {
-        final String[] options = {"分享", "删除","切换分组"};
         builder = new AlertDialog.Builder(getContext());
-        alertDialog = builder.setTitle("选择操作")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                adapter.shareItem(clickedCardIndex);
-                                // TODO: 2017/8/5 share
-                                break;
-                            case 1:
-                                // TODO: 2017/8/6 检查是不是不可删除的类型
-                                adapter.removeItem(clickedCardIndex);
-                                break;
-                            case 2:
-                                // TODO: 2017/8/6 切换分组功能
-                                break;
-                        }
-                    }
-                }).create();
-        alertDialog.show();
+        String[] options;
+        switch (fragmentType) {
+            case GROUP_FRAGMENT:
+                options = getActivity().getResources().getStringArray(R.array.card_group_options);
+                alertDialog = builder.setTitle("选择操作")
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        if(!adapter.removeItem(clickedCardIndex)){
+                                            mToast.makeText(getActivity(),"删除失败",Toast.LENGTH_LONG).show();
+                                        }
+
+                                        break;
+                                    case 1:
+                                        adapter.shareItem(clickedCardIndex, getActivity());
+                                        break;
+                                    case 2:
+                                        // TODO: 2017/8/6 切换分组功能
+                                        break;
+                                }
+                            }
+                        }).create();
+                alertDialog.show();
+                break;
+            case RECENT_FRAGMENT:
+                options = getActivity().getResources().getStringArray(R.array.card_options);
+                alertDialog = builder.setTitle("选择操作")
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                switch (which) {
+                                    case 0:
+                                        adapter.shareItem(clickedCardIndex, getActivity());
+                                        break;
+                                    case 1:
+                                        if(!adapter.removeItem(clickedCardIndex)){
+                                            mToast.makeText(getActivity(),"删除失败",Toast.LENGTH_LONG).show();
+                                        }
+
+                                        break;
+                                    case 2:
+                                        // TODO: 2017/8/6 切换分组功能
+                                        break;
+                                }
+                            }
+                        }).create();
+                alertDialog.show();
+                break;
+            case TASK_FRAGMENT:
+                options = getActivity().getResources().getStringArray(R.array.task_group_options);
+                break;
+        }
+
     }
 
     /**

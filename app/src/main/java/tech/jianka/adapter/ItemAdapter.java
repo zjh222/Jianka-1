@@ -1,5 +1,7 @@
 package tech.jianka.adapter;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +61,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
                 return new CardViewHolder(view);
             case TASK_GROUP:
-                view = inflater.inflate(R.layout.group_item, parent, false);
+                view = inflater.inflate(R.layout.task_group_item, parent, false);
                 return new GroupViewHolder(view);
             case TASK_IMPORTANT_EMERGENT:
                 break;
@@ -87,13 +89,17 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (adapterType == GROUP) {
-            if (items.get(position).getCardType() == Item.GROUP) {
+        switch (adapterType) {
+            case GROUP:
                 return GROUP;
-            } else return GROUP;
-        } else {
-            return CARD;
+            case CARD:
+                return CARD;
+            case TASK_GROUP:
+                return TASK_GROUP;
+            default:
+                return GROUP;
         }
+
     }
 
     @Override
@@ -106,7 +112,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         try {
             if (item.getItemType() == Item.GROUP) {
                 new File(getSpecifiedSDPath(item.getFilePath())).createNewFile();
-            }else {
+            } else {
                 saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
             }
         } catch (IOException e) {
@@ -116,16 +122,37 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public boolean removeItem(int position) {
+        Item toDeleteItem = items.get(position);
+        // TODO: 2017/8/6 完善能不能删除的逻辑
+        String[] canNotDelete = {"收信箱", "任务", "重要-紧急"};
+        String toCompare = toDeleteItem.getFileName();
+        for (String name : canNotDelete) {
+            if (name.equals(toCompare)) {
+                return false;
+            }
+        }
         new File(items.get(position).getFilePath()).delete();
         items.remove(position);
         notifyDataSetChanged();
         return true;
     }
 
-    public void shareItem(int clickedCardIndex) {
+    public void shareItem(int clickedCardIndex, Activity context) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+        intent.putExtra(Intent.EXTRA_TEXT, items.get(clickedCardIndex).getCardTitle() +
+                "\n" + items.get(clickedCardIndex).getCardContent());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(Intent.createChooser(intent, context.getTitle()));
     }
 
-    public class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+    public Item getItem(int clickedItemIndex) {
+        return items.get(clickedItemIndex);
+    }
+
+    public class CardViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, View.OnLongClickListener {
         TextView mCardTitle;
         TextView mCardDate;
         TextView mCardGroup;
@@ -164,9 +191,6 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public GroupViewHolder(View itemView) {
             super(itemView);
-//            ViewGroup.LayoutParams params = itemView.getLayoutParams();
-//            params.height = params.width * 2 / 3;
-//            itemView.setLayoutParams(params);
             mTitle = (TextView) itemView.findViewById(R.id.group_item_title);
             mImage = (ImageView) itemView.findViewById(R.id.group_item_image);
             itemView.setOnClickListener(this);

@@ -208,22 +208,7 @@
 //    /**
 //     * 根据文件名进行比较排序
 //     */
-//    public static class FileNameComparator implements Comparator<ItemData> {
-//        protected final static int
-//                FIRST = -1,
-//                SECOND = 1;
-//
-//        @Override
-//        public int compare(ItemData lhs, ItemData rhs) {
-//            if (lhs.isDirectory() || rhs.isDirectory()) {
-//                if (lhs.isDirectory() == rhs.isDirectory())
-//                    return lhs.getFileName().compareToIgnoreCase(rhs.getFileName());
-//                else if (lhs.isDirectory()) return FIRST;
-//                else return SECOND;
-//            }
-//            return lhs.getFileName().compareToIgnoreCase(rhs.getFileName());
-//        }
-//    }
+
 //
 //    public static ItemData getItemInfoFromFile(File file) {
 //        ItemData ItemData = new ItemData();

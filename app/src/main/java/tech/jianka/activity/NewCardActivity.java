@@ -17,7 +17,6 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,7 +44,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private EditText mEditContent;
     private TextView mIndicator;
     private ImageView iv_image;
-
+    private Item item;
     private String str;
     private DBConnection helper;
 
@@ -71,6 +70,11 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor.setOnCheckedChangeListener(this);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            item =(Item) bundle.getSerializable("CARD_DETAIL");
+        }
 
         ArrayList<String> groupItem = new ArrayList<>();
         List<Item> items = getGroupChildItems(getSpecifiedSDPath("jianka/data"));
@@ -97,14 +101,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         }
     }
 
-    //2017/8/4
-    public void load(View view) {
-        // 激活系统图库，选择一张图片
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 0);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,6 +153,12 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
                     isShare();
                 }
+                return true;
+            case R.id.action_insert_image:
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, 0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
