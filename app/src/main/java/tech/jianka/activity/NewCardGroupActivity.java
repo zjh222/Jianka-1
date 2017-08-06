@@ -8,13 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.File;
-
 import tech.jianka.data.Item;
 import tech.jianka.fragment.TabsFragment;
 import tech.jianka.fragment.TabsFragmentManager;
-
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
 public class NewCardGroupActivity extends AppCompatActivity {
     private EditText mEditGroupTitle;
@@ -39,8 +35,7 @@ public class NewCardGroupActivity extends AppCompatActivity {
         if(!title.equals("")){
             TabsFragment fragment =
             TabsFragmentManager.getFragment(TabsFragmentManager.GROUP_FRAGMENT);
-            fragment.adapter.addItem(new Item(title,getSpecifiedSDPath("jianka/data/" + title)));
-            new File(getSpecifiedSDPath("jianka/data/" + title)).mkdirs();
+            fragment.adapter.addItem(new Item(title,"jianka/data/" + title));
             NavUtils.navigateUpFromSameTask(this);
         }
     }

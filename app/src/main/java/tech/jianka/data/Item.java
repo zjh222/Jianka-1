@@ -18,7 +18,7 @@ public class Item implements Serializable {
 
     private String fileName;
     private String cardTitle;
-    private String modifiedTime;
+    private long modifiedTime;
     private String filePath;
     // TODO: 2017/7/31 content的保存方式
     private Object cardContent;
@@ -35,6 +35,12 @@ public class Item implements Serializable {
         this.filePath = filePath;
         this.cardTitle = cardTitle;
         this.cardContent = cardContent;
+    }
+
+    public Item(String fileName, String filePath, long lastModified) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.modifiedTime = lastModified;
     }
 
     public void setItemType(int itemType) {
@@ -90,11 +96,11 @@ public class Item implements Serializable {
         return itemType;
     }
 
-    public String getModifiedTime() {
+    public long getModifiedTime() {
         return modifiedTime;
     }
 
-    public void setModifiedTime(String modifiedTime) {
+    public void setModifiedTime(long modifiedTime) {
         this.modifiedTime = modifiedTime;
     }
 }
