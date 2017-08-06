@@ -65,7 +65,7 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
      * this fragment using the provided parameters.
      *
      * @param fragmentType
-     * @return A new instance of fragment TabsFragment.
+     * @return A new instance of fragment RecentFragment.
      */
     public static RecentFragment newInstance(int fragmentType) {
         RecentFragment fragment = new RecentFragment();

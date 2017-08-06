@@ -1,6 +1,7 @@
 package tech.jianka.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import tech.jianka.activity.R;
-import tech.jianka.adapter.ItemAdapter;
+import tech.jianka.adapter.TaskAdapter;
 import tech.jianka.data.TaskData;
 
 /**
- * Created by Richa on 2017/8/6.
+ * Created by Richard on 2017/8/6.
  */
 
 /**
@@ -30,23 +30,16 @@ import tech.jianka.data.TaskData;
  * Use the {@link TaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskFragment extends Fragment implements ItemAdapter.ItemClickListener {
+public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener ,View.OnClickListener,View.OnLongClickListener{
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
-
-    private static Toast mToast;
-
     private int fragmentType;
 
     private OnFragmentInteractionListener mListener;
     private View view;
-    private AlertDialog alertDialog;
-    private AlertDialog.Builder builder;
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-
-    public ItemAdapter adapter;
-
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    public TaskAdapter adapter;
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -56,7 +49,7 @@ public class TaskFragment extends Fragment implements ItemAdapter.ItemClickListe
      * this fragment using the provided parameters.
      *
      * @param fragmentType
-     * @return A new instance of fragment TabsFragment.
+     * @return A new instance of fragment TaskFragment.
      */
     public static TaskFragment newInstance(int fragmentType) {
         TaskFragment fragment = new TaskFragment();
@@ -86,11 +79,11 @@ public class TaskFragment extends Fragment implements ItemAdapter.ItemClickListe
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
         layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         TaskData data = new TaskData();
-        adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.TASK_GROUP, this);
+        adapter = new TaskAdapter(data.getTaskGroup(), TaskAdapter.TASK_GROUP, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -128,9 +121,56 @@ public class TaskFragment extends Fragment implements ItemAdapter.ItemClickListe
 
     @Override
     public void onItemLongClick(final int clickedCardIndex) {
-        builder = new AlertDialog.Builder(getContext());
         String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog alertDialog = builder.setTitle("选择操作")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                break;
+                            case 1:
+                                // TODO: 2017/8/6 rename
+                                break;
+                            case 2:
+                                // TODO: 2017/8/6 修改封面
+                                break;
+                        }
+                    }
+                }).create();
+        alertDialog.show();
     }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        AlertDialog alertDialog = builder.setTitle("选择操作")
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                break;
+                            case 1:
+                                // TODO: 2017/8/6 rename
+                                break;
+                            case 2:
+                                // TODO: 2017/8/6 修改封面
+                                break;
+                        }
+                    }
+                }).create();
+        alertDialog.show();
+        return true;
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
