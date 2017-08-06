@@ -9,8 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import tech.jianka.data.Item;
-import tech.jianka.fragment.TabsFragment;
-import tech.jianka.fragment.TabsFragmentManager;
+import tech.jianka.fragment.FragmentManager;
+import tech.jianka.fragment.GroupFragment;
 
 public class NewCardGroupActivity extends AppCompatActivity {
     private EditText mEditGroupTitle;
@@ -33,8 +33,8 @@ public class NewCardGroupActivity extends AppCompatActivity {
     public void btnSave(View view) {
         String title = mEditGroupTitle.getText().toString().trim();
         if(!title.equals("")){
-            TabsFragment fragment =
-            TabsFragmentManager.getFragment(TabsFragmentManager.GROUP_FRAGMENT);
+            GroupFragment fragment =
+            FragmentManager.getGroupFragment();
             fragment.adapter.addItem(new Item(title,"jianka/data/" + title));
             NavUtils.navigateUpFromSameTask(this);
         }

@@ -32,7 +32,7 @@ import java.util.List;
 
 import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Item;
-import tech.jianka.fragment.TabsFragmentManager;
+import tech.jianka.fragment.FragmentManager;
 
 import static tech.jianka.utils.CardUtil.getGroupChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
@@ -241,7 +241,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             toast.show();
             return false;
         }
-
         return true;
     }
 
@@ -255,7 +254,8 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             filePath = "jianka/data/" + mIndicator.getText().toString();
         }
         Item newCard = new Item(title, Item.CARD, filePath, content);
-        TabsFragmentManager.getFragment(TabsFragmentManager.RECENT_FRAGMENT).adapter.addItem(newCard);
+        // TODO: 2017/8/6 分两种情况 
+        FragmentManager.getRecentFragment().adapter.addItem(newCard);
     }
 
     @Override

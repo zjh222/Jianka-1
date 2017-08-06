@@ -23,11 +23,14 @@ import android.view.View;
 import java.io.File;
 
 import tech.jianka.adapter.HomeFragmentPagerAdapter;
+import tech.jianka.fragment.GroupFragment;
+import tech.jianka.fragment.RecentFragment;
 import tech.jianka.fragment.TabsFragment;
-import tech.jianka.fragment.TabsFragmentManager;
+import tech.jianka.fragment.FragmentManager;
+import tech.jianka.fragment.TaskFragment;
 import tech.jianka.utils.PreferenceHelper;
 
-import static tech.jianka.fragment.TabsFragmentManager.fragmentList;
+import static tech.jianka.fragment.FragmentManager.fragmentList;
 import static tech.jianka.utils.CardUtil.getSDCardPath;
 import static tech.jianka.utils.PreferenceHelper.getBoolean;
 
@@ -50,13 +53,13 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent();
                 switch (viewPager.getCurrentItem()){
-                    case TabsFragmentManager.GROUP_FRAGMENT:
+                    case FragmentManager.GROUP_FRAGMENT:
                         intent.setClass(context, NewCardGroupActivity.class);
                         break;
-                    case TabsFragmentManager.RECENT_FRAGMENT:
+                    case FragmentManager.RECENT_FRAGMENT:
                          intent = new Intent(context, NewCardActivity.class);
                         break;
-                    case TabsFragmentManager.TASK_FRAGMENT:
+                    case FragmentManager.TASK_FRAGMENT:
                         intent = new Intent(context, NewCardActivity.class);
                         break;
                 }
@@ -113,16 +116,16 @@ public class MainActivity extends AppCompatActivity
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         String[] titles = getResources().getStringArray(R.array.main_tab_titles);
 
-        fragmentList.add(TabsFragment.newInstance(TabsFragmentManager.GROUP_FRAGMENT));
-        fragmentList.add(TabsFragment.newInstance(TabsFragmentManager.RECENT_FRAGMENT));
-        fragmentList.add(TabsFragment.newInstance(TabsFragmentManager.TASK_FRAGMENT));
+        fragmentList.add(GroupFragment.newInstance(FragmentManager.GROUP_FRAGMENT));
+        fragmentList.add(RecentFragment.newInstance(FragmentManager.RECENT_FRAGMENT));
+        fragmentList.add(TaskFragment.newInstance(FragmentManager.TASK_FRAGMENT));
         //fragment的Adapter
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList);
         //viewpager的设置
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnAdapterChangeListener(this);
-        viewPager.setCurrentItem(TabsFragmentManager.RECENT_FRAGMENT,false);//从中间页启动
+        viewPager.setCurrentItem(FragmentManager.RECENT_FRAGMENT,false);//从中间页启动
         //tab的设置
         tabLayout.setupWithViewPager(viewPager);//tab和viewpager联动
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
