@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import tech.jianka.activity.R;
-import tech.jianka.adapter.ItemAdapter;
+import tech.jianka.adapter.GroupAdapter;
 import tech.jianka.data.GroupData;
 
 /**
@@ -26,25 +26,22 @@ import tech.jianka.data.GroupData;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TabsFragment.OnFragmentInteractionListener} interface
+ * {@link GroupFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TabsFragment#newInstance} factory method to
+ * Use the {@link GroupFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GroupFragment extends Fragment implements ItemAdapter.ItemClickListener {
+public class GroupFragment extends Fragment implements GroupAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
 
-    private static Toast mToast;
     private int fragmentType;
     private OnFragmentInteractionListener mListener;
     private View view;
-    private AlertDialog alertDialog;
-    private AlertDialog.Builder builder;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
 
-    public ItemAdapter adapter;
+    public GroupAdapter adapter;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -89,7 +86,7 @@ public class GroupFragment extends Fragment implements ItemAdapter.ItemClickList
         layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         GroupData data = new GroupData();
-        adapter = new ItemAdapter(data.getItemGroup(), ItemAdapter.GROUP, this);
+        adapter = new GroupAdapter(data.getItemGroup(), GroupAdapter.GROUP, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -127,25 +124,24 @@ public class GroupFragment extends Fragment implements ItemAdapter.ItemClickList
 
     @Override
     public void onItemLongClick(final int clickedCardIndex) {
-        builder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String[] options;
         options = getActivity().getResources().getStringArray(R.array.card_group_options);
-        alertDialog = builder.setTitle("选择操作")
+        AlertDialog alertDialog = builder.setTitle("选择操作")
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
                                 if (!adapter.removeItem(clickedCardIndex)) {
-                                    mToast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
                                 }
-
                                 break;
                             case 1:
-                                adapter.shareItem(clickedCardIndex, getActivity());
+                                // TODO: 2017/8/6 rename
                                 break;
                             case 2:
-                                // TODO: 2017/8/6 切换分组功能
+                                // TODO: 2017/8/6 修改封面
                                 break;
                         }
                     }

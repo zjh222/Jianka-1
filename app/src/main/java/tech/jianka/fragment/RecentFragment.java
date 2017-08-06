@@ -34,9 +34,9 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TabsFragment.OnFragmentInteractionListener} interface
+ * {@link RecentFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TabsFragment#newInstance} factory method to
+ * Use the {@link RecentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class RecentFragment extends Fragment implements ItemAdapter.ItemClickListener {

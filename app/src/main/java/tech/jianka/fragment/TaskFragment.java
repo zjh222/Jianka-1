@@ -25,9 +25,9 @@ import tech.jianka.data.TaskData;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TabsFragment.OnFragmentInteractionListener} interface
+ * {@link TaskFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TabsFragment#newInstance} factory method to
+ * Use the {@link TaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class TaskFragment extends Fragment implements ItemAdapter.ItemClickListener {
