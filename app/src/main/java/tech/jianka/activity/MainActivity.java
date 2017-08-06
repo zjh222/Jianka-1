@@ -23,10 +23,9 @@ import android.view.View;
 import java.io.File;
 
 import tech.jianka.adapter.HomeFragmentPagerAdapter;
+import tech.jianka.fragment.FragmentManager;
 import tech.jianka.fragment.GroupFragment;
 import tech.jianka.fragment.RecentFragment;
-import tech.jianka.fragment.TabsFragment;
-import tech.jianka.fragment.FragmentManager;
 import tech.jianka.fragment.TaskFragment;
 import tech.jianka.utils.PreferenceHelper;
 
@@ -36,7 +35,7 @@ import static tech.jianka.utils.PreferenceHelper.getBoolean;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ViewPager.OnAdapterChangeListener, TabsFragment.OnFragmentInteractionListener {
+        ViewPager.OnAdapterChangeListener, GroupFragment.OnFragmentInteractionListener {
     private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

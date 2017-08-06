@@ -52,7 +52,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
      * this fragment using the provided parameters.
      *
      * @param fragmentType
-     * @return A new instance of fragment TabsFragment.
+     * @return A new instance of fragment GroupFragment.
      */
     public static GroupFragment newInstance(int fragmentType) {
         GroupFragment fragment = new GroupFragment();
