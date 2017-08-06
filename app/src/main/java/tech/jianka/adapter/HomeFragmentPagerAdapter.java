@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-import tech.jianka.fragment.TabsFragment;
-
 /**
  * Created by Richard on 2017/7/25.
  */
@@ -15,9 +13,9 @@ import tech.jianka.fragment.TabsFragment;
 public class HomeFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private String[] titles;
-    private List<TabsFragment> fragmentList;
+    private List<Fragment> fragmentList;
 
-    public HomeFragmentPagerAdapter(FragmentManager manager, String[] titles, List<TabsFragment> fragmentList) {
+    public HomeFragmentPagerAdapter(FragmentManager manager, String[] titles, List<Fragment> fragmentList) {
         super(manager);
         this.titles = titles;
         this.fragmentList = fragmentList;

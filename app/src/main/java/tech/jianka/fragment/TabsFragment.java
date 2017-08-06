@@ -28,9 +28,9 @@ import tech.jianka.data.Item;
 import tech.jianka.data.TaskData;
 import tech.jianka.utils.SpaceItemDecoration;
 
-import static tech.jianka.fragment.TabsFragmentManager.GROUP_FRAGMENT;
-import static tech.jianka.fragment.TabsFragmentManager.RECENT_FRAGMENT;
-import static tech.jianka.fragment.TabsFragmentManager.TASK_FRAGMENT;
+import static tech.jianka.fragment.FragmentManager.GROUP_FRAGMENT;
+import static tech.jianka.fragment.FragmentManager.RECENT_FRAGMENT;
+import static tech.jianka.fragment.FragmentManager.TASK_FRAGMENT;
 import static tech.jianka.utils.CardUtil.getChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
@@ -110,7 +110,6 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             recyclerView.setLayoutManager(layoutManager);
             GroupData data = new GroupData();
             adapter = new ItemAdapter(data.getItemGroup(), ItemAdapter.GROUP, this);
-//            recyclerView.addItemDecoration(new SpaceItemDecoration(10));
             recyclerView.setAdapter(adapter);
         } else if (fragmentType == RECENT_FRAGMENT) {
             recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
@@ -128,8 +127,6 @@ public class TabsFragment extends Fragment implements ItemAdapter.ItemClickListe
             TaskData data = new TaskData();
             adapter = new ItemAdapter(data.getTaskGroup(), ItemAdapter.TASK_GROUP, this);
             recyclerView.setAdapter(adapter);
-//            recyclerView.addItemDecoration(new SpaceItemDecoration(20));
-
         }
     }
 
