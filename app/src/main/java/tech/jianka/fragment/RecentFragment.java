@@ -99,7 +99,7 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
         recyclerView.setLayoutManager(layoutManager);
         String path = getSpecifiedSDPath("jianka/data/收信箱");
         List<Item> items = getChildItems(path);
-        adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
+        adapter = new ItemAdapter(items,this);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(5));
     }
