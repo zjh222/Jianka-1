@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -170,10 +171,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void searchCard() {
+        Toast.makeText(this, "还没有实现,敬请期待", Toast.LENGTH_SHORT);
         // TODO: 2017/7/22
     }
 
     private void showHiddenCardList() {
+        Toast.makeText(this, "还没有实现,敬请期待", Toast.LENGTH_SHORT);
         // TODO: 2017/7/22
     }
 
