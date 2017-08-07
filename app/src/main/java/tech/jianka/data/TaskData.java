@@ -11,11 +11,11 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
  */
 
 public class TaskData {
-    String[] taskGroup = {"重要|紧急", "重要|不紧急", "不重要|紧急", "不重要|不紧急"};
+    private String[] taskGroup = {"重要|紧急", "重要|不紧急", "不重要|紧急", "不重要|不紧急"};
 
-    String[] paths = {
-            "jianka/task/很重要-很紧急","jianka/task/很重要-不紧急",
-            "jianka/task/不重要-很紧急","jianka/task/不紧急-不重要"};
+    private String[] paths = {
+            "jianka/task/很重要-很紧急", "jianka/task/很重要-不紧急",
+            "jianka/task/不重要-很紧急", "jianka/task/不紧急-不重要"};
 
     private List<Item> taskGroups = new ArrayList<>();
     private List<Item> taskItems = new ArrayList<>();
@@ -25,9 +25,11 @@ public class TaskData {
     }
 
     public TaskData() {
+        //taskGroup初始化
         for (String group : taskGroup) {
-            taskGroups.add(new Item(group,  getSpecifiedSDPath("jianka/task")));
+            taskGroups.add(new Item(group, getSpecifiedSDPath("jianka/task")));
         }
+        //taskItems初始化
         for (String path : paths) {
             List<Item> items = getChildItems(getSpecifiedSDPath(path));
             if (items != null) {

@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import tech.jianka.activity.R;
 import tech.jianka.data.Item;
 
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+import static tech.jianka.utils.CardUtil.longToString;
 import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
 import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
@@ -82,6 +84,13 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (holder instanceof CardViewHolder) {
             if (items != null) {
                 ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
+                ((CardViewHolder) holder).mCardContent.setText((String) items.get(position).getCardContent());
+                try {
+                    String date = longToString(items.get(position).getModifiedTime(),"HH:mm MM/dd");
+                    ((CardViewHolder) holder).mCardDate.setText(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 ((CardViewHolder) holder).mCardContent.setText((String) items.get(position).getCardContent());
             }
         }
@@ -219,4 +228,5 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         void onItemLongClick(int clickedCardIndex);
     }
+
 }

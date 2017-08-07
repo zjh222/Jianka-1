@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +38,12 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     private OnFragmentInteractionListener mListener;
     private View view;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView groupRecyclerView;
+    private RecyclerView.LayoutManager groupLayoutManager;
+    public TaskAdapter groupAdapter;
     public TaskAdapter adapter;
+    private RecyclerView itemRecyclerView;
+    private RecyclerView.LayoutManager itemLayoutManager;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -79,13 +83,19 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
-        layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         TaskData data = new TaskData();
-        adapter = new TaskAdapter(data.getTaskGroup(), TaskAdapter.TASK_GROUP, this);
-        recyclerView.setAdapter(adapter);
+
+        groupRecyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
+        groupLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
+        groupRecyclerView.setLayoutManager(groupLayoutManager);
+        groupAdapter = new TaskAdapter(data.getTaskGroup(), this);
+        groupRecyclerView.setAdapter(groupAdapter);
+
+        itemRecyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
+        itemLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
+        itemRecyclerView.setLayoutManager(itemLayoutManager);
+        adapter = new TaskAdapter(data.getTaskItems(), this);
+        itemRecyclerView.setAdapter(adapter);
     }
 
 
