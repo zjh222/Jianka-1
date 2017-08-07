@@ -73,12 +73,12 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
-            item =(Item) bundle.getSerializable("CARD_DETAIL");
+            item =(Item) bundle.getSerializable("CARD_DETAILS");
         }
 
         ArrayList<String> groupItem = new ArrayList<>();
         List<Item> items = getGroupChildItems(getSpecifiedSDPath("jianka/data"));
-        items.add(new Item("任务", getSpecifiedSDPath("jianka/task")));
+        items.add(new Item(getString(R.string.task), getSpecifiedSDPath("jianka/task")));
         for (Item item : items) {
             groupItem.add(item.getFileName());
         }
@@ -169,22 +169,22 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private void isShare() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.ic_menu_share)
-                .setTitle("发表成功，立即分享？")
-                .setPositiveButton("好的", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.publish_successfully_and_share))
+                .setPositiveButton(getString(R.string.share_accept), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
 
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/plain");
-                        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.card_share));
                         intent.putExtra(Intent.EXTRA_TEXT, str + "\n" + mEditContent.getText().toString());
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(Intent.createChooser(intent, getTitle()));
 
                         mEditContent.setText("");
                     }
-                }).setNegativeButton("以后", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.share_reject), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -210,9 +210,9 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             return true;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("需要网络支持！")
+        builder.setMessage(getString(R.string.network_need))
                 .setCancelable(false)
-                .setPositiveButton("进行网络配置",
+                .setPositiveButton(getString(R.string.network_configuration),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
@@ -222,7 +222,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                                 NewCardActivity.this.finish();
                             }
                         })
-                .setNegativeButton("退出", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.quit), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         NewCardActivity.this.finish();
                     }
@@ -248,18 +248,14 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
         String filePath;
-        Item newCard;
-        if (mIndicator.getText().toString().equals("普通卡片")) {
+        if (mIndicator.getText().toString().equals(getString(R.string.task_regular))) {
             filePath = "jianka/data/" + mGroupSelector.getSelectedItem().toString();
-            newCard =  new Item(title, Item.CARD, filePath, content);
-            FragmentManager.getRecentFragment().adapter.addItem(newCard);
-
         } else {
             filePath = "jianka/data/" + mIndicator.getText().toString();
-            newCard =  new Item(title, Item.CARD, filePath, content);
-            FragmentManager.getTaskFragment().adapter.addItem(newCard);
         }
-        // TODO: 2017/8/6 分两种情况
+        Item newCard = new Item(title, Item.CARD, filePath, content);
+        // TODO: 2017/8/6 分两种情况 
+        FragmentManager.getRecentFragment().adapter.addItem(newCard);
     }
 
     @Override

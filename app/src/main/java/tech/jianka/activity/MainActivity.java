@@ -171,12 +171,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void searchCard() {
-        Toast.makeText(this, "还没有实现,敬请期待", Toast.LENGTH_SHORT);
+        Toast.makeText(this, getString(R.string.not_achieved_yet), Toast.LENGTH_SHORT);
         // TODO: 2017/7/22
     }
 
     private void showHiddenCardList() {
-        Toast.makeText(this, "还没有实现,敬请期待", Toast.LENGTH_SHORT);
+        Toast.makeText(this,getString(R.string.not_achieved_yet), Toast.LENGTH_SHORT);
         // TODO: 2017/7/22
     }
 

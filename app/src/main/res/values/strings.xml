@@ -80,7 +80,7 @@
     <string name="pref_rate_the_app_label">在应用市场评分</string>
     <string name="action_refresh">刷新/同步</string>
     <string name="enter_a_title">卡片标题</string>
-    <string name="enter_the_content">记录此刻的想法……</string>
+    <string name="enter_the_content">请输入记录的文字……</string>
     <string name="time_example">2017年7月20日   9:36</string>
     <string name="new_card_activity">创建卡片</string>
     <string name="card_theme_color">卡色</string>
@@ -104,6 +104,7 @@
 
     <string name="card_theme_blue">蓝</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_card_group">所有卡组</string>
     <string name="card_group_inbox">收信箱</string>
@@ -122,5 +123,22 @@
     <string name="task_unimportant_not_emergent">不重要-不紧急</string>
     <string name="card_insert_image">插入图片</string>
     <string name="input_card_group_title">卡组名</string>
-    <string name="choose_operation">选择操作</string>
+    <string name="not_achieved_yet">还没有实现，敬请期待</string>
+    <string name="task">任务</string>
+    <string name="publish_successfully_and_share">发表成功，立刻分享？</string>
+    <string name="share_accept">好的</string>
+    <string name="share_reject">以后再说</string>
+    <string name="network_need">需要网络支持！</string>
+    <string name="network_configuration">进行网络配置</string>
+    <string name="quit">退出</string>
+    <string name="selet_option">选择操作</string>
+    <string name="messagebox_cannot_delete">收信箱不能被删除</string>
+    <string name="delete_confirmation">删除确认</string>
+    <string name="continue_delete_for_unempty_cardgroup">卡组不为空，继续删除吗？</string>
+    <string name="cancel">取消</string>
+    <string name="click_cancel">你点击了取消按钮~</string>
+    <string name="make_sure">确定</string>
+    <string name="have_deleted">已删除</string>
+    <string name="delete_failed">删除失败</string>
+    <string name="message_write_successful">信息已写入SharedPreference中</string>
 </resources>

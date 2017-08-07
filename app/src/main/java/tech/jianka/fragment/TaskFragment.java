@@ -44,6 +44,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     public TaskAdapter adapter;
     private RecyclerView itemRecyclerView;
     private RecyclerView.LayoutManager itemLayoutManager;
+    Context context;
 
     public TaskFragment() {
         // Required empty public constructor
@@ -134,7 +135,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     public void onItemLongClick(final int clickedCardIndex) {
         String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle(getString(R.string.choose_operation))
+        AlertDialog alertDialog = builder.setTitle(context.getResources().getString(R.string.selet_option))
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
