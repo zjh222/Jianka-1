@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_weight="1"
-            android:background="@drawable/background"
+            android:background="@drawable/background_inbox"
             />
         <TextView
             android:id="@+id/card_item_title"
