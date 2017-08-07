@@ -56,6 +56,8 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
 
     public ItemAdapter adapter;
 
+    Context context;
+
     public RecentFragment() {
         // Required empty public constructor
     }
@@ -145,7 +147,7 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
         builder = new AlertDialog.Builder(getContext());
         String[] options;
         options = getActivity().getResources().getStringArray(R.array.card_options);
-        alertDialog = builder.setTitle("选择操作")
+        alertDialog = builder.setTitle(context.getResources().getString(R.string.selet_option))
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -155,7 +157,7 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
                                 break;
                             case 1:
                                 if (!adapter.removeItem(clickedCardIndex)) {
-                                    mToast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                    mToast.makeText(getActivity(), context.getResources().getString(R.string.delete_failed), Toast.LENGTH_LONG).show();
                                 }
 
                                 break;

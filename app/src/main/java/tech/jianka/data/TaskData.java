@@ -1,7 +1,11 @@
 package tech.jianka.data;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import tech.jianka.activity.R;
 
 import static tech.jianka.utils.CardUtil.getChildItems;
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
@@ -11,7 +15,11 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
  */
 
 public class TaskData {
-    private String[] taskGroup = {"重要|紧急", "重要|不紧急", "不重要|紧急", "不重要|不紧急"};
+    Context context;
+    private String[] taskGroup = {context.getResources().getString(R.string.task_important_emergent),
+            context.getResources().getString(R.string.task_important_not_emergent),
+            context.getResources().getString(R.string.task_unimportant_emergent),
+            context.getResources().getString(R.string.task_unimportant_not_emergent)};
 
     private String[] paths = {
             "jianka/task/很重要-很紧急", "jianka/task/很重要-不紧急",

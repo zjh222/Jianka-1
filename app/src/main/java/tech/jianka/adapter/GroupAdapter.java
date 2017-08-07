@@ -1,5 +1,6 @@
 package tech.jianka.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private ItemClickListener listener;
     private List<Item> items;
+    Context context;
 
     public GroupAdapter(List<Item> items, ItemClickListener listener) {
         this.listener = listener;
@@ -65,7 +67,8 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         Item toDeleteItem = items.get(position);
         // TODO: 2017/8/6 完善能不能删除的逻辑
         String toCompare = toDeleteItem.getFileName();
-        if (toCompare.equals("收信箱")) {
+
+        if (toCompare.equals(context.getResources().getString(R.string.card_group_inbox))) {
             return GroupData.INBOX;
         }
         File file = new File(items.get(position).getFilePath());

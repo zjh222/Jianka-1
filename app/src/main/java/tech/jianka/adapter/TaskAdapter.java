@@ -1,6 +1,7 @@
 package tech.jianka.adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ItemClickListener listener;
     private List<Item> items;
+    Context context;
 
     public TaskAdapter(List<Item> items, ItemClickListener listener) {
         this.listener = listener;
@@ -92,7 +94,8 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public boolean removeItem(int position) {
         Item toDeleteItem = items.get(position);
         // TODO: 2017/8/6 完善能不能删除的逻辑
-        String[] canNotDelete = {"收信箱", "任务", "重要-紧急"};
+        String[] canNotDelete = {context.getResources().getString(R.string.card_group_inbox),
+                context.getResources().getString(R.string.task),context.getResources().getString(R.string.task_important_emergent)};
         String toCompare = toDeleteItem.getFileName();
         for (String name : canNotDelete) {
             if (name.equals(toCompare)) {
@@ -108,7 +111,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void shareItem(int clickedCardIndex, Activity context) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+        intent.putExtra(Intent.EXTRA_SUBJECT, context.getResources().getString(R.string.card_share));
         intent.putExtra(Intent.EXTRA_TEXT, items.get(clickedCardIndex).getCardTitle() +
                 "\n" + items.get(clickedCardIndex).getCardContent());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

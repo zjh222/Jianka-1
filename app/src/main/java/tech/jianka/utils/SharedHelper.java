@@ -7,6 +7,8 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.Map;
 
+import tech.jianka.activity.R;
+
 /**
  * Created by Richa on 2017/7/29.
  */
@@ -14,6 +16,8 @@ import java.util.Map;
 public class SharedHelper {
 
     private Context mContext;
+
+    Context context;
 
     public SharedHelper() {
     }
@@ -34,7 +38,7 @@ public class SharedHelper {
         editor.putString("username", username);
         editor.putString("passwd", passwd);
         editor.commit();
-        Toast.makeText(mContext, "信息已写入SharedPreference中", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,context.getResources().getString(R.string.message_write_successful) , Toast.LENGTH_SHORT).show();
     }
 
     //定义一个读取SP文件的方法
