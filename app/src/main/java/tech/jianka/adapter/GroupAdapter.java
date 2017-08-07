@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import tech.jianka.activity.R;
+import tech.jianka.data.GroupData;
 import tech.jianka.data.Item;
 
 import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
@@ -22,27 +22,12 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int GROUP = 1;
-    public static final int CARD = 2;
-    public static final int CARD_AND_GROUP = 3;
-    public static final int TASK_GROUP = 4;
-    public static final int TASK_AND_GROUP = 5;
-    public static final int TASK_IMPORTANT_EMERGENT = 6;
-    public static final int TASK_IMPORTANT_NOT_EMERGENT = 7;
-    public static final int TASK_UNIMPORTANT_EMERGENT = 8;
-    public static final int TASK_UNIMPORTANT_NOT_EMERGENT = 9;
-    public static final int ITEM_ONE_COLOMN = 40;
-    public static final int ITEM_TWO_COLOMN = 785;
-    public static final int CARD_TWO_COLUMN = 20;
-
     private ItemClickListener listener;
     private List<Item> items;
-    private int adapterType = 0;
 
-    public GroupAdapter(List<Item> items, int adapterType, ItemClickListener listener) {
+    public GroupAdapter(List<Item> items, ItemClickListener listener) {
         this.listener = listener;
         this.items = items;
-        this.adapterType = adapterType;
     }
 
     @Override
@@ -62,7 +47,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        return GROUP;
+        return Item.GROUP;
     }
 
     @Override
@@ -72,28 +57,35 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void addItem(Item item) {
         items.add(item);
-        try {
-            new File(getSpecifiedSDPath(item.getFilePath())).createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        new File(getSpecifiedSDPath(item.getFilePath())).mkdirs();
         notifyDataSetChanged();
     }
 
-    public boolean removeItem(int position) {
+    public int removeItem(int position) {
         Item toDeleteItem = items.get(position);
         // TODO: 2017/8/6 完善能不能删除的逻辑
-        String[] canNotDelete = {"收信箱", "任务"};
         String toCompare = toDeleteItem.getFileName();
-        for (String name : canNotDelete) {
-            if (name.equals(toCompare)) {
-                return false;
-            }
+        if (toCompare.equals("收信箱")) {
+            return GroupData.INBOX;
         }
+        File file = new File(items.get(position).getFilePath());
+        if (file.list() != null && file.list().length > 0) {
+            return GroupData.NOT_EMPTY;
+        } else {
+            file.delete();
+            items.remove(position);
+            notifyDataSetChanged();
+            return GroupData.DELETE_DONE;
+        }
+    }
+
+    public boolean removeItemAndChild(int position) {
+        //先删除文件,再删除items中的数据
+        boolean result =
         new File(items.get(position).getFilePath()).delete();
         items.remove(position);
         notifyDataSetChanged();
-        return true;
+        return result;
     }
 
     public Item getItem(int clickedItemIndex) {
@@ -131,6 +123,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      */
     public interface ItemClickListener {
         void onItemClick(int clickedCardIndex);
+
         void onItemLongClick(int clickedCardIndex);
     }
 }
