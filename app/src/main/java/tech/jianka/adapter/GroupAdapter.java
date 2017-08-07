@@ -63,7 +63,6 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public int removeItem(int position) {
         Item toDeleteItem = items.get(position);
-        // TODO: 2017/8/6 完善能不能删除的逻辑
         String toCompare = toDeleteItem.getFileName();
         if (toCompare.equals("收信箱")) {
             return GroupData.INBOX;

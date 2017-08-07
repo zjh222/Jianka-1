@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -26,12 +27,12 @@ import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
  * Created by Richard on 2017/7/28.
  */
 
-public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ItemClickListener listener;
     private List<Item> items;
 
-    public ItemAdapter(List<Item> items, ItemClickListener listener) {
+    public CardAdapter(List<Item> items, ItemClickListener listener) {
         this.listener = listener;
         this.items = items;
     }
@@ -83,14 +84,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addItem(Item item) {
         items.add(item);
         try {
-            if (item.getItemType() == Item.GROUP) {
-                new File(getSpecifiedSDPath(item.getFilePath())).createNewFile();
-            } else {
-                saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
-            }
+            FileWriter writer = new FileWriter(getSpecifiedSDPath("jianka/log/recent.txt"),true);
+            writer.write(item.getFilePath()+"\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
         notifyDataSetChanged();
     }
 
