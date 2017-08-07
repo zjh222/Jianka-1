@@ -95,6 +95,7 @@ public class SDCardHelper {
                     e.printStackTrace();
                 }
             }
+            return true;
         }
         return false;
     }

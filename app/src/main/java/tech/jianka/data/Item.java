@@ -12,15 +12,36 @@ public class Item implements Serializable {
     public static final int PARENT = 123;
     public static final int GROUP = 744;
     public static final int CARD = 500;
+    public static final int REGULAR = 456;
     private int itemType;
     private int cardType;
 
     private String fileName;
     private String cardTitle;
-    private String modifiedTime;
+    private long modifiedTime;
     private String filePath;
     // TODO: 2017/7/31 content的保存方式
     private Object cardContent;
+
+    public Item(String fileName,String filePath ) {
+        this.itemType = GROUP;
+        this.fileName = fileName;
+        this.filePath = filePath;
+    }
+
+    public Item(String cardTitle, int itemType,String filePath,Object cardContent) {
+        this.itemType = CARD;
+        this.itemType = itemType;
+        this.filePath = filePath;
+        this.cardTitle = cardTitle;
+        this.cardContent = cardContent;
+    }
+
+    public Item(String fileName, String filePath, long lastModified) {
+        this.fileName = fileName;
+        this.filePath = filePath;
+        this.modifiedTime = lastModified;
+    }
 
     public void setItemType(int itemType) {
         this.itemType = itemType;
@@ -71,25 +92,15 @@ public class Item implements Serializable {
     public Item() {
     }
 
-    public Item(int itemType, String fileName, String filePath, String modifiedTime) {
-        this.itemType = itemType;
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.modifiedTime = modifiedTime;
-    }
-    public Item(int itemType) {
-        this.itemType = itemType;
-    }
-
     public int getItemType() {
         return itemType;
     }
 
-    public String getModifiedTime() {
+    public long getModifiedTime() {
         return modifiedTime;
     }
 
-    public void setModifiedTime(String modifiedTime) {
+    public void setModifiedTime(long modifiedTime) {
         this.modifiedTime = modifiedTime;
     }
 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp">
+
+    <android.support.percent.PercentFrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <android.support.constraint.ConstraintLayout
+            app:layout_aspectRatio="100%"
+            app:layout_widthPercent="100%">
+
+            <TextView
+                android:id="@+id/card_item_title"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="#88ffffff"
+                android:fontFamily="monospace"
+                android:text="@string/title_holder"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_widthPercent="100%" />
+
+
+            <ImageView
+                android:id="@+id/card_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_item_title"
+                app:srcCompat="@drawable/background" />
+
+            <TextView
+                android:id="@+id/card_content"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="#88ffffff"
+                android:padding="3dp"
+                android:text="TextView"
+                android:textColor="#000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.percent.PercentFrameLayout>
+</android.support.v7.widget.CardView>

@@ -1,7 +1,5 @@
 package tech.jianka.activity;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.File;
-
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+import tech.jianka.data.Item;
+import tech.jianka.fragment.FragmentManager;
+import tech.jianka.fragment.GroupFragment;
 
 public class NewCardGroupActivity extends AppCompatActivity {
     private EditText mEditGroupTitle;
@@ -33,22 +31,26 @@ public class NewCardGroupActivity extends AppCompatActivity {
     }
 
     public void btnSave(View view) {
-        String title = mEditGroupTitle.getText().toString();
-        new File(getSpecifiedSDPath("jianka/data/" + title)).mkdirs();
-        NavUtils.navigateUpFromSameTask(this);
+        String title = mEditGroupTitle.getText().toString().trim();
+        if(!title.equals("")){
+            GroupFragment fragment =
+            FragmentManager.getGroupFragment();
+            fragment.adapter.addItem(new Item(title,"jianka/data/" + title));
+            NavUtils.navigateUpFromSameTask(this);
+        }
     }
 
-    public static void putString(String key, String value, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
-
-    public static String getString(String key, Context context) {
-        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
-        return sharedPref.getString(key, "");
-    }
+//    public static void putString(String key, String value, Context context) {
+//        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString(key, value);
+//        editor.apply();
+//    }
+//
+//    public static String getString(String key, Context context) {
+//        SharedPreferences sharedPref = context.getSharedPreferences("pref_group", Context.MODE_PRIVATE);
+//        return sharedPref.getString(key, "");
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

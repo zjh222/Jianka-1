@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -22,19 +21,21 @@ import android.view.MenuItem;
 import android.view.View;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import tech.jianka.adapter.HomeFragmentPagerAdapter;
-import tech.jianka.fragment.TabsFragment;
+import tech.jianka.fragment.FragmentManager;
+import tech.jianka.fragment.GroupFragment;
+import tech.jianka.fragment.RecentFragment;
+import tech.jianka.fragment.TaskFragment;
 import tech.jianka.utils.PreferenceHelper;
 
+import static tech.jianka.fragment.FragmentManager.fragmentList;
 import static tech.jianka.utils.CardUtil.getSDCardPath;
 import static tech.jianka.utils.PreferenceHelper.getBoolean;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        ViewPager.OnAdapterChangeListener, TabsFragment.OnFragmentInteractionListener {
+        ViewPager.OnAdapterChangeListener, GroupFragment.OnFragmentInteractionListener {
     private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +52,14 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent();
                 switch (viewPager.getCurrentItem()){
-                    case TabsFragment.GROUP_FRAGMENT:
+                    case FragmentManager.GROUP_FRAGMENT:
                         intent.setClass(context, NewCardGroupActivity.class);
                         break;
-                    case TabsFragment.RECENT_FRAGMENT:
+                    case FragmentManager.RECENT_FRAGMENT:
                          intent = new Intent(context, NewCardActivity.class);
                         break;
-                    case TabsFragment.TASK_FRAGMENT:
-                        intent = new Intent(context, NewCardGroupActivity.class);
+                    case FragmentManager.TASK_FRAGMENT:
+                        intent = new Intent(context, NewCardActivity.class);
                         break;
                 }
                 startActivity(intent);
@@ -90,12 +91,11 @@ public class MainActivity extends AppCompatActivity
     private void checkFirstLaunch() {
         boolean flag = getSharedPreferences("tech.jianka",MODE_PRIVATE).getBoolean("isFirstRun",true);
         if(flag){
-            String[] groups = {"jianka/image","jianka/log","/jianka/data/InBox","/jianka/data/Task"};
+            String[] groups = getResources().getStringArray(R.array.default_group_path);
             for (String group : groups) {
                 new File(getSDCardPath()+File.separator + group).mkdirs();
             }
             getSharedPreferences("tech.jianka", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
-
         }
     }
 
@@ -113,20 +113,18 @@ public class MainActivity extends AppCompatActivity
     private void initView() {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-
-        List<Fragment> fragmentList = new ArrayList<>();
         String[] titles = getResources().getStringArray(R.array.main_tab_titles);
-        //增加三个fragment
-        fragmentList.add(TabsFragment.newInstance(TabsFragment.GROUP_FRAGMENT));
-        fragmentList.add(TabsFragment.newInstance(TabsFragment.RECENT_FRAGMENT));
-        fragmentList.add(TabsFragment.newInstance(TabsFragment.TASK_FRAGMENT));
+
+        fragmentList.add(GroupFragment.newInstance(FragmentManager.GROUP_FRAGMENT));
+        fragmentList.add(RecentFragment.newInstance(FragmentManager.RECENT_FRAGMENT));
+        fragmentList.add(TaskFragment.newInstance(FragmentManager.TASK_FRAGMENT));
         //fragment的Adapter
         HomeFragmentPagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager(), titles, fragmentList);
         //viewpager的设置
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
         viewPager.addOnAdapterChangeListener(this);
-        viewPager.setCurrentItem(TabsFragment.RECENT_FRAGMENT,false);//从中间页启动
+        viewPager.setCurrentItem(FragmentManager.RECENT_FRAGMENT,false);//从中间页启动
         //tab的设置
         tabLayout.setupWithViewPager(viewPager);//tab和viewpager联动
         tabLayout.setTabMode(TabLayout.MODE_FIXED);

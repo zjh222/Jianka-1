@@ -48,6 +48,34 @@
         <item>@string/default_group_unimportant_emergent</item>
         <item>@string/default_group_unimportant_not_emergent</item>
     </string-array>
+    <string-array name="default_group_path">
+        <item>jianka/image</item>
+        <item>jianka/log</item>
+        <item>jianka/recyclebin</item>
+        <item>jianka/data/收信箱</item>
+        <item>jianka/task/很重要-很紧急</item>
+        <item>jianka/task/很重要-不紧急</item>
+        <item>jianka/task/不重要-很紧急</item>
+        <item>jianka/task/不紧急-不重要</item>
+    </string-array>
+    <string-array name="card_group_options">
+        <item>删除</item>
+        <item>重命名</item>
+        <item>修改封面</item>
+    </string-array>
+    <string-array name="card_options">
+        <item>分享</item>
+        <item>删除</item>
+        <item>切换分组</item>
+    </string-array>
+    <string-array name="task_group_options">
+        <item>修改封面</item>
+    </string-array>
+    <string-array name="task_options">
+        <item>分享</item>
+        <item>标记为完成</item>
+        <item>删除</item>
+    </string-array>
 
     <string name="default_group_inbox">收信箱</string>
     <string name="default_group_task">任务</string>

@@ -17,7 +17,9 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -124,7 +126,7 @@ public class CardUtil {
      */
     public static String getSpecifiedSDPath(String path) {
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            return Environment.getExternalStorageDirectory().getAbsolutePath() +File.separator+ path;
+            return Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + path;
         } else {
             return null;
         }
@@ -153,45 +155,63 @@ public class CardUtil {
         File group = new File(groupDir);
         ArrayList<Item> childItems = new ArrayList<>();
         File[] children = fileFilter(group);
+        Arrays.sort(children, new Comparator<File>() {
+            public int compare(File f1, File f2) {
+                long diff = f1.lastModified() - f2.lastModified();
+                if (diff > 0)
+                    return 1;
+                else if (diff == 0)
+                    return 0;
+                else
+                    return -1;
+            }
+
+            public boolean equals(Object obj) {
+                return true;
+            }
+        });
         if (children != null && children.length != 0) {
             for (File child : children) {
-                Item item = getCardFromFile(child);
+                Item item = inflateCardFromFile(child);
                 childItems.add(item);
             }
             return childItems;
-        }else return null;
+        } else return null;
     }
 
-    @Nullable
-    private static ArrayList<Item> getCardsFromFileArray(File[] children) {
-        ArrayList<Item> items = new ArrayList<>();
-        for (File child : children) {
-            Item item = getCardFromFile(child);
-            items.add(item);
-        }
-//        做一个排序
-//        Collections.sort(items,new FileNameComparator());
-        return items;
+    public static List<Item> getGroupChildItems(String groupDir) {
+        File group = new File(groupDir);
+        ArrayList<Item> childItems = new ArrayList<>();
+        File[] children = fileFilter(group);
+        if (children != null && children.length != 0) {
+            for (File child : children) {
+                Item item = inflateCardFromFile(child);
+                if (item.getItemType() == Item.GROUP) {
+                    childItems.add(item);
+                }
+            }
+            return childItems;
+        } else return null;
     }
 
-    private static Item getCardFromFile(File child) {
+    private static Item inflateCardFromFile(File file) {
         FileInputStream fis;
         ObjectInputStream ois;
         Item item = new Item();
-        if (child.isDirectory()) {
+        if (file.isDirectory()) {
             item.setItemType(Item.GROUP);
-            item.setFileName(child.getName());
-            item.setFilePath(child.getPath());
-        }else try {
-            fis = new FileInputStream(child.toString());
+        } else try {
+            fis = new FileInputStream(file.toString());
             ois = new ObjectInputStream(fis);
             item = (Item) ois.readObject();
             item.setItemType(Item.CARD);
-            item.setFileName(child.getName());
-            item.setFilePath(child.getPath());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        item.setFileName(file.getName());
+        item.setFilePath(file.getPath());
+        item.setModifiedTime(file.lastModified());
+
         return item;
     }
 
