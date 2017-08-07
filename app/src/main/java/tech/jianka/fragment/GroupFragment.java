@@ -43,8 +43,6 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
 
     public GroupAdapter adapter;
 
-    Context context;
-
     public GroupFragment() {
         // Required empty public constructor
     }
@@ -129,7 +127,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         String[] options;
         options = getActivity().getResources().getStringArray(R.array.card_group_options);
-        AlertDialog alertDialog = builder.setTitle(context.getResources().getString(R.string.selet_option))
+        AlertDialog alertDialog = builder.setTitle("选择操作")
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -137,19 +135,18 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
                             case 0:
                                 int result = adapter.removeItem(clickedCardIndex);
                                 if (result == GroupData.INBOX) {
-                                    Toast.makeText(getActivity(),context.getResources().getString(R.string.messagebox_cannot_delete),
-                                            Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(),"收信箱不能被删除",Toast.LENGTH_SHORT).show();
                                 } else if (result == GroupData.NOT_EMPTY) {
                                     final int toDelete = which;
-                                    AlertDialog confirmDelete = new AlertDialog.Builder(getContext()).setTitle(context.getResources().getString(R.string.delete_confirmation))
-                                            .setMessage(context.getResources().getString(R.string.continue_delete_for_unempty_cardgroup))
-                                            .setNegativeButton(context.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                    AlertDialog confirmDelete = new AlertDialog.Builder(getContext()).setTitle("删除确认")
+                                            .setMessage("卡组不为空,继续删除吗?")
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    Toast.makeText(getContext(), context.getResources().getString(R.string.click_cancel), Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getContext(), "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
                                                 }
                                             })
-                                            .setPositiveButton(context.getResources().getString(R.string.make_sure), new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     adapter.removeItemAndChild(toDelete);
@@ -158,7 +155,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
                                             .create();             //创建AlertDialog对象
                                     confirmDelete.show();                    //显示对话框
                                 } else if (result == GroupData.DELETE_DONE) {
-                                    Toast.makeText(getActivity(), context.getResources().getString(R.string.have_deleted), Toast.LENGTH_SHORT);
+                                    Toast.makeText(getActivity(), "已删除", Toast.LENGTH_SHORT);
                                 }
                                 break;
                             case 1:
