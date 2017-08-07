@@ -30,7 +30,7 @@ import tech.jianka.data.TaskData;
  * Use the {@link TaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener ,View.OnClickListener,View.OnLongClickListener{
+public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
     private int fragmentType;
 
@@ -40,6 +40,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     public TaskAdapter adapter;
+
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -79,7 +80,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
         layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         TaskData data = new TaskData();
@@ -142,34 +143,6 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
         alertDialog.show();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle("选择操作")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                break;
-                            case 1:
-                                // TODO: 2017/8/6 rename
-                                break;
-                            case 2:
-                                // TODO: 2017/8/6 修改封面
-                                break;
-                        }
-                    }
-                }).create();
-        alertDialog.show();
-        return true;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
