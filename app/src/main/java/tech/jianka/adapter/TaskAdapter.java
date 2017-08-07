@@ -10,14 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
 import tech.jianka.activity.R;
 import tech.jianka.data.Item;
 
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 import static tech.jianka.utils.CardUtil.longToString;
 import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
 import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
@@ -41,8 +39,9 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         if (viewType == Item.GROUP) {
-            view = inflater.inflate(R.layout.group_item, parent, false);
+            view = inflater.inflate(R.layout.task_group_item, parent, false);
             return new GroupViewHolder(view);
+//            StaggeredGridLayoutManager.LayoutParams layoutParams =
         } else {
             view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
             return new CardViewHolder(view);
@@ -53,10 +52,25 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
             ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
+            switch (items.get(position).getFileName()) {
+                case "重要|紧急":
+                    ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_important_emergent);
+                    break;
+                case "重要|不紧急":
+                    ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_important_not_emergent);
+                    break;
+                case "不重要|紧急":
+                    ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_unimportant_emergent);
+                    break;
+                case "不重要|不紧急":
+                    ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_umimportant_not_emergent);
+                    break;
+            }
+
         } else if (holder instanceof CardViewHolder) {
             if (items != null) {
                 try {
-                    String date = longToString(items.get(position).getModifiedTime(),"HH:mm MM/dd");
+                    String date = longToString(items.get(position).getModifiedTime(), "HH:mm MM/dd");
                     ((CardViewHolder) holder).mCardDate.setText(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -77,22 +91,13 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addItem(Item item) {
         items.add(item);
-        try {
-            if (item.getItemType() == Item.GROUP) {
-                new File(getSpecifiedSDPath(item.getFilePath())).createNewFile();
-            } else {
-                saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
         notifyDataSetChanged();
     }
 
     public boolean removeItem(int position) {
         Item toDeleteItem = items.get(position);
-        // TODO: 2017/8/6 完善能不能删除的逻辑
-        String[] canNotDelete = {"收信箱", "任务", "重要-紧急"};
+        String[] canNotDelete = {"很重要-很紧急","很重要-不紧急","不重要-很紧急","不重要-不紧急"};
         String toCompare = toDeleteItem.getFileName();
         for (String name : canNotDelete) {
             if (name.equals(toCompare)) {

@@ -248,14 +248,18 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
         String filePath;
+        Item newCard;
         if (mIndicator.getText().toString().equals("普通卡片")) {
             filePath = "jianka/data/" + mGroupSelector.getSelectedItem().toString();
+            newCard =  new Item(title, Item.CARD, filePath, content);
+            FragmentManager.getRecentFragment().adapter.addItem(newCard);
+
         } else {
             filePath = "jianka/data/" + mIndicator.getText().toString();
+            newCard =  new Item(title, Item.CARD, filePath, content);
+            FragmentManager.getTaskFragment().adapter.addItem(newCard);
         }
-        Item newCard = new Item(title, Item.CARD, filePath, content);
-        // TODO: 2017/8/6 分两种情况 
-        FragmentManager.getRecentFragment().adapter.addItem(newCard);
+        // TODO: 2017/8/6 分两种情况
     }
 
     @Override

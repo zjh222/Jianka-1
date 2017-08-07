@@ -134,7 +134,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     public void onItemLongClick(final int clickedCardIndex) {
         String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle("选择操作")
+        AlertDialog alertDialog = builder.setTitle(getString(R.string.choose_operation))
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

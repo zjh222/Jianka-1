@@ -193,7 +193,9 @@ public class CardUtil {
             return childItems;
         } else return null;
     }
-
+    public static Item inflateCardFromPath(String line) {
+        return inflateCardFromFile(new File(getSpecifiedSDPath(line)));
+    }
     private static Item inflateCardFromFile(File file) {
         FileInputStream fis;
         ObjectInputStream ois;
