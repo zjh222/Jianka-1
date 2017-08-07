@@ -28,27 +28,12 @@ import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 
 public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int GROUP = 1;
-    public static final int CARD = 2;
-    public static final int CARD_AND_GROUP = 3;
-    public static final int TASK_GROUP = 4;
-    public static final int TASK_AND_GROUP = 5;
-    public static final int TASK_IMPORTANT_EMERGENT = 6;
-    public static final int TASK_IMPORTANT_NOT_EMERGENT = 7;
-    public static final int TASK_UNIMPORTANT_EMERGENT = 8;
-    public static final int TASK_UNIMPORTANT_NOT_EMERGENT = 9;
-    public static final int ITEM_ONE_COLOMN = 40;
-    public static final int ITEM_TWO_COLOMN = 785;
-    public static final int CARD_TWO_COLUMN = 20;
-
     private ItemClickListener listener;
     private List<Item> items;
-    private int adapterType = 0;
 
-    public ItemAdapter(List<Item> items, int adapterType, ItemClickListener listener) {
+    public ItemAdapter(List<Item> items, ItemClickListener listener) {
         this.listener = listener;
         this.items = items;
-        this.adapterType = adapterType;
     }
 
     @Override
@@ -56,23 +41,12 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case GROUP:
+            case Item.GROUP:
                 view = inflater.inflate(R.layout.group_item, parent, false);
                 return new GroupViewHolder(view);
-            case CARD:
+            case Item.CARD:
                 view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
                 return new CardViewHolder(view);
-            case TASK_GROUP:
-                view = inflater.inflate(R.layout.task_group_item, parent, false);
-                return new GroupViewHolder(view);
-            case TASK_IMPORTANT_EMERGENT:
-                break;
-            case TASK_IMPORTANT_NOT_EMERGENT:
-                break;
-            case TASK_UNIMPORTANT_EMERGENT:
-                break;
-            case TASK_UNIMPORTANT_NOT_EMERGENT:
-                break;
         }
         return null;
     }
@@ -86,7 +60,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
                 ((CardViewHolder) holder).mCardContent.setText((String) items.get(position).getCardContent());
                 try {
-                    String date = longToString(items.get(position).getModifiedTime(),"HH:mm MM/dd");
+                    String date = longToString(items.get(position).getModifiedTime(), "HH:mm MM/dd");
                     ((CardViewHolder) holder).mCardDate.setText(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -98,17 +72,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        switch (adapterType) {
-            case GROUP:
-                return GROUP;
-            case CARD:
-                return CARD;
-            case TASK_GROUP:
-                return TASK_GROUP;
-            default:
-                return GROUP;
-        }
-
+        return items.get(position).getItemType();
     }
 
     @Override

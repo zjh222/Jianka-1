@@ -86,7 +86,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
         layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         GroupData data = new GroupData();
-        adapter = new GroupAdapter(data.getItemGroup(), GroupAdapter.GROUP, this);
+        adapter = new GroupAdapter(data.getGroup(), this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -133,8 +133,29 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                if (!adapter.removeItem(clickedCardIndex)) {
-                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                int result = adapter.removeItem(clickedCardIndex);
+                                if (result == GroupData.INBOX) {
+                                    Toast.makeText(getActivity(),"收信箱不能被删除",Toast.LENGTH_SHORT).show();
+                                } else if (result == GroupData.NOT_EMPTY) {
+                                    final int toDelete = which;
+                                    AlertDialog confirmDelete = new AlertDialog.Builder(getContext()).setTitle("删除确认")
+                                            .setMessage("卡组不为空,继续删除吗?")
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Toast.makeText(getContext(), "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
+                                                }
+                                            })
+                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    adapter.removeItemAndChild(toDelete);
+                                                }
+                                            })
+                                            .create();             //创建AlertDialog对象
+                                    confirmDelete.show();                    //显示对话框
+                                } else if (result == GroupData.DELETE_DONE) {
+                                    Toast.makeText(getActivity(), "已删除", Toast.LENGTH_SHORT);
                                 }
                                 break;
                             case 1:
