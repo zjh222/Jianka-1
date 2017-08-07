@@ -10,15 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
 import tech.jianka.activity.R;
 import tech.jianka.data.Item;
+import tech.jianka.data.RecentData;
 
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 import static tech.jianka.utils.CardUtil.longToString;
 import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
 import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
@@ -83,14 +81,9 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void addItem(Item item) {
         items.add(item);
-        try {
-            FileWriter writer = new FileWriter(getSpecifiedSDPath("jianka/log/recent.txt"),true);
-            writer.write(item.getFilePath()+"\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
         notifyDataSetChanged();
+        saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
+        new RecentData().addItem(item.getFilePath());
     }
 
     public boolean removeItem(int position) {

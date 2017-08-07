@@ -253,9 +253,8 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             filePath = "jianka/data/" + mGroupSelector.getSelectedItem().toString();
             newCard =  new Item(title, Item.CARD, filePath, content);
             FragmentManager.getRecentFragment().adapter.addItem(newCard);
-
         } else {
-            filePath = "jianka/data/" + mIndicator.getText().toString();
+            filePath = "jianka/task/" + mIndicator.getText().toString();
             newCard =  new Item(title, Item.CARD, filePath, content);
             FragmentManager.getTaskFragment().adapter.addItem(newCard);
         }

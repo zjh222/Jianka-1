@@ -37,7 +37,6 @@ import tech.jianka.utils.SpaceItemDecoration;
 public class RecentFragment extends Fragment implements CardAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
 
-    private static Toast mToast;
 
     private int fragmentType;
 
@@ -93,7 +92,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         RecentData data = new RecentData();
-        adapter = new CardAdapter(data.getData(),this);
+        adapter = new CardAdapter(data.getData(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SpaceItemDecoration(5));
     }
@@ -149,7 +148,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
                                 break;
                             case 1:
                                 if (!adapter.removeItem(clickedCardIndex)) {
-                                    mToast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
                                 }
 
                                 break;

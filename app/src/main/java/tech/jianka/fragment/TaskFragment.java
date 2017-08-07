@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,16 +84,11 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
         TaskData data = new TaskData();
 
         groupRecyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
-        groupLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
+        groupLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         groupRecyclerView.setLayoutManager(groupLayoutManager);
         groupAdapter = new TaskAdapter(data.getTaskGroup(), this);
         groupRecyclerView.setAdapter(groupAdapter);
 
-        itemRecyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
-        itemLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
-        itemRecyclerView.setLayoutManager(itemLayoutManager);
-        adapter = new TaskAdapter(data.getTaskItems(), this);
-        itemRecyclerView.setAdapter(adapter);
     }
 
 

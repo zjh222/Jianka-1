@@ -3,6 +3,7 @@ package tech.jianka.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,9 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewType == Item.GROUP) {
             view = inflater.inflate(R.layout.task_group_item, parent, false);
             return new GroupViewHolder(view);
-//            StaggeredGridLayoutManager.LayoutParams layoutParams =
+
         } else {
-            view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
+            view = inflater.inflate(R.layout.task_item_big_rectangle, parent, false);
             return new CardViewHolder(view);
         }
     }
@@ -68,6 +69,13 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
         } else if (holder instanceof CardViewHolder) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams =
+                    new StaggeredGridLayoutManager.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setFullSpan(true);
+            layoutParams.setMargins(10,10,10,10);
+            holder.itemView.setLayoutParams(layoutParams);
             if (items != null) {
                 try {
                     String date = longToString(items.get(position).getModifiedTime(), "HH:mm MM/dd");
@@ -97,7 +105,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public boolean removeItem(int position) {
         Item toDeleteItem = items.get(position);
-        String[] canNotDelete = {"很重要-很紧急","很重要-不紧急","不重要-很紧急","不重要-不紧急"};
+        String[] canNotDelete = {"很重要-很紧急", "很重要-不紧急", "不重要-很紧急", "不重要-不紧急"};
         String toCompare = toDeleteItem.getFileName();
         for (String name : canNotDelete) {
             if (name.equals(toCompare)) {

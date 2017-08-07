@@ -17,7 +17,6 @@ public class TaskData {
             "jianka/task/很重要-很紧急", "jianka/task/很重要-不紧急",
             "jianka/task/不重要-很紧急", "jianka/task/不紧急-不重要"};
 
-    private List<Item> taskGroups = new ArrayList<>();
     private List<Item> taskItems = new ArrayList<>();
 
     public List<Item> getTaskItems() {
@@ -27,7 +26,7 @@ public class TaskData {
     public TaskData() {
         //taskGroup初始化
         for (String group : taskGroup) {
-            taskGroups.add(new Item(group, getSpecifiedSDPath("jianka/task")));
+            taskItems.add(new Item(group, getSpecifiedSDPath("jianka/task")));
         }
         //taskItems初始化
         for (String path : paths) {
@@ -39,6 +38,6 @@ public class TaskData {
     }
 
     public List<Item> getTaskGroup() {
-        return taskGroups;
+        return taskItems;
     }
 }

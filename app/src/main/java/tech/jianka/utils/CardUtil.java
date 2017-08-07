@@ -183,6 +183,7 @@ public class CardUtil {
         File group = new File(groupDir);
         ArrayList<Item> childItems = new ArrayList<>();
         File[] children = fileFilter(group);
+
         if (children != null && children.length != 0) {
             for (File child : children) {
                 Item item = inflateCardFromFile(child);
