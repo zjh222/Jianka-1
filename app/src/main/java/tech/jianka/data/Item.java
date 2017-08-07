@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class Item implements Serializable {
     private static final long serialVersionUID = 7995824715641496969L;
 
-    public static final int PARENT = 123;
     public static final int GROUP = 744;
     public static final int CARD = 500;
+    public static final int PARENT = 123;
     public static final int REGULAR = 456;
     private int itemType;
     private int cardType;

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,16 +31,20 @@ import tech.jianka.data.TaskData;
  * Use the {@link TaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener ,View.OnClickListener,View.OnLongClickListener{
+public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
     private int fragmentType;
 
     private OnFragmentInteractionListener mListener;
     private View view;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView groupRecyclerView;
+    private RecyclerView.LayoutManager groupLayoutManager;
+    public TaskAdapter groupAdapter;
     public TaskAdapter adapter;
+    private RecyclerView itemRecyclerView;
+    private RecyclerView.LayoutManager itemLayoutManager;
+
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -78,13 +83,19 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
-        layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
         TaskData data = new TaskData();
-        adapter = new TaskAdapter(data.getTaskGroup(), TaskAdapter.TASK_GROUP, this);
-        recyclerView.setAdapter(adapter);
+
+        groupRecyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
+        groupLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
+        groupRecyclerView.setLayoutManager(groupLayoutManager);
+        groupAdapter = new TaskAdapter(data.getTaskGroup(), this);
+        groupRecyclerView.setAdapter(groupAdapter);
+
+        itemRecyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
+        itemLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
+        itemRecyclerView.setLayoutManager(itemLayoutManager);
+        adapter = new TaskAdapter(data.getTaskItems(), this);
+        itemRecyclerView.setAdapter(adapter);
     }
 
 
@@ -142,34 +153,6 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
         alertDialog.show();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
-    public boolean onLongClick(View v) {
-        String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle("选择操作")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                break;
-                            case 1:
-                                // TODO: 2017/8/6 rename
-                                break;
-                            case 2:
-                                // TODO: 2017/8/6 修改封面
-                                break;
-                        }
-                    }
-                }).create();
-        alertDialog.show();
-        return true;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
