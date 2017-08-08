@@ -11,10 +11,12 @@ import java.io.File;
 import java.util.List;
 
 import tech.jianka.activity.R;
+import tech.jianka.data.DataType;
+import tech.jianka.data.Group;
 import tech.jianka.data.GroupData;
 import tech.jianka.data.Item;
 
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+import static tech.jianka.utils.ItemUtils.getSDCardPath;
 
 /**
  * Created by Richard on 2017/7/28.
@@ -23,11 +25,11 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ItemClickListener listener;
-    private List<Item> items;
+    private List<Group> groups;
 
-    public GroupAdapter(List<Item> items, ItemClickListener listener) {
+    public GroupAdapter(List<Group> groups, ItemClickListener listener) {
         this.listener = listener;
-        this.items = items;
+        this.groups = groups;
     }
 
     @Override
@@ -41,38 +43,38 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
-            ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
+            ((GroupViewHolder) holder).mTitle.setText(groups.get(position).getFileName());
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return Item.GROUP;
+        return DataType.GROUP;
     }
 
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return groups == null ? 0 : groups.size();
     }
 
-    public void addItem(Item item) {
-        items.add(item);
-        new File(getSpecifiedSDPath(item.getFilePath())).mkdirs();
+    public void addItem(Group group) {
+        groups.add(group);
+        new File(getSDCardPath(group.getFilePath())).mkdirs();
         notifyDataSetChanged();
     }
 
     public int removeItem(int position) {
-        Item toDeleteItem = items.get(position);
+        Item toDeleteItem = groups.get(position);
         String toCompare = toDeleteItem.getFileName();
         if (toCompare.equals("收信箱")) {
             return GroupData.INBOX;
         }
-        File file = new File(items.get(position).getFilePath());
+        File file = new File(groups.get(position).getFilePath());
         if (file.list() != null && file.list().length > 0) {
             return GroupData.NOT_EMPTY;
         } else {
             file.delete();
-            items.remove(position);
+            groups.remove(position);
             notifyDataSetChanged();
             return GroupData.DELETE_DONE;
         }
@@ -81,14 +83,14 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public boolean removeItemAndChild(int position) {
         //先删除文件,再删除items中的数据
         boolean result =
-        new File(items.get(position).getFilePath()).delete();
-        items.remove(position);
+        new File(groups.get(position).getFilePath()).delete();
+        groups.remove(position);
         notifyDataSetChanged();
         return result;
     }
 
     public Item getItem(int clickedItemIndex) {
-        return items.get(clickedItemIndex);
+        return groups.get(clickedItemIndex);
     }
 
     public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import tech.jianka.data.Item;
+import tech.jianka.data.Group;
 import tech.jianka.fragment.FragmentManager;
 import tech.jianka.fragment.GroupFragment;
 
@@ -35,7 +35,7 @@ public class NewCardGroupActivity extends AppCompatActivity {
         if(!title.equals("")){
             GroupFragment fragment =
             FragmentManager.getGroupFragment();
-            fragment.adapter.addItem(new Item(title,"jianka/data/" + title));
+            fragment.adapter.addItem(new Group(title,"jianka/data/" + title));
             NavUtils.navigateUpFromSameTask(this);
         }
     }

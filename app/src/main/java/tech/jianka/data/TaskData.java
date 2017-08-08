@@ -3,8 +3,8 @@ package tech.jianka.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tech.jianka.utils.CardUtil.getChildItems;
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+import static tech.jianka.utils.ItemUtils.getSDCardPath;
+import static tech.jianka.utils.ItemUtils.getTaskItems;
 
 /**
  * Created by Richard on 2017/8/3.
@@ -16,28 +16,25 @@ public class TaskData {
     private String[] paths = {
             "jianka/task/很重要-很紧急", "jianka/task/很重要-不紧急",
             "jianka/task/不重要-很紧急", "jianka/task/不紧急-不重要"};
+    private List<Task> taskItems = new ArrayList<>();
 
-    private List<Item> taskItems = new ArrayList<>();
-
-    public List<Item> getTaskItems() {
-        return taskItems;
-    }
 
     public TaskData() {
         //taskGroup初始化
-        for (String group : taskGroup) {
-            taskItems.add(new Item(group, getSpecifiedSDPath("jianka/task")));
+        int[] type = DataType.TASK_TYPE;
+        for (int i = 0; i < 4; i++) {
+            taskItems.add(new Task(taskGroup[i], getSDCardPath("jianka/task"), DataType.GROUP, type[i]));
         }
         //taskItems初始化
         for (String path : paths) {
-            List<Item> items = getChildItems(getSpecifiedSDPath(path));
-            if (items != null) {
-                taskItems.addAll(items);
+            List<Task> tasks = getTaskItems(getSDCardPath(path));
+            if (tasks != null) {
+                taskItems.addAll(tasks);
             }
         }
     }
 
-    public List<Item> getTaskGroup() {
+    public List<Task> getTaskGroup() {
         return taskItems;
     }
 }

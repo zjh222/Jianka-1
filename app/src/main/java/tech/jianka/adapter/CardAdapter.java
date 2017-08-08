@@ -14,12 +14,12 @@ import java.text.ParseException;
 import java.util.List;
 
 import tech.jianka.activity.R;
+import tech.jianka.data.Card;
 import tech.jianka.data.Item;
-import tech.jianka.data.RecentData;
 
-import static tech.jianka.utils.CardUtil.longToString;
-import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
-import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
+import static tech.jianka.utils.ItemUtils.Obj2Bytes;
+import static tech.jianka.utils.ItemUtils.longToString;
+import static tech.jianka.utils.ItemUtils.saveFileToSDCard;
 
 /**
  * Created by Richard on 2017/7/28.
@@ -28,66 +28,56 @@ import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ItemClickListener listener;
-    private List<Item> items;
+    private List<Card> cards;
 
-    public CardAdapter(List<Item> items, ItemClickListener listener) {
+    public CardAdapter(List<Card> cards, ItemClickListener listener) {
         this.listener = listener;
-        this.items = items;
+        this.cards = cards;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        switch (viewType) {
-            case Item.GROUP:
-                view = inflater.inflate(R.layout.group_item, parent, false);
-                return new GroupViewHolder(view);
-            case Item.CARD:
-                view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
-                return new CardViewHolder(view);
-        }
-        return null;
+        view = inflater.inflate(R.layout.card_item_big_rectangle, parent, false);
+        return new CardViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof GroupViewHolder) {
-            ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
-        } else if (holder instanceof CardViewHolder) {
-            if (items != null) {
-                ((CardViewHolder) holder).mCardTitle.setText(items.get(position).getCardTitle());
-                ((CardViewHolder) holder).mCardContent.setText((String) items.get(position).getCardContent());
+            if (cards != null) {
+                ((CardViewHolder) holder).mCardTitle.setText(cards.get(position).getCardTitle());
+                ((CardViewHolder) holder).mCardContent.setText((String) cards.get(position).getCardContent());
                 try {
-                    String date = longToString(items.get(position).getModifiedTime(), "HH:mm MM/dd");
+                    String date = longToString(cards.get(position).getModifiedTime(), "HH:mm MM/dd");
                     ((CardViewHolder) holder).mCardDate.setText(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                ((CardViewHolder) holder).mCardContent.setText((String) items.get(position).getCardContent());
+                ((CardViewHolder) holder).mCardContent.setText((String) cards.get(position).getCardContent());
             }
-        }
+//        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return items.get(position).getItemType();
+        return cards.get(position).getItemType();
     }
 
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return cards == null ? 0 : cards.size();
     }
 
-    public void addItem(Item item) {
-        items.add(item);
+    public void addItem(Card card) {
+        saveFileToSDCard(Obj2Bytes(card), card.getFilePath(), card.getCardTitle() + ".card");
+        card.setFilePath(card.getFilePath()+card.getCardTitle() + ".card");
+        cards.add(card);
         notifyDataSetChanged();
-        saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
-        new RecentData().addItem(item.getFilePath());
     }
 
     public boolean removeItem(int position) {
-        Item toDeleteItem = items.get(position);
+        Item toDeleteItem = cards.get(position);
         // TODO: 2017/8/6 完善能不能删除的逻辑
         String[] canNotDelete = {"收信箱", "任务", "重要-紧急"};
         String toCompare = toDeleteItem.getFileName();
@@ -96,8 +86,8 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return false;
             }
         }
-        new File(items.get(position).getFilePath()).delete();
-        items.remove(position);
+        new File(cards.get(position).getFilePath()).delete();
+        cards.remove(position);
         notifyDataSetChanged();
         return true;
     }
@@ -106,14 +96,14 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-        intent.putExtra(Intent.EXTRA_TEXT, items.get(clickedCardIndex).getCardTitle() +
-                "\n" + items.get(clickedCardIndex).getCardContent());
+        intent.putExtra(Intent.EXTRA_TEXT, cards.get(clickedCardIndex).getCardTitle() +
+                "\n" + cards.get(clickedCardIndex).getCardContent());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(Intent.createChooser(intent, context.getTitle()));
     }
 
     public Item getItem(int clickedItemIndex) {
-        return items.get(clickedItemIndex);
+        return cards.get(clickedItemIndex);
     }
 
     public class CardViewHolder extends RecyclerView.ViewHolder
@@ -126,7 +116,7 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public CardViewHolder(View itemView) {
             super(itemView);
-            mCardTitle = (TextView) itemView.findViewById(R.id.card_item_title);
+            mCardTitle = (TextView) itemView.findViewById(R.id.task_item_title);
             mCardDate = (TextView) itemView.findViewById(R.id.card_item_date);
             mCardGroup = (TextView) itemView.findViewById(R.id.card_item_group);
             mCardImage = (ImageView) itemView.findViewById(R.id.card_item_image);
@@ -148,32 +138,6 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return true;
         }
 
-    }
-
-    public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-        TextView mTitle;
-        ImageView mImage;
-
-        public GroupViewHolder(View itemView) {
-            super(itemView);
-            mTitle = (TextView) itemView.findViewById(R.id.group_item_title);
-            mImage = (ImageView) itemView.findViewById(R.id.group_item_image);
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int clickedPosition = getAdapterPosition();
-            listener.onItemClick(clickedPosition);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            int clickedPosition = getAdapterPosition();
-            listener.onItemLongClick(clickedPosition);
-            return true;
-        }
     }
 
     /**

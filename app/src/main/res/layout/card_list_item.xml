@@ -23,7 +23,7 @@
             android:background="@drawable/background_inbox"
             />
         <TextView
-            android:id="@+id/card_item_title"
+            android:id="@+id/task_item_title"
             android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

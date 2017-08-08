@@ -15,11 +15,13 @@ import java.text.ParseException;
 import java.util.List;
 
 import tech.jianka.activity.R;
+import tech.jianka.data.DataType;
 import tech.jianka.data.Item;
+import tech.jianka.data.Task;
 
-import static tech.jianka.utils.CardUtil.longToString;
-import static tech.jianka.utils.SDCardHelper.Obj2Bytes;
-import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
+import static tech.jianka.utils.ItemUtils.Obj2Bytes;
+import static tech.jianka.utils.ItemUtils.longToString;
+import static tech.jianka.utils.ItemUtils.saveFileToSDCard;
 
 /**
  * Created by Richard on 2017/7/28.
@@ -28,47 +30,47 @@ import static tech.jianka.utils.SDCardHelper.saveFileToSDCard;
 public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ItemClickListener listener;
-    private List<Item> items;
+    private List<Task> tasks;
 
-    public TaskAdapter(List<Item> items, ItemClickListener listener) {
+    public TaskAdapter(List<Task> tasks, ItemClickListener listener) {
         this.listener = listener;
-        this.items = items;
+        this.tasks = tasks;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == Item.GROUP) {
+        if (viewType == DataType.GROUP) {
             view = inflater.inflate(R.layout.task_group_item, parent, false);
             return new GroupViewHolder(view);
 
         } else {
-            view = inflater.inflate(R.layout.task_item_big_rectangle, parent, false);
-            return new CardViewHolder(view);
+            view = inflater.inflate(R.layout.task_item, parent, false);
+            return new TaskViewHolder(view);
         }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
-            ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
-            switch (items.get(position).getFileName()) {
-                case "重要|紧急":
+            ((GroupViewHolder) holder).mTitle.setText(tasks.get(position).getFileName());
+            switch (tasks.get(position).getTaskType()) {
+                case DataType.TASK_IMPORTANT_EMERGENT:
                     ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_important_emergent);
                     break;
-                case "重要|不紧急":
+                case DataType.TASK_IMPORTANT_NOT_EMERGENT:
                     ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_important_not_emergent);
                     break;
-                case "不重要|紧急":
+                case DataType.TASK_UNIMPORTANT_EMERGENT:
                     ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_unimportant_emergent);
                     break;
-                case "不重要|不紧急":
+                case DataType.TASK_UNIMPORTANT_NOT_EMERGENT:
                     ((GroupViewHolder) holder).mImage.setImageResource(R.drawable.background_umimportant_not_emergent);
                     break;
             }
 
-        } else if (holder instanceof CardViewHolder) {
+        } else if (holder instanceof TaskViewHolder) {
             StaggeredGridLayoutManager.LayoutParams layoutParams =
                     new StaggeredGridLayoutManager.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -76,10 +78,11 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             layoutParams.setFullSpan(true);
             layoutParams.setMargins(10,10,10,10);
             holder.itemView.setLayoutParams(layoutParams);
-            if (items != null) {
+            if (tasks != null) {
                 try {
-                    String date = longToString(items.get(position).getModifiedTime(), "HH:mm MM/dd");
-                    ((CardViewHolder) holder).mCardDate.setText(date);
+                    String date = longToString(tasks.get(position).getModifiedTime(), "HH:mm MM/dd");
+                    ((TaskViewHolder) holder).mTaskDate.setText(date);
+                    ((TaskViewHolder) holder).mCardImage.setImageResource(R.drawable.task_image_important_not_emergent);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -89,22 +92,22 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return items.get(position).getItemType();
+        return tasks.get(position).getItemType();
     }
 
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return tasks == null ? 0 : tasks.size();
     }
 
-    public void addItem(Item item) {
-        items.add(item);
-        saveFileToSDCard(Obj2Bytes(item), item.getFilePath(), item.getCardTitle() + ".card");
+    public void addItem(Task task) {
+        tasks.add(task);
+        saveFileToSDCard(Obj2Bytes(task), task.getFilePath(), task.getTaskTitle() + ".card");
         notifyDataSetChanged();
     }
 
     public boolean removeItem(int position) {
-        Item toDeleteItem = items.get(position);
+        Item toDeleteItem = tasks.get(position);
         String[] canNotDelete = {"很重要-很紧急", "很重要-不紧急", "不重要-很紧急", "不重要-不紧急"};
         String toCompare = toDeleteItem.getFileName();
         for (String name : canNotDelete) {
@@ -112,8 +115,8 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 return false;
             }
         }
-        new File(items.get(position).getFilePath()).delete();
-        items.remove(position);
+        new File(tasks.get(position).getFilePath()).delete();
+        tasks.remove(position);
         notifyDataSetChanged();
         return true;
     }
@@ -122,31 +125,30 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-        intent.putExtra(Intent.EXTRA_TEXT, items.get(clickedCardIndex).getCardTitle() +
-                "\n" + items.get(clickedCardIndex).getCardContent());
+        intent.putExtra(Intent.EXTRA_TEXT, tasks.get(clickedCardIndex).getTaskTitle() +
+                "\n" + tasks.get(clickedCardIndex).getTaskContent());
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(Intent.createChooser(intent, context.getTitle()));
     }
 
     public Item getItem(int clickedItemIndex) {
-        return items.get(clickedItemIndex);
+        return tasks.get(clickedItemIndex);
     }
 
-    public class CardViewHolder extends RecyclerView.ViewHolder
+    public class TaskViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
-        TextView mCardTitle;
-        TextView mCardDate;
+        TextView mTaskTitle;
+        TextView mTaskDate;
         TextView mCardGroup;
         TextView mCardContent;
         ImageView mCardImage;
 
-        public CardViewHolder(View itemView) {
+        public TaskViewHolder(View itemView) {
             super(itemView);
-            mCardTitle = (TextView) itemView.findViewById(R.id.card_item_title);
-            mCardDate = (TextView) itemView.findViewById(R.id.card_item_date);
-            mCardGroup = (TextView) itemView.findViewById(R.id.card_item_group);
-            mCardImage = (ImageView) itemView.findViewById(R.id.card_item_image);
-            mCardContent = (TextView) itemView.findViewById(R.id.card_item_content);
+            mTaskTitle = (TextView) itemView.findViewById(R.id.task_item_title);
+            mTaskDate = (TextView) itemView.findViewById(R.id.task_item_date);
+            mCardImage = (ImageView) itemView.findViewById(R.id.task_item_image);
+            mCardContent = (TextView) itemView.findViewById(R.id.task_item_content);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
