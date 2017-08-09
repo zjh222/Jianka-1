@@ -71,6 +71,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
 
         } else if (holder instanceof TaskViewHolder) {
+
             StaggeredGridLayoutManager.LayoutParams layoutParams =
                     new StaggeredGridLayoutManager.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -103,6 +104,8 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
     }
+
+
 
     @Override
     public int getItemViewType(int position) {

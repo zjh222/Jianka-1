@@ -96,10 +96,12 @@ public class ItemUtils {
     public static List<Card> getTaskItems(String taskDir) {
         ArrayList<Card> cards = new ArrayList<>();
         File[] taskFiles = new File(taskDir).listFiles();
-        for (File file : taskFiles) {
-            Card card = inflateTaskFromFile(file);
-            if (card == null) break;
-            cards.add(card);
+        if (taskFiles != null) {
+            for (File file : taskFiles) {
+                Card card = inflateTaskFromFile(file);
+                if (card == null) break;
+                cards.add(card);
+            }
         }
         return cards;
     }

@@ -1,19 +1,13 @@
 package tech.jianka.activity;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,9 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Card;
@@ -49,8 +41,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private EditText mEditContent;
     private TextView mIndicator;
     private ImageView iv_image;
-    private String str;
-    private BaseAdapter myAdapter;
     private String[] mIndicatorText;
     private int cardType = DataType.CARD;
     private boolean isDetail = false;
@@ -72,16 +62,16 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
-        RadioGroup mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
+        RadioGroup mTaskSelector = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mGroupSelector.setOnItemSelectedListener(this);
 
         mEditContent = (EditText) findViewById(R.id.new_card_content);
-        mTaskSelecotor.setOnCheckedChangeListener(this);
+        mTaskSelector.setOnCheckedChangeListener(this);
 
 
         ArrayList<String> groups = (ArrayList<String>) GroupData.getGroupTitles();
-        myAdapter = new MyAdapter<String>(groups, R.layout.spinner_item) {
+        BaseAdapter myAdapter = new MyAdapter<String>(groups, R.layout.spinner_item) {
             @Override
             public void bindView(ViewHolder holder, String obj) {
                 holder.setText(R.id.spinner_item_text_view, obj);
@@ -100,12 +90,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             cardIndex = intent.getIntExtra("TASK_DETAILS", 999);
             Card card = TaskData.getTask(cardIndex);
             loadTask(card);
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
-        Date curDate = new Date(System.currentTimeMillis());
-        str = formatter.format(curDate);
-        if (!checkNetworkInfo()) {
-            return;
         }
     }
 
@@ -156,21 +140,8 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                 finish();
                 return true;
             case R.id.action_share:
-                //li2017/8/4
                 if (isEmpty()) {
-                    ContentValues values = new ContentValues();
-                    values.put("content",
-                            Html.fromHtml(mEditContent.getText().toString()) + "");
-                    values.put("writetime", str);
-
-//                    SQLiteDatabase db = helper.getWritableDatabase();
-//                    db.insert("content",null,values);
-//                    db.close();
-//
-//                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    //imm.hideSoftInputFromWindow(btnRight.getWindowToken(),0);
-
-                    isShare();
+                    shareDialog();
                 }
                 return true;
             case R.id.action_insert_image:
@@ -185,7 +156,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     }
 
     //li2
-    private void isShare() {
+    private void shareDialog() {
         new AlertDialog.Builder(this)
                 .setIcon(R.drawable.ic_menu_share)
                 .setTitle("发表成功，立即分享？")
@@ -197,7 +168,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/plain");
                         intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
-                        intent.putExtra(Intent.EXTRA_TEXT, str + "\n" + mEditContent.getText().toString());
+                        intent.putExtra(Intent.EXTRA_TEXT, mEditTitle.getText() + "\n" + mEditContent.getText());
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(Intent.createChooser(intent, getTitle()));
 
@@ -211,7 +182,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             }
         }).show();
     }
-
+/*
     public boolean checkNetworkInfo() {
 
         ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -234,7 +205,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                 .setPositiveButton("进行网络配置",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-
                                 // 进入无线网络配置界面
                                 startActivity(new Intent(
                                         Settings.ACTION_WIRELESS_SETTINGS));
@@ -249,7 +219,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         builder.show();
         return false;
 
-    }
+    }*/
 
     private boolean isEmpty() {
         if (mEditContent.getText() == null

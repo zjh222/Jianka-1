@@ -23,6 +23,7 @@ public class GroupData {
     }
 
     public static List<String> getGroupTitles() {
+        groupTitles.clear();
         for (Group group : groupItems) {
             groupTitles.add(group.getFileName());
         }
@@ -39,15 +40,16 @@ public class GroupData {
         new File(group.getFilePath()).mkdirs();
     }
 
-    public static int removeGroup(Group group) {
-        if (group.getFileName().equals("收信箱")) {
+    public static int removeGroup(int index) {
+        if (groupItems.get(index).getFileName().equals("收信箱")) {
             return GroupData.INBOX;
         }
-        File file = new File(group.getFilePath());
+        File file = new File(groupItems.get(index).getFilePath());
         if (file.list() != null && file.list().length > 0) {
             return GroupData.NOT_EMPTY;
         } else {
             file.delete();
+            new File(groupItems.get(index).getCoverPath()).delete();
             return GroupData.DELETE_DONE;
         }
     }

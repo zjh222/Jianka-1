@@ -44,7 +44,7 @@ public class TaskData {
     public static void addTask(Card card) {
         saveFileToSDCard(Obj2Bytes(card), card.getFilePath(), card.getCardTitle() + ".card");
         card.setFilePath(card.getFilePath() + File.separator + card.getCardTitle() + ".card");
-        data.add(0, card);
+        data.add(4, card);
     }
 
     public static boolean removeTask(int index) {
