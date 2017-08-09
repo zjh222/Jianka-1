@@ -72,14 +72,14 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addItem(Card card) {
         saveFileToSDCard(Obj2Bytes(card), card.getFilePath(), card.getCardTitle() + ".card");
         card.setFilePath(card.getFilePath()+card.getCardTitle() + ".card");
-        cards.add(card);
+        cards.add(0,card);
         notifyDataSetChanged();
     }
 
     public boolean removeItem(int position) {
         Item toDeleteItem = cards.get(position);
         // TODO: 2017/8/6 完善能不能删除的逻辑
-        String[] canNotDelete = {"收信箱", "任务", "重要-紧急"};
+        String[] canNotDelete = {"收信箱", "任务"};
         String toCompare = toDeleteItem.getFileName();
         for (String name : canNotDelete) {
             if (name.equals(toCompare)) {

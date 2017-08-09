@@ -17,9 +17,12 @@ import android.text.Html;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,26 +36,21 @@ import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Card;
 import tech.jianka.data.DataType;
 import tech.jianka.data.GroupData;
-import tech.jianka.data.Item;
 import tech.jianka.data.Task;
 import tech.jianka.fragment.FragmentManager;
 
-import static tech.jianka.utils.ItemUtils.getSDCardPath;
-
-public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener,AdapterView.OnItemSelectedListener {
     private RadioGroup mTaskSelecotor;
     private EditText mEditTitle;
     private Spinner mGroupSelector;
     private EditText mEditContent;
     private TextView mIndicator;
     private ImageView iv_image;
-    private Item item;
     private String str;
     private DBConnection helper;
     private BaseAdapter myAdapter;
     private String[] mIndicatorText;
     private int taskType= DataType.CARD;
-    private String path;
 
 
     @Override
@@ -73,13 +71,11 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
+        mGroupSelector.setOnItemSelectedListener(this);
+
         mEditContent = (EditText) findViewById(R.id.new_card_content);
         mTaskSelecotor.setOnCheckedChangeListener(this);
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            item = (Item) bundle.getSerializable("CARD_DETAIL");
-        }
+
 
         ArrayList<String> groups = (ArrayList<String>) GroupData.getGroupTitles();
 
@@ -249,7 +245,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         String content = mEditContent.getText().toString();
         String filePath;
         if (taskType == DataType.CARD) {
-            filePath = getSDCardPath("jianka/data/" + mGroupSelector.getSelectedItem().toString());
+            filePath = "jianka/data/" + mGroupSelector.getSelectedItem().toString();
             Card card = new Card(title, filePath, content);
             FragmentManager.getRecentFragment().adapter.addItem(card);
         } else {
@@ -268,7 +264,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                     taskType = DataType.CARD;
                     break;
                 case R.id.task_important_emergent:
-                    // TODO: 2017/8/6 设置和spinner的联动
+                    // TODO: 2017/8/6 bug 两个选择不能联动
                     mIndicator.setText(mIndicatorText[1]);
                     taskType = DataType.TASK_IMPORTANT_EMERGENT;
                     break;
@@ -286,6 +282,24 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
                     break;
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.new_card_group_selector) {
+            if (parent.getSelectedItemPosition()==1) {
+                if (taskType == DataType.CARD) {
+                    taskType = DataType.TASK_IMPORTANT_EMERGENT;
+                    RadioButton button = (RadioButton) findViewById(R.id.task_important_emergent);
+                    button.setChecked(true);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 //    StringBuffer status = new StringBuffer();
 //    //①获取系统的Configuration对象

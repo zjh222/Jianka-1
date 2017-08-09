@@ -1,5 +1,6 @@
 package tech.jianka.adapter;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,6 @@ import tech.jianka.activity.R;
 import tech.jianka.data.DataType;
 import tech.jianka.data.Group;
 import tech.jianka.data.GroupData;
-import tech.jianka.data.Item;
-
-import static tech.jianka.utils.ItemUtils.getSDCardPath;
 
 /**
  * Created by Richard on 2017/7/28.
@@ -43,7 +41,12 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
-            ((GroupViewHolder) holder).mTitle.setText(groups.get(position).getFileName());
+            String name = groups.get(position).getFileName();
+            String path = groups.get(position).getCoverPath();
+            ((GroupViewHolder) holder).mTitle.setText(name);
+            if (new File(path).exists()) {
+                ((GroupViewHolder) holder).mImage.setImageBitmap(BitmapFactory.decodeFile(path));
+            }
         }
     }
 
@@ -59,38 +62,28 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public void addItem(Group group) {
         groups.add(group);
-        new File(getSDCardPath(group.getFilePath())).mkdirs();
+        GroupData.addGroup(group);
         notifyDataSetChanged();
     }
 
     public int removeItem(int position) {
-        Item toDeleteItem = groups.get(position);
-        String toCompare = toDeleteItem.getFileName();
-        if (toCompare.equals("收信箱")) {
-            return GroupData.INBOX;
-        }
-        File file = new File(groups.get(position).getFilePath());
-        if (file.list() != null && file.list().length > 0) {
-            return GroupData.NOT_EMPTY;
-        } else {
-            file.delete();
+        int result = GroupData.removeGroup(groups.get(position));
+        if (result == GroupData.DELETE_DONE) {
             groups.remove(position);
             notifyDataSetChanged();
-            return GroupData.DELETE_DONE;
         }
-    }
-
-    public boolean removeItemAndChild(int position) {
-        //先删除文件,再删除items中的数据
-        boolean result =
-        new File(groups.get(position).getFilePath()).delete();
-        groups.remove(position);
-        notifyDataSetChanged();
         return result;
     }
 
-    public Item getItem(int clickedItemIndex) {
-        return groups.get(clickedItemIndex);
+    public void removeGroupAndCards(int position) {
+        GroupData.removeGroupAndCards(groups.get(position));
+        groups.remove(position);
+        notifyDataSetChanged();
+    }
+
+    public void renameGroup(int index, String title) {
+        GroupData.renameGroup(index, title);
+        notifyDataSetChanged();
     }
 
     public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

@@ -1,6 +1,7 @@
 package tech.jianka.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
 import android.os.storage.StorageManager;
@@ -73,15 +74,59 @@ public class ItemUtils {
         return cards;
     }
 
+    @Nullable
+    public static List<File> getAllSubFiles(File file) {
+        File[] files = file.listFiles();
+        if (files == null || files.length == 0) {
+            return null;
+        }
+        List<File> cardFile = new ArrayList<>();
+        for (File f : files) {
+            if (f.isDirectory()) {
+                List<File> temp = getAllSubFiles(f);
+                if (temp != null) {
+                    cardFile.addAll(temp);
+                }
+            } else {
+                cardFile.add(f);
+            }
+        }
+        return cardFile;
+    }
+
     public static List<Task> getTaskItems(String taskDir) {
         ArrayList<Task> tasks = new ArrayList<>();
         File[] taskFiles = new File(taskDir).listFiles();
         for (File file : taskFiles) {
             Task task = inflateTaskFromFile(file);
-            if(task==null) break;
+            if (task == null) break;
             tasks.add(task);
         }
         return tasks;
+    }
+
+    @Nullable
+    public static List<Card> getAllSubCards(String dir) {
+        List<File> files = getAllSubFiles(new File(dir));
+        if (files == null) {
+            return null;
+        }
+        Collections.sort(files, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                long diff = o1.lastModified() - o2.lastModified();
+                if (diff > 0) {
+                    return -1;
+                } else if (diff < 0) {
+                    return 1;
+                } else return 0;
+            }
+        });
+        List<Card> cards = new ArrayList<>();
+        for (File f : files) {
+            cards.add(inflateCardFromFile(f));
+        }
+        return cards;
     }
 
     @Nullable
@@ -106,6 +151,52 @@ public class ItemUtils {
         return task;
     }
 
+    public static List<Group> getAllGroups(String dir) {
+        List<File> files = getAllSubDirectories(new File(dir));
+        if (files == null) {
+            return null;
+        }
+
+        Collections.sort(files, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                long diff = o1.lastModified() - o2.lastModified();
+                if (diff > 0) {
+                    return -1;
+                } else if (diff < 0) {
+                    return 1;
+                } else return 0;
+            }
+        });
+        List<Group> groups = new ArrayList<>();
+        for (File f : files) {
+            if (f.getName().equals("收信箱")) {
+                groups.add(0, new Group(f.getName(), f.getPath(), f.lastModified()));
+            } else {
+                groups.add(new Group(f.getName(), f.getPath(), f.lastModified()));
+            }
+        }
+        return groups;
+    }
+
+    private static List<File> getAllSubDirectories(File file) {
+        File[] files = file.listFiles();
+        if (files == null || files.length == 0) {
+            return null;
+        }
+        List<File> fileList = new ArrayList<>();
+        for (File f : files) {
+            if (f.isDirectory()) {
+                fileList.add(f);
+                List<File> temp = getAllSubDirectories(f);
+                if (temp != null) {
+                    fileList.addAll(temp);
+                }
+            }
+        }
+        return fileList;
+    }
+
     public static List<Group> getSubGroups(String groupDir) {
         File group = new File(groupDir);
         ArrayList<Group> subGroups = new ArrayList<>();
@@ -113,11 +204,7 @@ public class ItemUtils {
         Collections.sort(groups, new Comparator<File>() {
             @Override
             public int compare(File f1, File f2) {
-                if (f1.getName().equals("收信箱")) {
-                    return 1;
-                } else if (f2.getName().equals("收信箱")) {
-                    return 2;
-                } else if (f1.lastModified() > f2.lastModified()) {
+                if (f1.lastModified() > f2.lastModified()) {
                     return 1;
                 } else {
                     return -1;
@@ -206,6 +293,30 @@ public class ItemUtils {
             e.printStackTrace();
         }
         return bytes;
+    }
+
+    /**
+     * 保存bitmap到SD卡
+     *
+     * @param bitmap
+     * @param fileName
+     */
+    @Nullable
+    public static String saveBitmapToSDCard(Bitmap bitmap, String filePath, String fileName) {
+        String path = getSDCardPath(filePath + File.separator + fileName);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(path);
+            if (fos != null) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                fos.close();
+            }
+
+            return path;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /****

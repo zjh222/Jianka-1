@@ -123,4 +123,5 @@
     <string name="card_insert_image">插入图片</string>
     <string name="input_card_group_title">卡组名</string>
     <string name="choose_operation">选择操作</string>
+    <string name="click_to_choose_cover">点击选择封面</string>
 </resources>
