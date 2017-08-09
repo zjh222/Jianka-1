@@ -84,6 +84,7 @@ public class ItemUtils {
         return tasks;
     }
 
+    @Nullable
     private static Task inflateTaskFromFile(File file) {
         if (file.isDirectory()) {
             return null;
@@ -161,8 +162,7 @@ public class ItemUtils {
                                            String filename) {
         BufferedOutputStream bos = null;
         if (isSDCardMounted()) {
-//            File file = new File(ItemUtils.getSDCardPath(dir));
-            File file = new File(dir);
+            File file = new File(ItemUtils.getSDCardPath(dir));
             if (!file.exists()) {
                 boolean flags = file.mkdirs();
             }

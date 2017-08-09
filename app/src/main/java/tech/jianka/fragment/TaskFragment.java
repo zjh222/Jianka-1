@@ -36,13 +36,11 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     private OnFragmentInteractionListener mListener;
     private View view;
 
-    private RecyclerView groupRecyclerView;
-    private RecyclerView.LayoutManager groupLayoutManager;
-    public TaskAdapter groupAdapter;
-    public TaskAdapter adapter;
-    private RecyclerView itemRecyclerView;
-    private RecyclerView.LayoutManager itemLayoutManager;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    public TaskAdapter mAdapter;
 
+    private TaskData mData;
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -81,13 +79,13 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        TaskData data = new TaskData();
+        mData = new TaskData();
 
-        groupRecyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
-        groupLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        groupRecyclerView.setLayoutManager(groupLayoutManager);
-        groupAdapter = new TaskAdapter(data.getTaskGroup(), this);
-        groupRecyclerView.setAdapter(groupAdapter);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.task_group_recycler_view);
+        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new TaskAdapter(mData.getTaskGroup(), this);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -144,6 +142,11 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
                     }
                 }).create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onTaskCheck(int clickedPosition) {
+        mAdapter.removeItem(clickedPosition);
     }
 
 

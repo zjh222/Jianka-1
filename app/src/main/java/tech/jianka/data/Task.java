@@ -11,7 +11,8 @@ public class Task extends Item {
     private String taskContent;
     private int taskType;
 
-    public Task(String taskTitle, @Nullable String taskContent, int taskType) {
+    public Task(String taskTitle,String filePath, @Nullable String taskContent, int taskType) {
+        super.setFilePath(filePath);
         this.taskTitle = taskTitle;
         this.taskContent = taskContent;
         this.taskType = taskType;

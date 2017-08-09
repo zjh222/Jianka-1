@@ -51,7 +51,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     private DBConnection helper;
     private BaseAdapter myAdapter;
     private String[] mIndicatorText;
-    private int cardType;
+    private int taskType= DataType.CARD;
     private String path;
 
 
@@ -248,14 +248,14 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
         String filePath;
-        if (cardType == DataType.CARD) {
+        if (taskType == DataType.CARD) {
             filePath = getSDCardPath("jianka/data/" + mGroupSelector.getSelectedItem().toString());
             Card card = new Card(title, filePath, content);
             FragmentManager.getRecentFragment().adapter.addItem(card);
         } else {
             filePath = "jianka/task/" + mIndicator.getText().toString();
-            Task task = new Task(title, filePath, cardType);
-            FragmentManager.getTaskFragment().adapter.addItem(task);
+            Task task = new Task(title, filePath,content, taskType);
+            FragmentManager.getTaskFragment().mAdapter.addItem(task);
         }
     }
 
@@ -265,24 +265,24 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             switch (checkedId) {
                 case R.id.task_regular:
                     mIndicator.setText(mIndicatorText[0]);
-                    cardType = DataType.CARD;
+                    taskType = DataType.CARD;
                     break;
                 case R.id.task_important_emergent:
                     // TODO: 2017/8/6 设置和spinner的联动
                     mIndicator.setText(mIndicatorText[1]);
-                    cardType = DataType.TASK_IMPORTANT_EMERGENT;
+                    taskType = DataType.TASK_IMPORTANT_EMERGENT;
                     break;
                 case R.id.task_important_not_emergent:
                     mIndicator.setText(mIndicatorText[2]);
-                    cardType = DataType.TASK_IMPORTANT_NOT_EMERGENT;
+                    taskType = DataType.TASK_IMPORTANT_NOT_EMERGENT;
                     break;
                 case R.id.task_unimportant_emergent:
                     mIndicator.setText(mIndicatorText[3]);
-                    cardType = DataType.TASK_UNIMPORTANT_EMERGENT;
+                    taskType = DataType.TASK_UNIMPORTANT_EMERGENT;
                     break;
                 case R.id.task_unimportant_not_emergent:
                     mIndicator.setText(mIndicatorText[4]);
-                    cardType = DataType.TASK_UNIMPORTANT_NOT_EMERGENT;
+                    taskType = DataType.TASK_UNIMPORTANT_NOT_EMERGENT;
                     break;
             }
         }

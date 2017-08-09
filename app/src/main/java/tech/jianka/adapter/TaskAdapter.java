@@ -7,6 +7,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -76,16 +78,30 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setFullSpan(true);
-            layoutParams.setMargins(10,10,10,10);
+            layoutParams.setMargins(10, 5, 5, 10);
             holder.itemView.setLayoutParams(layoutParams);
-            if (tasks != null) {
-                try {
-                    String date = longToString(tasks.get(position).getModifiedTime(), "HH:mm MM/dd");
-                    ((TaskViewHolder) holder).mTaskDate.setText(date);
-                    ((TaskViewHolder) holder).mCardImage.setImageResource(R.drawable.task_image_important_not_emergent);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+            Task task = tasks.get(position);
+            ((TaskViewHolder) holder).mTaskTitle.setText(task.getTaskTitle());
+            ((TaskViewHolder) holder).mTaskContent.setText(task.getTaskContent());
+            try {
+                String date = longToString(task.getModifiedTime(), "HH:mm MM/dd");
+                ((TaskViewHolder) holder).mTaskDate.setText(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            switch (task.getTaskType()) {
+                case DataType.TASK_IMPORTANT_EMERGENT:
+                    ((TaskViewHolder) holder).mTaskImage.setImageResource(R.drawable.task_image_important_emergent);
+                    break;
+                case DataType.TASK_IMPORTANT_NOT_EMERGENT:
+                    ((TaskViewHolder) holder).mTaskImage.setImageResource(R.drawable.task_image_important_not_emergent);
+                    break;
+                case DataType.TASK_UNIMPORTANT_EMERGENT:
+                    ((TaskViewHolder) holder).mTaskImage.setImageResource(R.drawable.task_image_unimportant_emergent);
+                    break;
+                case DataType.TASK_UNIMPORTANT_NOT_EMERGENT:
+                    ((TaskViewHolder) holder).mTaskImage.setImageResource(R.drawable.task_image_unimportant_not_emergent);
+                    break;
             }
         }
     }
@@ -136,19 +152,21 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class TaskViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnLongClickListener {
+            implements View.OnClickListener, View.OnLongClickListener, CompoundButton.OnCheckedChangeListener {
         TextView mTaskTitle;
         TextView mTaskDate;
-        TextView mCardGroup;
-        TextView mCardContent;
-        ImageView mCardImage;
+        TextView mTaskContent;
+        ImageView mTaskImage;
+        CheckBox mCheckBox;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
             mTaskTitle = (TextView) itemView.findViewById(R.id.task_item_title);
             mTaskDate = (TextView) itemView.findViewById(R.id.task_item_date);
-            mCardImage = (ImageView) itemView.findViewById(R.id.task_item_image);
-            mCardContent = (TextView) itemView.findViewById(R.id.task_item_content);
+            mTaskImage = (ImageView) itemView.findViewById(R.id.task_item_image);
+            mTaskContent = (TextView) itemView.findViewById(R.id.task_item_content);
+            mCheckBox = (CheckBox) itemView.findViewById(R.id.task_item_check_box);
+            mCheckBox.setOnCheckedChangeListener(this);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -166,6 +184,11 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return true;
         }
 
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            int clickedPosition = getAdapterPosition();
+            listener.onTaskCheck(clickedPosition);
+        }
     }
 
     public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -201,5 +224,7 @@ public class TaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         void onItemClick(int clickedCardIndex);
 
         void onItemLongClick(int clickedCardIndex);
+
+        void onTaskCheck(int clickedPosition);
     }
 }

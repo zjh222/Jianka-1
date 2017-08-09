@@ -23,8 +23,9 @@ public class TaskData {
         //taskGroup初始化
         int[] type = DataType.TASK_TYPE;
         for (int i = 0; i < 4; i++) {
-            taskItems.add(new Task(taskGroup[i], getSDCardPath("jianka/task"), DataType.GROUP, type[i]));
+            taskItems.add(new Task(taskGroup[i], getSDCardPath(paths[i]), DataType.GROUP, type[i]));
         }
+
         //taskItems初始化
         for (String path : paths) {
             List<Task> tasks = getTaskItems(getSDCardPath(path));
