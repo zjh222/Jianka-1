@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,29 +37,31 @@ import tech.jianka.adapter.MyAdapter;
 import tech.jianka.data.Card;
 import tech.jianka.data.DataType;
 import tech.jianka.data.GroupData;
-import tech.jianka.data.Task;
+import tech.jianka.data.RecentData;
+import tech.jianka.data.TaskData;
 import tech.jianka.fragment.FragmentManager;
 
-public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener,AdapterView.OnItemSelectedListener {
-    private RadioGroup mTaskSelecotor;
+import static tech.jianka.utils.ItemUtils.getSDCardPath;
+
+public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
     private EditText mEditTitle;
     private Spinner mGroupSelector;
     private EditText mEditContent;
     private TextView mIndicator;
     private ImageView iv_image;
     private String str;
-    private DBConnection helper;
     private BaseAdapter myAdapter;
     private String[] mIndicatorText;
-    private int taskType= DataType.CARD;
-
+    private int cardType = DataType.CARD;
+    private boolean isDetail = false;
+    private int cardIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_card);
 
-        this.iv_image = (ImageView) findViewById(R.id.iv_image);//li
+        this.iv_image = (ImageView) findViewById(R.id.iv_image);
 
         setTitle(getString(R.string.new_card_activity));
         if (getSupportActionBar() != null) {
@@ -69,7 +72,7 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         mIndicator = (TextView) findViewById(R.id.new_card_task_indicator);
         mEditTitle = (EditText) findViewById(R.id.new_card_title);
         mEditContent = (EditText) findViewById(R.id.new_card_content);
-        mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
+        RadioGroup mTaskSelecotor = (RadioGroup) findViewById(R.id.new_card_task_selector);
         mGroupSelector = (Spinner) findViewById(R.id.new_card_group_selector);
         mGroupSelector.setOnItemSelectedListener(this);
 
@@ -78,23 +81,43 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
 
 
         ArrayList<String> groups = (ArrayList<String>) GroupData.getGroupTitles();
-
         myAdapter = new MyAdapter<String>(groups, R.layout.spinner_item) {
             @Override
             public void bindView(ViewHolder holder, String obj) {
                 holder.setText(R.id.spinner_item_text_view, obj);
             }
         };
-
         mGroupSelector.setAdapter(myAdapter);
 
-        helper = new DBConnection(this);
+        Intent intent = getIntent();
+        if (intent.hasExtra("CARD_DETAILS")){
+            isDetail = true;
+            cardIndex = intent.getIntExtra("CARD_DETAILS",999);
+            Card card = RecentData.getCard(cardIndex);
+            loadCard(card);
+        } else if (intent.hasExtra("TASK_DETAILS")) {
+            isDetail = true;
+            cardIndex = intent.getIntExtra("TASK_DETAILS", 999);
+            Card card = TaskData.getTask(cardIndex);
+            loadTask(card);
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd/HH:mm:ss");
         Date curDate = new Date(System.currentTimeMillis());
         str = formatter.format(curDate);
         if (!checkNetworkInfo()) {
             return;
         }
+    }
+
+    private void loadTask(Card card) {
+        mEditTitle.setText(card.getCardTitle());
+        mEditContent.setText(card.getCardContent());
+    }
+
+    private void loadCard(Card card) {
+        mEditTitle.setText(card.getCardTitle());
+        mEditContent.setText(card.getCardContent());
+        // TODO: 2017/8/9 分组问题还没解决
     }
 
 
@@ -244,14 +267,14 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
         String title = mEditTitle.getText().toString();
         String content = mEditContent.getText().toString();
         String filePath;
-        if (taskType == DataType.CARD) {
-            filePath = "jianka/data/" + mGroupSelector.getSelectedItem().toString();
+        if (cardType == DataType.CARD) {
+            filePath = getSDCardPath("jianka/data/" + mGroupSelector.getSelectedItem().toString() + File.separator);
             Card card = new Card(title, filePath, content);
             FragmentManager.getRecentFragment().adapter.addItem(card);
         } else {
-            filePath = "jianka/task/" + mIndicator.getText().toString();
-            Task task = new Task(title, filePath,content, taskType);
-            FragmentManager.getTaskFragment().mAdapter.addItem(task);
+            filePath = getSDCardPath("jianka/card/" + mIndicator.getText().toString());
+            Card card = new Card(title, filePath, content, cardType);
+            FragmentManager.getTaskFragment().mAdapter.addItem(card);
         }
     }
 
@@ -261,24 +284,24 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             switch (checkedId) {
                 case R.id.task_regular:
                     mIndicator.setText(mIndicatorText[0]);
-                    taskType = DataType.CARD;
+                    cardType = DataType.CARD;
                     break;
                 case R.id.task_important_emergent:
                     // TODO: 2017/8/6 bug 两个选择不能联动
                     mIndicator.setText(mIndicatorText[1]);
-                    taskType = DataType.TASK_IMPORTANT_EMERGENT;
+                    cardType = DataType.TASK_IMPORTANT_EMERGENT;
                     break;
                 case R.id.task_important_not_emergent:
                     mIndicator.setText(mIndicatorText[2]);
-                    taskType = DataType.TASK_IMPORTANT_NOT_EMERGENT;
+                    cardType = DataType.TASK_IMPORTANT_NOT_EMERGENT;
                     break;
                 case R.id.task_unimportant_emergent:
                     mIndicator.setText(mIndicatorText[3]);
-                    taskType = DataType.TASK_UNIMPORTANT_EMERGENT;
+                    cardType = DataType.TASK_UNIMPORTANT_EMERGENT;
                     break;
                 case R.id.task_unimportant_not_emergent:
                     mIndicator.setText(mIndicatorText[4]);
-                    taskType = DataType.TASK_UNIMPORTANT_NOT_EMERGENT;
+                    cardType = DataType.TASK_UNIMPORTANT_NOT_EMERGENT;
                     break;
             }
         }
@@ -287,9 +310,9 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.new_card_group_selector) {
-            if (parent.getSelectedItemPosition()==1) {
-                if (taskType == DataType.CARD) {
-                    taskType = DataType.TASK_IMPORTANT_EMERGENT;
+            if (parent.getSelectedItemPosition() == 1) {
+                if (cardType == DataType.CARD) {
+                    cardType = DataType.TASK_IMPORTANT_EMERGENT;
                     RadioButton button = (RadioButton) findViewById(R.id.task_important_emergent);
                     button.setChecked(true);
                 }

@@ -52,9 +52,10 @@ public class GroupData {
         }
     }
 
-    public static void removeGroupAndCards(Group group) {
-        new File(group.getFilePath()).delete();
-        new File(group.getCoverPath()).delete();
+    public static void removeGroupAndCards(int index) {
+        new File(groupItems.get(index).getFilePath()).delete();
+        new File(groupItems.get(index).getCoverPath()).delete();
+        groupItems.remove(index);
     }
 
     public static void renameGroup(int index, String newName) {
@@ -62,5 +63,6 @@ public class GroupData {
         group.setFileName(newName);
         File file = new File(groupItems.get(index).getFilePath());
         file.renameTo(new File(file.getParent() + "/" + newName));
+        group.setFilePath(file.getPath());
     }
 }

@@ -1,10 +1,13 @@
 package tech.jianka.data;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static tech.jianka.utils.ItemUtils.Obj2Bytes;
 import static tech.jianka.utils.ItemUtils.getSDCardPath;
 import static tech.jianka.utils.ItemUtils.getTaskItems;
+import static tech.jianka.utils.ItemUtils.saveFileToSDCard;
 
 /**
  * Created by Richard on 2017/8/3.
@@ -16,25 +19,48 @@ public class TaskData {
     private String[] paths = {
             "jianka/task/很重要-很紧急", "jianka/task/很重要-不紧急",
             "jianka/task/不重要-很紧急", "jianka/task/不紧急-不重要"};
-    private static List<Task> taskItems = new ArrayList<>();
+    private static List<Card> data = new ArrayList<>();
 
     public TaskData() {
         //taskGroup初始化
         int[] type = DataType.TASK_TYPE;
         for (int i = 0; i < 4; i++) {
-            taskItems.add(new Task(taskGroup[i], getSDCardPath(paths[i]), DataType.GROUP, type[i]));
+            data.add(new Card(taskGroup[i], getSDCardPath(paths[i]), DataType.GROUP, type[i]));
         }
 
         //taskItems初始化
         for (String path : paths) {
-            List<Task> tasks = getTaskItems(getSDCardPath(path));
-            if (tasks != null) {
-                taskItems.addAll(tasks);
+            List<Card> cards = getTaskItems(getSDCardPath(path));
+            if (cards != null) {
+                data.addAll(cards);
             }
         }
     }
 
-    public List<Task> getTaskGroup() {
-        return taskItems;
+    public List<Card> getData() {
+        return data;
+    }
+
+    public static void addTask(Card card) {
+        saveFileToSDCard(Obj2Bytes(card), card.getFilePath(), card.getCardTitle() + ".card");
+        card.setFilePath(card.getFilePath() + File.separator + card.getCardTitle() + ".card");
+        data.add(0, card);
+    }
+
+    public static boolean removeTask(int index) {
+        File file = new File(data.get(index).getFilePath());
+        if(file.delete()) {
+            data.remove(index);
+            return true;
+        }else return false;
+    }
+
+    public static void modifiedTask(int index,Card card) {
+        removeTask(index);
+        addTask(card);
+    }
+
+    public static Card getTask(int cardIndex) {
+        return data.get(cardIndex);
     }
 }

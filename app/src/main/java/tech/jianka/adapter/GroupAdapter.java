@@ -76,8 +76,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public void removeGroupAndCards(int position) {
-        GroupData.removeGroupAndCards(groups.get(position));
-        groups.remove(position);
+        GroupData.removeGroupAndCards(position);
         notifyDataSetChanged();
     }
 

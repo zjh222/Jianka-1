@@ -126,9 +126,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
     public void onItemClick(int clickedCardIndex) {
         // TODO: 2017/7/26 处理卡片单击事件
         Intent intent = new Intent(getActivity(), NewCardActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("CARD_DETAILS", adapter.getItem(clickedCardIndex));
-        intent.putExtras(bundle);
+        intent.putExtra("CARD_DETAILS", clickedCardIndex);
         startActivity(intent);
     }
 

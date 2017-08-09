@@ -9,17 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.text.ParseException;
 import java.util.List;
 
 import tech.jianka.activity.R;
 import tech.jianka.data.Card;
 import tech.jianka.data.Item;
+import tech.jianka.data.RecentData;
 
-import static tech.jianka.utils.ItemUtils.Obj2Bytes;
 import static tech.jianka.utils.ItemUtils.longToString;
-import static tech.jianka.utils.ItemUtils.saveFileToSDCard;
 
 /**
  * Created by Richard on 2017/7/28.
@@ -45,18 +43,16 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            if (cards != null) {
-                ((CardViewHolder) holder).mCardTitle.setText(cards.get(position).getCardTitle());
-                ((CardViewHolder) holder).mCardContent.setText((String) cards.get(position).getCardContent());
-                try {
-                    String date = longToString(cards.get(position).getModifiedTime(), "HH:mm MM/dd");
-                    ((CardViewHolder) holder).mCardDate.setText(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                ((CardViewHolder) holder).mCardContent.setText((String) cards.get(position).getCardContent());
-            }
-//        }
+        Card card = cards.get(position);
+        ((CardViewHolder) holder).mCardTitle.setText(card.getCardTitle());
+        ((CardViewHolder) holder).mCardContent.setText(card.getCardContent());
+        try {
+            String date = longToString(card.getModifiedTime(), "HH:mm MM/dd");
+            ((CardViewHolder) holder).mCardDate.setText(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        ((CardViewHolder) holder).mCardContent.setText(card.getCardContent());
     }
 
     @Override
@@ -70,26 +66,16 @@ public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void addItem(Card card) {
-        saveFileToSDCard(Obj2Bytes(card), card.getFilePath(), card.getCardTitle() + ".card");
-        card.setFilePath(card.getFilePath()+card.getCardTitle() + ".card");
-        cards.add(0,card);
+        RecentData.addCard(card);
         notifyDataSetChanged();
     }
 
     public boolean removeItem(int position) {
-        Item toDeleteItem = cards.get(position);
-        // TODO: 2017/8/6 完善能不能删除的逻辑
-        String[] canNotDelete = {"收信箱", "任务"};
-        String toCompare = toDeleteItem.getFileName();
-        for (String name : canNotDelete) {
-            if (name.equals(toCompare)) {
-                return false;
-            }
+        if (RecentData.removeCard(position)) {
+            notifyDataSetChanged();
+            return true;
         }
-        new File(cards.get(position).getFilePath()).delete();
-        cards.remove(position);
-        notifyDataSetChanged();
-        return true;
+        return false;
     }
 
     public void shareItem(int clickedCardIndex, Activity context) {

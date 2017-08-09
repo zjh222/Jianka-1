@@ -1,14 +1,12 @@
 package tech.jianka.data;
 
 import java.io.File;
-import java.io.Serializable;
 
 /**
  * Created by Richard on 2017/7/30.
  */
 
-public class Item implements Serializable {
-    private static final long serialVersionUID = 7995824715641496969L;
+public class Item {
 
     private int itemType;
     private String fileName;
@@ -16,6 +14,7 @@ public class Item implements Serializable {
     private long modifiedTime;
 
     public Item() {
+
     }
 
     public Item(String fileName, String filePath, long lastModified) {

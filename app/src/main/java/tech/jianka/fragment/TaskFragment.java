@@ -84,7 +84,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
         mRecyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new TaskAdapter(mData.getTaskGroup(), this);
+        mAdapter = new TaskAdapter(mData.getData(), this);
         mRecyclerView.setAdapter(mAdapter);
 
     }

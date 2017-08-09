@@ -33,7 +33,6 @@ import java.util.Locale;
 import tech.jianka.data.Card;
 import tech.jianka.data.DataType;
 import tech.jianka.data.Group;
-import tech.jianka.data.Task;
 
 /**
  * Created by Richa on 2017/7/31.
@@ -94,15 +93,15 @@ public class ItemUtils {
         return cardFile;
     }
 
-    public static List<Task> getTaskItems(String taskDir) {
-        ArrayList<Task> tasks = new ArrayList<>();
+    public static List<Card> getTaskItems(String taskDir) {
+        ArrayList<Card> cards = new ArrayList<>();
         File[] taskFiles = new File(taskDir).listFiles();
         for (File file : taskFiles) {
-            Task task = inflateTaskFromFile(file);
-            if (task == null) break;
-            tasks.add(task);
+            Card card = inflateTaskFromFile(file);
+            if (card == null) break;
+            cards.add(card);
         }
-        return tasks;
+        return cards;
     }
 
     @Nullable
@@ -130,25 +129,25 @@ public class ItemUtils {
     }
 
     @Nullable
-    private static Task inflateTaskFromFile(File file) {
+    private static Card inflateTaskFromFile(File file) {
         if (file.isDirectory()) {
             return null;
         }
-        Task task = new Task();
+        Card card = new Card();
         try {
             FileInputStream fis;
             ObjectInputStream ois;
             fis = new FileInputStream(file);
             ois = new ObjectInputStream(fis);
-            task = (Task) ois.readObject();
-            task.setItemType(DataType.CARD);
+            card = (Card) ois.readObject();
+            card.setItemType(DataType.CARD);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        task.setFileName(file.getName());
-        task.setFilePath(file.getPath());
-        task.setModifiedTime(file.lastModified());
-        return task;
+        card.setFileName(file.getName());
+        card.setFilePath(file.getPath());
+        card.setModifiedTime(file.lastModified());
+        return card;
     }
 
     public static List<Group> getAllGroups(String dir) {
@@ -249,7 +248,8 @@ public class ItemUtils {
                                            String filename) {
         BufferedOutputStream bos = null;
         if (isSDCardMounted()) {
-            File file = new File(ItemUtils.getSDCardPath(dir));
+            File file = new File(dir);
+//            File file = new File(getSDCardPath(dir));
             if (!file.exists()) {
                 boolean flags = file.mkdirs();
             }
@@ -272,6 +272,7 @@ public class ItemUtils {
         }
         return false;
     }
+
 
     /**
      * 将文件（byte[]） 保存进sdcard指定的路径下
