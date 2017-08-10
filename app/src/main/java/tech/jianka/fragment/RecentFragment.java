@@ -37,7 +37,6 @@ import tech.jianka.utils.SpaceItemDecoration;
 public class RecentFragment extends Fragment implements CardAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
 
-    private static Toast mToast;
 
     private int fragmentType;
 
@@ -46,7 +45,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
 
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     RecyclerView.LayoutManager layoutManager;
 
     public CardAdapter adapter;
@@ -89,13 +88,13 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
         RecentData data = new RecentData();
-        adapter = new CardAdapter(data.getData(),this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+        adapter = new CardAdapter(data.getData(), mRecyclerView, this);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(5));
     }
 
 
@@ -127,9 +126,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
     public void onItemClick(int clickedCardIndex) {
         // TODO: 2017/7/26 处理卡片单击事件
         Intent intent = new Intent(getActivity(), NewCardActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("CARD_DETAILS", adapter.getItem(clickedCardIndex));
-        intent.putExtras(bundle);
+        intent.putExtra("CARD_DETAILS", clickedCardIndex);
         startActivity(intent);
     }
 
@@ -149,7 +146,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
                                 break;
                             case 1:
                                 if (!adapter.removeItem(clickedCardIndex)) {
-                                    mToast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
                                 }
 
                                 break;

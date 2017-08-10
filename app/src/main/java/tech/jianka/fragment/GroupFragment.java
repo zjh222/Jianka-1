@@ -2,6 +2,7 @@ package tech.jianka.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import tech.jianka.activity.NewCardGroupActivity;
 import tech.jianka.activity.R;
 import tech.jianka.adapter.GroupAdapter;
 import tech.jianka.data.GroupData;
@@ -137,19 +139,17 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
                                 if (result == GroupData.INBOX) {
                                     Toast.makeText(getActivity(),"收信箱不能被删除",Toast.LENGTH_SHORT).show();
                                 } else if (result == GroupData.NOT_EMPTY) {
-                                    final int toDelete = which;
                                     AlertDialog confirmDelete = new AlertDialog.Builder(getContext()).setTitle("删除确认")
                                             .setMessage("卡组不为空,继续删除吗?")
                                             .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    Toast.makeText(getContext(), "你点击了取消按钮~", Toast.LENGTH_SHORT).show();
                                                 }
                                             })
                                             .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    adapter.removeItemAndChild(toDelete);
+                                                    adapter.removeGroupAndCards(clickedCardIndex);
                                                 }
                                             })
                                             .create();             //创建AlertDialog对象
@@ -159,6 +159,10 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
                                 }
                                 break;
                             case 1:
+                                Intent renameGroup = new Intent(getActivity(), NewCardGroupActivity.class);
+                                renameGroup.putExtra("RENAME_GROUP", clickedCardIndex);
+                                startActivity(renameGroup);
+
                                 // TODO: 2017/8/6 rename
                                 break;
                             case 2:

@@ -31,7 +31,7 @@ import tech.jianka.fragment.TaskFragment;
 import tech.jianka.utils.PreferenceHelper;
 
 import static tech.jianka.fragment.FragmentManager.fragmentList;
-import static tech.jianka.utils.CardUtil.getSDCardPath;
+import static tech.jianka.utils.ItemUtils.getSDCardPath;
 import static tech.jianka.utils.PreferenceHelper.getBoolean;
 
 public class MainActivity extends AppCompatActivity
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         if(flag){
             String[] groups = getResources().getStringArray(R.array.default_group_path);
             for (String group : groups) {
-                new File(getSDCardPath()+File.separator + group).mkdirs();
+                new File(getSDCardPath(group)).mkdirs();
             }
             getSharedPreferences("tech.jianka", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
         }

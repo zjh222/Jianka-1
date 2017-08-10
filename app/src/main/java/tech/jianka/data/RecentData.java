@@ -1,13 +1,13 @@
 package tech.jianka.data;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
-import static tech.jianka.utils.CardUtil.inflateCardFromPath;
+import static tech.jianka.utils.ItemUtils.Obj2Bytes;
+import static tech.jianka.utils.ItemUtils.getAllSubCards;
+import static tech.jianka.utils.ItemUtils.getSDCardPath;
+import static tech.jianka.utils.ItemUtils.saveFileToSDCard;
 
 /**
  * Created by Richa on 2017/8/3.
@@ -15,26 +15,36 @@ import static tech.jianka.utils.CardUtil.inflateCardFromPath;
 
 public class RecentData {
     // TODO: 2017/8/3 读取最近修改的卡片数据
-    private List<Item> data = new ArrayList<>();
+    private static List<Card> data = new ArrayList<>();
 
     public RecentData() {
-        String path = getSpecifiedSDPath("jianka/log/recent.txt");
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(path)));
-            for (String line = br.readLine(); line != null; line = br.readLine()) {
-                data.add(inflateCardFromPath(line));
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        data = getAllSubCards(getSDCardPath("jianka/data"));
     }
 
-    public List<Item> getData() {
+    public List<Card> getData() {
         return data;
     }
 
+    public static boolean removeCard(int index) {
+        File file = new File(data.get(index).getFilePath());
+        if(file.delete()) {
+            data.remove(index);
+            return true;
+        }else return false;
+    }
+
+    public static void addCard(Card card) {
+        saveFileToSDCard(Obj2Bytes(card), card.getFilePath(),card.getCardTitle()+".card");
+        card.setFilePath(card.getFilePath()+ File.separator+card.getCardTitle()+".card");
+        data.add(0, card);
+    }
+
+    public static void modifiedCard(int index,Card card) {
+        removeCard(index);
+        addCard(card);
+    }
+
+    public static Card getCard(int cardIndex) {
+        return data.get(cardIndex);
+    }
 }
