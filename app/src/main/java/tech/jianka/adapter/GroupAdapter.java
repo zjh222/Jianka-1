@@ -67,7 +67,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     public int removeItem(int position) {
-        int result = GroupData.removeGroup(groups.get(position));
+        int result = GroupData.removeGroup(position);
         if (result == GroupData.DELETE_DONE) {
             groups.remove(position);
             notifyDataSetChanged();

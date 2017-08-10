@@ -182,44 +182,6 @@ public class NewCardActivity extends AppCompatActivity implements RadioGroup.OnC
             }
         }).show();
     }
-/*
-    public boolean checkNetworkInfo() {
-
-        ConnectivityManager conMan = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        // mobile 3G Data Network
-        NetworkInfo.State mobile = conMan.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
-                .getState();
-        // wifi
-        NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
-                .getState();
-        // 如果3G网络和wifi网络都未连接，且不是处于正在连接状态 则进入Network Setting界面 由用户配置网络连接
-
-        if (mobile == NetworkInfo.State.CONNECTED || mobile == NetworkInfo.State.CONNECTING)
-            return true;
-        if (wifi == NetworkInfo.State.CONNECTED || wifi == NetworkInfo.State.CONNECTING)
-            return true;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("需要网络支持！")
-                .setCancelable(false)
-                .setPositiveButton("进行网络配置",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // 进入无线网络配置界面
-                                startActivity(new Intent(
-                                        Settings.ACTION_WIRELESS_SETTINGS));
-                                NewCardActivity.this.finish();
-                            }
-                        })
-                .setNegativeButton("退出", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        NewCardActivity.this.finish();
-                    }
-                });
-        builder.show();
-        return false;
-
-    }*/
 
     private boolean isEmpty() {
         if (mEditContent.getText() == null

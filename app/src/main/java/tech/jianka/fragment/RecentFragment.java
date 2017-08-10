@@ -45,7 +45,7 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
 
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     RecyclerView.LayoutManager layoutManager;
 
     public CardAdapter adapter;
@@ -88,13 +88,13 @@ public class RecentFragment extends Fragment implements CardAdapter.ItemClickLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
         RecentData data = new RecentData();
-        adapter = new CardAdapter(data.getData(), this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+        adapter = new CardAdapter(data.getData(), mRecyclerView, this);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(5));
     }
 
 
